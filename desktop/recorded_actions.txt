@@ -1,0 +1,22 @@
+Click ai-accelerator – recorder.py
+Click Text editor
+Enter text "test"
+Click Close
+Click New tab
+Click Cut
+Click Paste
+Click Cut
+Click Undo
+Click Close
+Click Zoom in
+Click Cut
+Click Paste
+Click Close
+Click Save
+Enter text "run_file"
+Click Save
+Click Close
+Click Don't save
+Click ai-accelerator – recorder.py
+Enter text "c"
+Click ai-accelerator – recorder.py

@@ -1,0 +1,1 @@
+streamlit run .\Self_healing_streamlet.py

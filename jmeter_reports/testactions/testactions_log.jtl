@@ -1,0 +1,248 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect,"visual_id","query_mode","fe_ms","se_ms","is_cache"
+1779033228815,1503,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,1492,0,1052,null,null,null,null,null
+1779033232324,410,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,406,0,0,null,null,null,null,null
+1779033234740,395,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,1,1,https://blazedemo.com/reserve.php,383,0,0,null,null,null,null,null
+1779033237139,409,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,1,1,https://blazedemo.com/purchase.php,402,0,0,null,null,null,null,null
+1779033239555,407,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,400,0,0,null,null,null,null,null
+1779033241969,428,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,422,0,0,null,null,null,null,null
+1779033244417,388,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,1,1,https://blazedemo.com/reserve.php,378,0,0,null,null,null,null,null
+1779033246817,439,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,1,1,https://blazedemo.com/purchase.php,432,0,0,null,null,null,null,null
+1779033249269,408,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,403,0,0,null,null,null,null,null
+1779033251692,412,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,409,0,0,null,null,null,null,null
+1779033254117,419,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,1,1,https://blazedemo.com/reserve.php,412,0,0,null,null,null,null,null
+1779033256549,457,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,1,1,https://blazedemo.com/purchase.php,450,0,0,null,null,null,null,null
+1779033259011,412,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,406,0,0,null,null,null,null,null
+1779033261426,497,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,496,0,0,null,null,null,null,null
+1779033263930,431,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,1,1,https://blazedemo.com/reserve.php,421,0,0,null,null,null,null,null
+1779033266376,407,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,1,1,https://blazedemo.com/purchase.php,400,0,0,null,null,null,null,null
+1779033268792,417,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,413,0,0,null,null,null,null,null
+1779033271210,415,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,409,0,0,null,null,null,null,null
+1779033273738,402,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,1,1,https://blazedemo.com/reserve.php,391,0,0,null,null,null,null,null
+1779033276375,463,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,1,1,https://blazedemo.com/purchase.php,408,0,0,null,null,null,null,null
+1779033278847,428,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,422,0,0,null,null,null,null,null
+1779033281288,405,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,400,0,0,null,null,null,null,null
+1779033283705,412,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,1,1,https://blazedemo.com/reserve.php,404,0,0,null,null,null,null,null
+1779033286123,498,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,1,1,https://blazedemo.com/purchase.php,490,0,0,null,null,null,null,null
+1779033288638,422,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,418,0,0,null,null,null,null,null
+1779033291069,579,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,1,1,https://blazedemo.com/,575,0,189,null,null,null,null,null
+1779033293652,447,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,1,1,https://blazedemo.com/reserve.php,436,0,0,null,null,null,null,null
+1779033296102,392,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,1,1,https://blazedemo.com/purchase.php,384,0,0,null,null,null,null,null
+1779033298500,405,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,401,0,0,null,null,null,null,null
+1779033300914,444,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,439,0,0,null,null,null,null,null
+1779033303366,418,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,1,1,https://blazedemo.com/reserve.php,407,0,0,null,null,null,null,null
+1779033305798,396,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,1,1,https://blazedemo.com/purchase.php,387,0,0,null,null,null,null,null
+1779033308197,401,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,396,0,0,null,null,null,null,null
+1779033310613,435,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,424,0,0,null,null,null,null,null
+1779033313061,399,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,1,1,https://blazedemo.com/reserve.php,390,0,0,null,null,null,null,null
+1779033315462,462,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,1,1,https://blazedemo.com/purchase.php,461,0,0,null,null,null,null,null
+1779033317928,429,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,422,0,0,null,null,null,null,null
+1779033320360,404,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,1,1,https://blazedemo.com/,398,0,0,null,null,null,null,null
+1779033322775,388,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,1,1,https://blazedemo.com/reserve.php,379,0,0,null,null,null,null,null
+1779033325176,405,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,1,1,https://blazedemo.com/purchase.php,398,0,0,null,null,null,null,null
+1779033327592,415,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,410,0,0,null,null,null,null,null
+1779033328676,646,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,641,0,223,null,null,null,null,null
+1779033330025,396,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,392,0,0,null,null,null,null,null
+1779033331323,403,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,397,0,0,null,null,null,null,null
+1779033332439,387,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,378,0,0,null,null,null,null,null
+1779033333738,413,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,403,0,0,null,null,null,null,null
+1779033334838,434,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,427,0,0,null,null,null,null,null
+1779033336154,420,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,411,0,0,null,null,null,null,null
+1779033337290,382,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,378,0,0,null,null,null,null,null
+1779033338589,420,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,415,0,0,null,null,null,null,null
+1779033339687,409,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,406,0,0,null,null,null,null,null
+1779033341020,397,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,391,0,0,null,null,null,null,null
+1779033342103,432,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,421,0,0,null,null,null,null,null
+1779033343420,396,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,386,0,0,null,null,null,null,null
+1779033344537,405,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,395,0,0,null,null,null,null,null
+1779033345818,421,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,414,0,0,null,null,null,null,null
+1779033346952,438,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,433,0,0,null,null,null,null,null
+1779033348252,422,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,417,0,0,null,null,null,null,null
+1779033349401,385,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,381,0,0,null,null,null,null,null
+1779033350684,418,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,411,0,0,null,null,null,null,null
+1779033351800,457,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,451,0,107,null,null,null,null,null
+1779033353117,434,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,424,0,0,null,null,null,null,null
+1779033354266,361,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,356,0,0,null,null,null,null,null
+1779033355565,402,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,401,0,0,null,null,null,null,null
+1779033356632,366,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,361,0,0,null,null,null,null,null
+1779033357980,483,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,436,0,0,null,null,null,null,null
+1779033359014,366,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,361,0,0,null,null,null,null,null
+1779033360479,411,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,405,0,0,null,null,null,null,null
+1779033361396,374,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,368,0,0,null,null,null,null,null
+1779033362897,470,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,461,0,0,null,null,null,null,null
+1779033363779,348,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,342,0,0,null,null,null,null,null
+1779033365379,416,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,408,0,0,null,null,null,null,null
+1779033366129,572,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,562,0,0,null,null,null,null,null
+1779033367811,392,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,386,0,0,null,null,null,null,null
+1779033368713,344,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,338,0,0,null,null,null,null,null
+1779033370210,389,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,384,0,0,null,null,null,null,null
+1779033371060,359,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,351,0,0,null,null,null,null,null
+1779033372611,459,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,449,0,0,null,null,null,null,null
+1779033373425,389,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,384,0,0,null,null,null,null,null
+1779033375075,495,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,485,0,0,null,null,null,null,null
+1779033375825,383,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,378,0,0,null,null,null,null,null
+1779033377575,395,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,389,0,0,null,null,null,null,null
+1779033378209,370,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,361,0,0,null,null,null,null,null
+1779033379975,435,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,429,0,0,null,null,null,null,null
+1779033380591,382,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,376,0,0,null,null,null,null,null
+1779033382423,435,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,425,0,0,null,null,null,null,null
+1779033382975,388,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,383,0,0,null,null,null,null,null
+1779033384872,447,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,435,0,0,null,null,null,null,null
+1779033385372,400,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,381,0,0,null,null,null,null,null
+1779033387322,433,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,427,0,0,null,null,null,null,null
+1779033387786,363,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,358,0,0,null,null,null,null,null
+1779033389770,473,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,470,0,101,null,null,null,null,null
+1779033390153,342,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,336,0,0,null,null,null,null,null
+1779033392253,366,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,360,0,0,null,null,null,null,null
+1779033392501,368,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,365,0,0,null,null,null,null,null
+1779033394636,347,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,340,0,0,null,null,null,null,null
+1779033394886,359,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,355,0,0,null,null,null,null,null
+1779033396986,344,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,340,0,0,null,null,null,null,null
+1779033397252,344,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,339,0,0,null,null,null,null,null
+1779033399335,345,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4761,188,2,2,https://blazedemo.com/,337,0,0,null,null,null,null,null
+1779033399601,398,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,391,0,0,null,null,null,null,null
+1779033401683,356,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,351,0,0,null,null,null,null,null
+1779033402016,352,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,345,0,0,null,null,null,null,null
+1779033404049,351,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,346,0,0,null,null,null,null,null
+1779033404381,419,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,418,0,0,null,null,null,null,null
+1779033406404,343,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,339,0,0,null,null,null,null,null
+1779033406809,352,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,347,0,0,null,null,null,null,null
+1779033408748,367,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,364,0,0,null,null,null,null,null
+1779033409164,376,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,369,0,0,null,null,null,null,null
+1779033411116,362,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,354,0,0,null,null,null,null,null
+1779033411545,396,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,390,0,0,null,null,null,null,null
+1779033413492,374,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,2,2,https://blazedemo.com/purchase.php,367,0,0,null,null,null,null,null
+1779033414130,440,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,2,2,https://blazedemo.com/,437,0,103,null,null,null,null,null
+1779033415873,339,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4761,188,2,2,https://blazedemo.com/,336,0,0,null,null,null,null,null
+1779033416579,377,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,2,2,https://blazedemo.com/,370,0,0,null,null,null,null,null
+1779033418227,343,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4761,188,2,2,https://blazedemo.com/,342,0,0,null,null,null,null,null
+1779033418962,383,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,373,0,0,null,null,null,null,null
+1779033420576,379,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7249,199,2,2,https://blazedemo.com/reserve.php,372,0,0,null,null,null,null,null
+1779033421361,355,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,2,2,https://blazedemo.com/purchase.php,349,0,0,null,null,null,null,null
+1779033422960,416,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,2,2,https://blazedemo.com/purchase.php,409,0,0,null,null,null,null,null
+1779033423728,369,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,368,0,0,null,null,null,null,null
+1779033425392,358,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,2,2,https://blazedemo.com/,353,0,0,null,null,null,null,null
+1779033426104,376,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,2,2,https://blazedemo.com/,367,0,0,null,null,null,null,null
+1779033427758,372,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,369,0,0,null,null,null,null,null
+1779033428487,342,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,333,0,0,null,null,null,null,null
+1779033428743,621,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,621,0,184,null,null,null,null,null
+1779033430142,398,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,392,0,0,null,null,null,null,null
+1779033430837,348,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,343,0,0,null,null,null,null,null
+1779033431373,407,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,402,0,0,null,null,null,null,null
+1779033432542,355,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,349,0,0,null,null,null,null,null
+1779033433189,358,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,352,0,0,null,null,null,null,null
+1779033433787,411,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,399,0,0,null,null,null,null,null
+1779033434900,344,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,338,0,0,null,null,null,null,null
+1779033435556,348,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,345,0,0,null,null,null,null,null
+1779033436203,470,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,462,0,0,null,null,null,null,null
+1779033437255,344,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,339,0,0,null,null,null,null,null
+1779033437906,382,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,379,0,0,null,null,null,null,null
+1779033438683,414,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,406,0,0,null,null,null,null,null
+1779033439603,377,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,373,0,0,null,null,null,null,null
+1779033440302,367,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,362,0,0,null,null,null,null,null
+1779033441104,410,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,404,0,0,null,null,null,null,null
+1779033441985,369,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,362,0,0,null,null,null,null,null
+1779033442680,332,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,328,0,0,null,null,null,null,null
+1779033443520,386,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,379,0,0,null,null,null,null,null
+1779033444368,373,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,367,0,0,null,null,null,null,null
+1779033445028,1036,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,1030,0,0,null,null,null,null,null
+1779033445921,436,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,431,0,0,null,null,null,null,null
+1779033446752,347,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,343,0,0,null,null,null,null,null
+1779033448079,351,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,345,0,0,null,null,null,null,null
+1779033448368,464,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,409,0,0,null,null,null,null,null
+1779033449102,389,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,382,0,0,null,null,null,null,null
+1779033450432,369,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,361,0,0,null,null,null,null,null
+1779033450848,405,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,399,0,0,null,null,null,null,null
+1779033451494,483,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,479,0,110,null,null,null,null,null
+1779033452814,383,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,378,0,0,null,null,null,null,null
+1779033453266,403,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,394,0,0,null,null,null,null,null
+1779033453982,398,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,390,0,0,null,null,null,null,null
+1779033455199,344,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,341,0,0,null,null,null,null,null
+1779033455677,436,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,425,0,0,null,null,null,null,null
+1779033456397,376,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,369,0,0,null,null,null,null,null
+1779033457549,391,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,385,0,0,null,null,null,null,null
+1779033458116,416,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,409,0,0,null,null,null,null,null
+1779033458780,416,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,412,0,0,null,null,null,null,null
+1779033459948,367,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,358,0,0,null,null,null,null,null
+1779033460546,420,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,414,0,0,null,null,null,null,null
+1779033461197,370,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,363,0,0,null,null,null,null,null
+1779033462316,387,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,384,0,0,null,null,null,null,null
+1779033462981,412,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,400,0,0,null,null,null,null,null
+1779033463579,373,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,372,0,0,null,null,null,null,null
+1779033464714,357,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,354,0,0,null,null,null,null,null
+1779033465396,415,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,414,0,0,null,null,null,null,null
+1779033465962,369,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,363,0,0,null,null,null,null,null
+1779033467087,377,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,376,0,0,null,null,null,null,null
+1779033467822,435,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,430,0,0,null,null,null,null,null
+1779033468343,368,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,363,0,0,null,null,null,null,null
+1779033469472,371,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,366,0,0,null,null,null,null,null
+1779033470258,387,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,383,0,0,null,null,null,null,null
+1779033470727,390,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,376,0,0,null,null,null,null,null
+1779033471855,437,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,436,0,0,null,null,null,null,null
+1779033472655,543,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,543,0,0,null,null,null,null,null
+1779033473127,450,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,445,0,0,null,null,null,null,null
+1779033474306,600,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,594,0,185,null,null,null,null,null
+1779033475208,438,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,434,0,0,null,null,null,null,null
+1779033475591,376,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,372,0,0,null,null,null,null,null
+1779033476910,445,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,436,0,0,null,null,null,null,null
+1779033477654,442,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,434,0,0,null,null,null,null,null
+1779033477975,396,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,385,0,0,null,null,null,null,null
+1779033479357,416,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,408,0,0,null,null,null,null,null
+1779033480100,424,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,418,0,0,null,null,null,null,null
+1779033480373,384,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,379,0,0,null,null,null,null,null
+1779033481789,417,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,412,0,0,null,null,null,null,null
+1779033482541,403,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,394,0,0,null,null,null,null,null
+1779033482761,366,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,362,0,0,null,null,null,null,null
+1779033484221,406,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,398,0,0,null,null,null,null,null
+1779033484956,532,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,531,0,0,null,null,null,null,null
+1779033485139,406,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,401,0,0,null,null,null,null,null
+1779033486636,407,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,398,0,0,null,null,null,null,null
+1779033487498,415,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,406,0,0,null,null,null,null,null
+1779033487555,359,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,354,0,0,null,null,null,null,null
+1779033489051,428,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,419,0,0,null,null,null,null,null
+1779033489923,356,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,349,0,0,null,null,null,null,null
+1779033489923,465,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,461,0,94,null,null,null,null,null
+1779033491481,390,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,384,0,0,null,null,null,null,null
+1779033492286,379,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,377,0,0,null,null,null,null,null
+1779033492402,375,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,366,0,0,null,null,null,null,null
+1779033493880,401,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,394,0,0,null,null,null,null,null
+1779033494680,373,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,370,0,0,null,null,null,null,null
+1779033494784,404,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,398,0,0,null,null,null,null,null
+1779033496284,419,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,414,0,0,null,null,null,null,null
+1779033497062,362,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,355,0,0,null,null,null,null,null
+1779033497197,357,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,355,0,0,null,null,null,null,null
+1779033498719,423,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,415,0,0,null,null,null,null,null
+1779033499432,395,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,385,0,0,null,null,null,null,null
+1779033499568,377,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,373,0,0,null,null,null,null,null
+1779033501150,398,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,392,0,0,null,null,null,null,null
+1779033501829,368,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,364,0,0,null,null,null,null,null
+1779033501951,382,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,376,0,0,null,null,null,null,null
+1779033503549,411,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,404,0,0,null,null,null,null,null
+1779033504199,367,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,362,0,0,null,null,null,null,null
+1779033504335,360,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,353,0,0,null,null,null,null,null
+1779033505962,453,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,443,0,0,null,null,null,null,null
+1779033506579,345,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,3,3,https://blazedemo.com/reserve.php,333,0,0,null,null,null,null,null
+1779033506699,371,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,370,0,0,null,null,null,null,null
+1779033508427,443,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,433,0,0,null,null,null,null,null
+1779033508931,374,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6715,200,3,3,https://blazedemo.com/purchase.php,366,0,0,null,null,null,null,null
+1779033509073,361,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,350,0,0,null,null,null,null,null
+1779033510877,446,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,443,0,0,null,null,null,null,null
+1779033511310,415,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4761,188,3,3,https://blazedemo.com/,413,0,0,null,null,null,null,null
+1779033511443,369,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,362,0,0,null,null,null,null,null
+1779033513329,424,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,417,0,0,null,null,null,null,null
+1779033513729,454,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,449,0,97,null,null,null,null,null
+1779033513826,378,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,371,0,0,null,null,null,null,null
+1779033515760,448,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,448,0,0,null,null,null,null,null
+1779033516192,386,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,386,0,0,null,null,null,null,null
+1779033516210,384,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4757,188,3,3,https://blazedemo.com/,376,0,0,null,null,null,null,null
+1779033518210,412,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-1,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,405,0,0,null,null,null,null,null
+1779033518608,369,Click on btn btn-primary,200,OK,Thread Group 1-3,text,true,,4761,188,3,3,https://blazedemo.com/,363,0,0,null,null,null,null,null
+1779033518592,400,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-2,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,394,0,0,null,null,null,null,null
+1779033520640,419,Open BlazeDemo Homepage,200,OK,Thread Group 1-1,text,true,,4757,188,3,3,https://blazedemo.com/,413,0,0,null,null,null,null,null
+1779033521006,361,Open BlazeDemo Homepage,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,356,0,0,null,null,null,null,null
+1779033520991,392,Click on btn btn-small,200,OK,Thread Group 1-3,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,386,0,0,null,null,null,null,null
+1779033523061,463,Click on btn btn-primary,200,OK,Thread Group 1-1,text,true,,4761,188,3,3,https://blazedemo.com/,458,0,0,null,null,null,null,null
+1779033523374,343,Click on btn btn-primary,200,OK,Thread Group 1-2,text,true,,4757,188,3,3,https://blazedemo.com/,339,0,0,null,null,null,null,null
+1779033523391,406,Click on btn btn-primary (Purchase),200,OK,Thread Group 1-3,text,true,,6719,200,3,3,https://blazedemo.com/purchase.php,399,0,0,null,null,null,null,null
+1779033525526,438,Click on btn btn-small,200,OK,Thread Group 1-1,text,true,,7249,199,3,3,https://blazedemo.com/reserve.php,435,0,0,null,null,null,null,null
+1779033525726,368,Click on btn btn-small,200,OK,Thread Group 1-2,text,true,,7245,199,2,2,https://blazedemo.com/reserve.php,364,0,0,null,null,null,null,null
+1779033525806,328,Open BlazeDemo Homepage,200,OK,Thread Group 1-3,text,true,,4757,188,1,1,https://blazedemo.com/,324,0,0,null,null,null,null,null

@@ -1,0 +1,369 @@
+# Hybrid Automation Script Generation Prompt
+
+---
+
+You are an expert automation engineer. Your task is to generate a complete, executable Python automation script using pytest that performs hybrid automation (Windows desktop application + web application) based on the provided inputs.
+
+---
+
+## 🔹 INPUTS
+
+Application Path:
+{application_path}
+
+Workflow Steps:
+{workflow_steps}
+
+---
+
+## 🔹 OBJECTIVE
+
+Convert the given workflow steps into a fully working Python automation script that:
+- Automates a Windows desktop application using pywinauto
+- Continues the flow in a web application using Selenium
+- Executes end-to-end without any manual intervention
+
+---
+
+## 🔹 TECHNOLOGY STACK
+
+Use exactly these libraries — no others:
+- pywinauto (desktop automation) — use Application(backend="uia")
+- pywinauto.keyboard.send_keys (ALL keyboard input for desktop)
+- selenium (web automation)
+- pytest (test execution framework)
+- time, os (utility)
+- selenium.webdriver.common.action_chains.ActionChains — MANDATORY for ALL keyboard/typing actions in web
+
+---
+
+## 🔹 DESKTOP AUTOMATION RULES (STRICT)
+
+### A. Application Launch
+- Launch using: Application(backend="uia").start(app_path)
+- After launch, always call: app.window(title_re=".*<AppName>")
+- Always call dlg.wait("visible", timeout=30) before any interaction
+- Always call dlg.set_focus() before every action block
+
+### B. Splash Screen / Start Screen Handling (CRITICAL)
+- Many desktop apps (Excel, Word) open with a start/splash screen first
+- NEVER assume the document is immediately ready after launch
+- If the app shows a start screen (e.g., "Blank Workbook", recent files), handle it explicitly:
+  - Use send_keys("{ENTER}") to select the default highlighted option (e.g., Blank Workbook)
+  - Add time.sleep(5) after to wait for the document to load
+- Only after the start screen is dismissed should you proceed to data entry
+
+### C. Keyboard-First Strategy (ABSOLUTE RULE)
+- NEVER use .click(), .click_input(), or mouse-based actions for desktop
+- ALWAYS use send_keys() from pywinauto.keyboard for ALL desktop keyboard input
+- ALWAYS import send_keys as: from pywinauto.keyboard import send_keys
+
+Keyboard shortcut mappings to use:
+- Dismiss start screen / open default item → send_keys("{ENTER}")
+- New file → send_keys("^n")
+- Save → send_keys("^s")
+- Open Go To dialog → send_keys("^g") then send_keys("A1{ENTER}")
+- Close → send_keys("%{F4}")
+- Tab between cells → send_keys("{TAB}")
+- Confirm / next line → send_keys("{ENTER}")
+- Clear selected text → send_keys("^a{BACKSPACE}")
+
+### D. Save File Flow (CRITICAL — follow this exact sequence)
+When saving a file for the first time (e.g., to OneDrive):
+1. send_keys("^s") — trigger save
+2. time.sleep(3) — wait for save dialog to appear
+3. send_keys("^a{BACKSPACE}") — clear the default filename
+4. time.sleep(1)
+5. send_keys("<your_filename>") — type the new filename
+6. time.sleep(1)
+7. send_keys("{ENTER}") — confirm
+8. time.sleep(10) — wait for cloud upload to complete
+
+### E. Cell Navigation in Spreadsheet Apps
+- Always navigate to A1 before entering data:
+  - send_keys("^g") → opens Go To dialog
+  - send_keys("A1{ENTER}") → jumps to A1
+- Enter headers and data using TAB to move between columns, ENTER to move to next row
+
+---
+
+## 🔹 WEB AUTOMATION RULES (STRICT)
+
+### A. Browser Setup
+- Use Selenium Chrome WebDriver
+- Always add these Chrome options:
+  - --disable-gpu
+  - --disable-software-rasterizer
+  - --remote-debugging-port=9222
+  - --no-sandbox
+  - --remote-allow-origins=*
+  - --disable-dev-shm-usage
+- Always call driver.maximize_window() after launch
+
+### B. ActionChains — MANDATORY FOR ALL WEB INPUT
+- NEVER use element.send_keys() directly
+- ALWAYS use ActionChains for typing and key presses:
+  - actions = ActionChains(driver)
+  - actions.send_keys("text").perform()
+  - actions.send_keys(Keys.ENTER).perform()
+  - actions.key_down(Keys.ALT).send_keys("q").key_up(Keys.ALT).perform()
+
+### C. Login Flow (EXACT SEQUENCE)
+Follow this exact pattern for web login:
+1. driver.get(login_url)
+2. time.sleep(5) — wait for page load
+3. actions.send_keys(email).perform()
+4. time.sleep(2)
+5. actions.send_keys(Keys.ENTER).perform()
+6. time.sleep(5) — wait for password page
+7. actions.send_keys(password).perform()
+8. time.sleep(2)
+9. actions.send_keys(Keys.ENTER).perform()
+10. time.sleep(15) — wait for authentication + page load
+11. Wrap any optional "Stay signed in" prompt in try/except:
+    try:
+        actions.send_keys(Keys.ENTER).perform()
+    except:
+        pass
+12. time.sleep(15) — final wait after login
+
+### D. Window/Tab Switching (MANDATORY)
+- After ANY action that may open a new tab or window, ALWAYS switch to it
+- Use this exact pattern:
+
+  def switch_to_new_window(driver):
+      current_window = driver.current_window_handle
+      for handle in driver.window_handles:
+          if handle != current_window:
+              driver.switch_to.window(handle)
+              break
+
+- Call switch_to_new_window(driver) immediately after the action that opens the new window
+- Add time.sleep(3) after switching
+
+### E. File Search and Open in Web Apps (e.g., OneDrive)
+- Do NOT use generic Tab navigation to find files — it is unreliable
+- Use driver.find_element with a specific, stable locator:
+  - Prefer XPATH with contains(text(), 'filename')
+  - Example: driver.find_element(By.XPATH, "//button[contains(text(),'filename')]")
+- After finding the element, use .click() to open it
+- After the file opens (which may open a new tab), always call switch_to_new_window(driver)
+
+### F. In-App Keyboard Command Bar (e.g., Excel Online, OneDrive Web)
+- To trigger commands inside a web-based Office app (e.g., "Download a Copy"):
+  1. Use ALT+Q to open the command/tell-me bar:
+     actions.key_down(Keys.ALT).send_keys("q").key_up(Keys.ALT).perform()
+  2. time.sleep(3)
+  3. Type the command text:
+     actions.send_keys("Download a copy").perform()
+  4. time.sleep(2)
+  5. Press ENTER to execute:
+     actions.send_keys(Keys.ENTER).perform()
+  6. time.sleep(10)
+  7. Press ENTER again to confirm any dialog:
+     actions.send_keys(Keys.ENTER).perform()
+  8. time.sleep(10)
+
+---
+
+## 🔹 HYBRID FLOW SEQUENCING
+
+Maintain this exact flow order:
+1. Launch desktop application
+2. Handle start/splash screen
+3. Perform desktop data entry actions
+4. Save the file (to cloud if applicable)
+5. Close the desktop application (ALT+F4, then ENTER to confirm if prompted)
+6. Launch web browser
+7. Perform web login
+8. Navigate to and open the target file
+9. Switch to new window/tab if file opens in new tab
+10. Execute in-app web actions (e.g., download)
+11. Quit browser
+
+---
+
+## 🔹 SCRIPT STRUCTURE (MANDATORY)
+
+Generate exactly this structure — no deviation:
+
+1. Imports block (all required imports)
+2. Global constants (paths, URLs, credentials — mask passwords as "************")
+3. Desktop functions:
+   - launch_application(app_path)
+   - create_new_workbook(dlg)
+   - enter_data(dlg)
+   - save_file(dlg)
+4. Web functions:
+   - open_browser()
+   - login_to_web(driver, url, email, password)
+   - open_file_in_web(driver, filename)
+   - download_using_command_bar(driver)
+5. Utility functions:
+   - switch_to_new_window(driver)
+6. Main pytest test function:
+   - def test_end_to_end_flow():
+
+---
+
+## 🔹 OUTPUT REQUIREMENTS (ABSOLUTE RULES)
+
+- OUTPUT ONLY RAW PYTHON CODE — no markdown, no triple backticks, no explanations
+- The script must be directly executable with: pytest script_name.py
+- Mask all passwords as "************"
+- Use clean 4-space indentation throughout
+- Add brief inline comments only where a step's purpose is non-obvious
+- Do not invent steps not present in the workflow — follow the workflow exactly
+
+---
+
+## 🔹 COMMON MISTAKES TO AVOID (CRITICAL)
+
+The following are known failure patterns — NEVER do these:
+
+❌ Using type_keys() on a window object for data entry — ALWAYS use send_keys() from pywinauto.keyboard
+❌ Using element.send_keys() in web automation — ALWAYS use ActionChains
+❌ Skipping the splash/start screen handling — ALWAYS dismiss it before entering data
+❌ Not calling dlg.wait("visible", timeout=30) after app launch
+❌ Using Save As (Alt+F → A) flow when a simple Ctrl+S works — prefer Ctrl+S
+❌ Not clearing the default filename before typing new one — ALWAYS do Ctrl+A + Backspace first
+❌ Using Tab key navigation to find files in web apps — ALWAYS use find_element with XPath
+❌ Forgetting switch_to_new_window() when a file opens in a new tab
+❌ Not adding adequate time.sleep() after cloud saves or page loads
+❌ Using mouse clicks on desktop UI — ALWAYS use keyboard shortcuts
+
+---
+
+## 🔹 REFERENCE EXAMPLE
+
+Below is a verified working example for Excel → OneDrive hybrid flow.
+Use this as your structural and stylistic reference:
+
+import time
+import pytest
+from pywinauto.application import Application
+from pywinauto.keyboard import send_keys
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
+EXCEL_PATH = r"C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE"
+
+def launch_application(app_path):
+    app = Application(backend="uia").start(app_path)
+    time.sleep(5)
+    dlg = app.window(title_re=".*Excel")
+    dlg.wait("visible", timeout=30)
+    return app, dlg
+
+def create_new_workbook(dlg):
+    dlg.set_focus()
+    time.sleep(3)
+    send_keys("{ENTER}")
+    time.sleep(5)
+
+def enter_data(dlg):
+    dlg.set_focus()
+    time.sleep(2)
+    send_keys("^g")
+    time.sleep(1)
+    send_keys("A1{ENTER}")
+    time.sleep(1)
+    send_keys("application_name{TAB}application_url{TAB}user_type{ENTER}")
+    time.sleep(1)
+    send_keys("google{TAB}www.google.com{TAB}admin{ENTER}")
+    time.sleep(1)
+    send_keys("amazon{TAB}www.amazon.com{TAB}localuser{ENTER}")
+    time.sleep(2)
+
+def save_file(dlg):
+    dlg.set_focus()
+    time.sleep(1)
+    send_keys("^s")
+    time.sleep(3)
+    send_keys("^a{BACKSPACE}")
+    time.sleep(1)
+    send_keys("Application_details_mar17_v1")
+    time.sleep(1)
+    send_keys("{ENTER}")
+    time.sleep(10)
+
+def open_browser():
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-software-rasterizer")
+    chrome_options.add_argument("--remote-debugging-port=9222")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--remote-allow-origins=*")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.maximize_window()
+    return driver
+
+def login_to_web(driver, url, email, password):
+    driver.get(url)
+    time.sleep(5)
+    actions = ActionChains(driver)
+    actions.send_keys(email).perform()
+    time.sleep(2)
+    actions.send_keys(Keys.ENTER).perform()
+    time.sleep(5)
+    actions.send_keys(password).perform()
+    time.sleep(2)
+    actions.send_keys(Keys.ENTER).perform()
+    time.sleep(15)
+    try:
+        actions.send_keys(Keys.ENTER).perform()
+    except:
+        pass
+    time.sleep(15)
+
+def open_file_in_web(driver, filename):
+    file_btn = driver.find_element(By.XPATH, f"//button[contains(text(),'{filename}')]")
+    file_btn.click()
+    time.sleep(5)
+
+def switch_to_new_window(driver):
+    current_window = driver.current_window_handle
+    for handle in driver.window_handles:
+        if handle != current_window:
+            driver.switch_to.window(handle)
+            break
+
+def download_using_command_bar(driver):
+    switch_to_new_window(driver)
+    time.sleep(3)
+    actions = ActionChains(driver)
+    actions.key_down(Keys.ALT).send_keys("q").key_up(Keys.ALT).perform()
+    time.sleep(3)
+    actions.send_keys("Download a copy").perform()
+    time.sleep(2)
+    actions.send_keys(Keys.ENTER).perform()
+    time.sleep(10)
+    actions.send_keys(Keys.ENTER).perform()
+    time.sleep(10)
+
+def test_end_to_end_flow():
+    app, dlg = launch_application(EXCEL_PATH)
+    create_new_workbook(dlg)
+    enter_data(dlg)
+    save_file(dlg)
+    send_keys("%{F4}")
+    time.sleep(5)
+    send_keys("{ENTER}")
+
+    driver = open_browser()
+    try:
+        login_to_web(driver, "https://onedrive.live.com/login", "user@example.com", "************")
+        open_file_in_web(driver, "Application_details_mar17_v1")
+        download_using_command_bar(driver)
+    finally:
+        driver.quit()
+
+---
+
+## 🔹 GENERATE THE SCRIPT NOW
+
+Using the application path and workflow steps provided in the INPUTS section above, generate the complete automation script following all rules, structure, and reference patterns defined in this prompt.

@@ -1,0 +1,80 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .risk-low { color: green; font-weight: bold; }
+        .risk-medium { color: orange; font-weight: bold; }
+        .risk-high { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Performance Analysis Report</h1>
+
+    <h2>Test Overview</h2>
+    <ul>
+        <li><strong>API Method & Endpoint:</strong></li>
+        <ul>
+            <li>GET /api/users</li>
+            <li>POST /api/users</li>
+        </ul>
+        <li><strong>Load Configuration Summary:</strong></li>
+        <ul>
+            <li>Users: 20</li>
+            <li>Spawn Rate: 0.5 users/second</li>
+            <li>Duration: 10 seconds</li>
+            <li>Stop Time: 100 seconds</li>
+        </ul>
+    </ul>
+
+    <h2>Key Metrics Summary</h2>
+    <h3>GET /api/users</h3>
+    <ul>
+        <li><strong>Average Response Time:</strong> Not Available</li>
+        <li><strong>P95 Response Time:</strong> Not Available</li>
+        <li><strong>Throughput:</strong> Not Available</li>
+        <li><strong>Error Rate:</strong> Not Available</li>
+    </ul>
+    <h3>POST /api/users</h3>
+    <ul>
+        <li><strong>Average Response Time:</strong> Not Available</li>
+        <li><strong>P95 Response Time:</strong> Not Available</li>
+        <li><strong>Throughput:</strong> Not Available</li>
+        <li><strong>Error Rate:</strong> Not Available</li>
+    </ul>
+
+    <h2>Performance Findings</h2>
+    <p>The raw Locust performance report lacks sufficient detail to provide meaningful insights. Specifically:</p>
+    <ul>
+        <li>No information on throughput, response times (average, P95, P99), or error rate was captured.</li>
+        <li>Stability and scalability trends could not be assessed due to inadequate data.</li>
+    </ul>
+    <p>The limited available data suggests an incomplete or improperly configured load test, making it impossible to assess the performance of the APIs under test accurately.</p>
+
+    <h2>Risk Level</h2>
+    <p class="risk-high">High</p>
+    <p>The test results lack key performance metrics, including response times, throughput, error rates, and stability trends. This makes it impossible to determine system performance and behavior under load. The missing data poses significant risks for production deployment.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that the Locust report configuration explicitly captures key performance metrics such as throughput, response times (avg, P95, P99), and failure rates.</li>
+        <li>Rerun the tests with proper instrumentation in place to investigate potential bottlenecks and confirm readiness for production.</li>
+        <li>Validate that the load test setup (test scripts, user scenarios, and configuration) generates sufficient and accurate metrics aligned with the system's SLA and SLO.</li>
+        <li>Iteratively refine load test configurations to stress-test the APIs at varying loads and capture comprehensive diagnostic data.</li>
+    </ul>
+
+    <h2>Production Readiness Verdict</h2>
+    <p class="risk-high">Not Ready</p>
+    <p>The provided test results lack essential data required to assess production readiness. Throughput, latency, and error metrics are missing, preventing meaningful evaluation of system performance and scalability. Rerun the performance tests with proper configurations and data collection to ensure informed decision-making.</p>
+</body>
+</html>
+```

@@ -1,0 +1,26 @@
+Switched to new window: [http://localhost:8080/index.html]
+Click on "__button0-BDI-content" (URL: http://localhost:8080/index.html)
+Change the value to "Warning
+All fields are mandatory.
+OK" in "__warning2"
+Click on "__mbox-btn-4-BDI-content"
+Click on "__component0---app--username-inner"
+Enter "testuser" in the "__component0---app--username-inner" field
+Click on "__component0---app--email-inner"
+Enter "testuser@gmail.com" in the "__component0---app--email-inner" field
+Click on "__component0---app--role-inner"
+Enter "admin" in the "__component0---app--role-inner" field
+Enter "testing" in the "__component0---app--department-inner" field
+Enter "1234" in the "__component0---app--password-inner" field
+Click on "__component0---app--confirm-inner"
+Enter "1234" in the "__component0---app--confirm-inner" field
+Click on "__button0-BDI-content"
+Change the value to "Success
+User created successfully!
+
+Username: testuser
+Email: testuser@gmail.com
+Role: admin
+Department: testing
+OK" in "__success1"
+Click on "__mbox-btn-5-inner"

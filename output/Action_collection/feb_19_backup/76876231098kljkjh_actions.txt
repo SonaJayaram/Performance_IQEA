@@ -1,0 +1,28 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/agent-store]
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/agent-store)
+Click on "link-Data Store"
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Click on "submit-btn"
+Click on "S3"
+Click on "Enter Data Source Name"
+Enter_text on "Enter Data Source Name"
+Click on "Data Source Description"
+Enter_text on "Data Source Description"
+Click on "S3 Bucket Path"
+Enter_text on "S3 Bucket Path"
+Click on "Next"
+Select "Manual" from the "react-select-2-option-1" dropdown
+Select "PyPDF2" from the "react-select-4-option-1" dropdown
+Click on "PPTX / DOCX"
+Select "PyMuPDF" from the "react-select-5-option-2" dropdown
+Click on "IMAGES"
+Select "LLM Parser" from the "react-select-6-option-2" dropdown
+Click on "PDF"
+Select "Titan Embed V2" from the "react-select-3-option-0" dropdown
+Uncheck on "[unlabeled]"
+Uncheck on "[unlabeled]"
+Click on "Next"
+Uncheck on "execution_mode"
+Select "Monthly" from the "react-select-9-option-2" dropdown
+Click on "Choose date, selected date is Jan 23, 2026"
+Select "24" from the "24" dropdown

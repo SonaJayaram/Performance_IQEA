@@ -1,0 +1,9 @@
+Switched to new window: [https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/page/home]
+Navigate to "Home | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/page/home)
+Navigate to "Lightning Experience | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/o/Contact/pipelineInspection)
+Navigate to "Contact Intelligence View | Contacts | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/o/Contact/pipelineInspection?filterName=00BQy00000TK9JNMA1)
+Navigate to "Contact Intelligence View | Contacts | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/o/Contact/new?count=1&nooverride=1&useRecordTypeCheck=1&navigationLocation=LIST_VIEW&uid=177320749543824488&backgroundContext=%2Flightning%2Fo%2FContact%2FpipelineInspection%3FfilterName%3D00BQy00000TK9JNMA1)
+Navigate to "Lightning Experience | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D2PGrIAN/view)
+Click on "Close"
+Navigate to "test raja | Contact | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D2PGrIAN/edit?count=2&backgroundContext=%2Flightning%2Fr%2FContact%2F003Qy00001D2PGrIAN%2Fview)
+Navigate to "test raja | Contact | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D2PGrIAN/view)

@@ -1,0 +1,39 @@
+Switched to new window: [https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Shell-home]
+Click on "homeApp-component---myhome--pagesPanel-favPage-1--genericTile--1-title-inner" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Shell-home)
+Change the value to "Manufacturing and Supply Chain" in "Manufacturing and Supply Chain
+Tile" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Launchpad-openFLPPage?pageId=Z_TRIAL_MANUFACTURING&spaceId=Z_TRIAL_MANUFACTURING)
+Click on "__tile364-title-inner"
+Change the value to "Mon­i­tor Mate­r­ial Cov­er­ageNet / Indi­vid­ual Seg­ments" in "Monitor Material Coverage
+Net / Individual Segments
+Tile" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#MRPPlanningSegment-monitorSegment&/?sap-iapp-state--history=TASKWD5LXOO79S5H7LU3MZ8XDYLTAQOFLA7A2SRY9)
+Change the value to "Welcome!
+You need to assign an area of responsibility before you start working on this app.
+OK" in "idDgWelcome"
+Click on "idBtnDgWelcome-content"
+Change the value to "My Area of Responsibility" in "My Area of Responsibility" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#MRPAreaOfResponsibility-manage?sap-app-origin-hint=&sap-xapp-state=ASWDJU4KWMVIBY6CB1HO86NDDGMZZUBL8OIB1H9Z&/?sap-iapp-state--history=TASNH23WLYCMS91TC4T48DLI76UOXO1NOA1CLBR8S&sap-iapp-state=ASP0ZXOTL5A3I1259FYF5ZW76M4B46A69O80ABBR)
+Click on "i2d.pp.mrpaor.assigns1::sap.suite.ui.generic.template.ListReport.view.ListReport::C_MRPCtrlrByAreaOfRespy--template:::ListReportTable:::ColumnListItem-__clone345-selectMulti-CbBg"
+Change the value to "" in "i2d.pp.mrpaor.assigns1::sap.suite.ui.generic.template.ListReport.view.ListReport::C_MRPCtrlrByAreaOfRespy--template:::ListReportTable:::ColumnListItem-__clone345-selectMulti"
+Click on "sapMSwtLabel sapMSwtLabelOff"
+Change the value to "" in "i2d.pp.mrpaor.assigns1::sap.suite.ui.generic.template.ListReport.view.ListReport::C_MRPCtrlrByAreaOfRespy--assignedStatus-__clone345"
+Change the value to "" in "i2d.pp.mrpaor.assigns1::sap.suite.ui.generic.template.ListReport.view.ListReport::C_MRPCtrlrByAreaOfRespy--responsiveTable-busyIndicator"
+Change the value to "" in "i2d.pp.mrpaor.assigns1::sap.suite.ui.generic.template.ListReport.view.ListReport::C_MRPCtrlrByAreaOfRespy--assignedStatus-__clone345"
+Click on ""
+Change the value to "" in "Back"
+Change the value to "" in "Profile of Trial 0018522 User" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#MRPPlanningSegment-monitorSegment&/?sap-iapp-state--history=TASKWD5LXOO79S5H7LU3MZ8XDYLTAQOFLA7A2SRY9)
+Change the value to "Monitor Material Coverage - Net and Individual Segments" in "Monitor Material Coverage - Net and Individual Segments"
+Click on ""
+Change the value to "" in "shell-header-logo" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Launchpad-openFLPPage?pageId=Z_TRIAL_MANUFACTURING&spaceId=Z_TRIAL_MANUFACTURING)
+Click on "__tile365-title-inner"
+Change the value to "Check Mate­r­ial Cov­er­age" in "Check Material Coverage
+Tile" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#MRPMaterial-manage?DirectCall=&SegmentType=02&SegmentType=20&SegmentType=22&SegmentType=24)
+Click on "Content"
+Change the value to "Main­tain PIRs" in "Maintain PIRs
+Tile"
+Change the value to "Find Material
+Material
+Plant
+Shortage Definition
+MRP Standard
+MRP Standard
+OK
+Cancel" in "SapMrpDialogDirectCall"

@@ -1,0 +1,6 @@
+Generate an test execution summary report for each scenario executed and each step mentioning pass/fail status. And attach snapshots on failure steps if they are available.
+
+* Instructions: 
+- Strictly respond with the output in HTML format only.
+- Generate report for all scenarios that were executed.
+- Do not provide explanation and/or summary about the report.

@@ -1,0 +1,23 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "login_credentials"
+Click on "user-name"
+Enter "standard_user" in the "user-name" field
+Click on "Password for all users:
+secret_sauce"
+Click on "password"
+Enter "secret_sauce" in the "password" field
+Click on "login-button"
+Click on "add-to-cart-sauce-labs-backpack"
+Click on "1"
+Click on "checkout"
+Click on "firstName"
+Enter "test" in the "firstName" field
+Enter "TEST" in the "lastName" field
+Enter "7657657" in the "postalCode" field
+Click on "continue"
+Click on "finish"
+Click on "back-to-products"
+Click on "react-burger-menu-btn"
+Change the value to "All Items" in "inventory_sidebar_link"
+Click on "logout_sidebar_link"
+Change the value to "Logout" in "logout_sidebar_link"

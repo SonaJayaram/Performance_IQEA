@@ -1,0 +1,32 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Tiger ETL Tool Report</title>
+        <style>
+            /* Add CSS styles here */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            /* Adjust the width and enable wrapping for the results column */
+            .results {
+            width: 30%;
+            word-wrap: break-word;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tiger ETL Tool Report</h1>
+    <h2>Run Summary</h2><p><strong>Run Date:</strong> 2025-05-23 16:44:35.907109</p><p><strong>Function Name:</strong> QueryValidationAndReport</p><p><strong>Function Value:</strong> Validating the query generated from AI against DB and retrieving only the first 5 rows</p><h2>Results</h2><table><tr><th>No.</th><th>Prompt</th><th>SQL Query</th><th>Explanation</th><th>Results</th></tr><tr><td>1</td><td>A request to calculate the average salaries of individuals who are 30, 35, and 25 years old using a pivot function.</td><td>SELECT *FROM (    SELECT age, salary    FROM Employee.dbo.Employee_Salary) AS SourceTable PIVOT (    AVG(salary)    FOR age IN ([30], [35], [25])) AS PivotTable;</td><td>A request to calculate the average salaries of individuals who are 30, 35, and 25 years old using a pivot function.</td><td class='results'><ul><li>(Decimal('56833.333333'), Decimal('63166.666666'), None)</li></ul></td></tr><tr><td>2</td><td>As an AI, I don't have access to any physical or digital sheet. Please provide the prompts you want me to explain.</td><td>SELECT * FROM Employee.dbo.Employee_Salary WHERE salary IS NULL</td><td>As an AI, I don't have access to any physical or digital sheet. Please provide the prompts you want me to explain.</td><td>No results</td></tr></table>
+    </body>
+    </html>
+    

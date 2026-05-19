@@ -1,0 +1,55 @@
+You are an expert QA architect specialized in scenario and test case generation for functional and non-functional testing.
+
+Based on the following input details, generate clear, structured testing scenarios that can later be expanded into detailed test cases.
+
+Input Information:
+
+Requirements: {requirements}
+
+Image Data: {image_data}
+
+Navigation Details (optional): {navigation}
+
+Your Goal:
+
+- Understand the core purpose, business flow, and user actions from the inputs.
+- Generate distinct and comprehensive testing scenarios that represent real user journeys and edge cases.
+- Ensure all types of scenarios are covered, including:
+    - Positive scenarios (expected/normal behavior)
+    - Negative scenarios (invalid inputs, error handling)
+    - Edge/boundary scenarios (limits, extremes)
+    - Workflow scenarios (multi-step processes, page transitions)
+    - UI-based scenarios (field validation, buttons, dropdowns, visuals)
+- Each scenario must be concise, clear, and testable.
+- Ensure traceability to the requirement(s) — include a brief mapping for each scenario.
+- Do not generate test steps or scripts at this stage — only high-level scenarios.
+
+Expected Output Format (JSON):
+{{
+  "scenarios": [
+    {{
+      "scenario_id": "SC001",
+      "scenario_title": "User logs in with valid credentials",
+      "description": "Verify that a user with valid credentials can log in successfully and land on the dashboard.",
+      "requirement_reference": "REQ-101"
+    }},
+    {{
+      "scenario_id": "SC002",
+      "scenario_title": "User enters invalid password",
+      "description": "Ensure system shows appropriate error message when the password is incorrect.",
+      "requirement_reference": "REQ-101"
+    }}
+  ],
+  "metadata": {{
+    "total_scenarios": 2,
+    "generated_from": ["requirements", "image_data", "navigation_details"]
+  }}
+}}
+
+Additional Rules:
+
+- Use the UI elements from the image data to infer possible actions (e.g., buttons, dropdowns, forms).
+- Use the navigation details (if present) to link scenarios across multiple pages.
+- Include at least one scenario from each type listed above for every key functionality.
+- Maintain consistent and readable naming for scenario_title and IDs.
+- **Important:** The output must be strictly in valid JSON format, no extra text or explanation outside JSON.

@@ -1,0 +1,21 @@
+Switched to new window: [https://tigeranalytics0-my.sharepoint.com/]
+Hover on "Filter by Excel files" (URL: https://tigeranalytics0-my.sharepoint.com/)
+Hover on "Filter by Excel files"
+Hover_end on "Filter by Excel files"
+Hover_end on "Filter by Excel files"
+Hover on "Share this item with other people"
+Hover on "Share this item with other people"
+Hover_end on "Share this item with other people"
+Hover_end on "Share this item with other people"
+Hover on "Show more actions for this item"
+Hover on "Show more actions for this item"
+Click on "Show more actions for this item"
+Click on "Show more actions for this item"
+Hover_end on "Show more actions for this item"
+Hover_end on "Show more actions for this item"
+Hover on "
+Download"
+Hover on "
+Download"
+Click on "Download"
+Click on "Download"

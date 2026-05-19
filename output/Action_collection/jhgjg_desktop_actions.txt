@@ -1,0 +1,5 @@
+CLICK_FIELD app="EXCEL.EXE" window="Excel" name="Formula Bar"
+CLICK_FIELD app="EXCEL.EXE" window="Book1 - Excel" name="C4"
+TYPE_TEXT app="EXCEL.EXE" window="Book1 - Excel" text="hg"
+SHORTCUT app="chrome.exe" window="TigerQE AI iQEA - Google Chrome" keys="Alt+Tab" action="Switch Window"
+CLICK app="chrome.exe" window="TigerQE AI iQEA - Google Chrome" coords="(587,585)"

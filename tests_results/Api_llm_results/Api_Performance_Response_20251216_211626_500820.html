@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>Performance Analysis Report</title>
+</head>
+<body>
+    <h1>Performance Analysis Report</h1>
+    
+    <h2>Test Overview</h2>
+    <ul>
+        <li><strong>API Method & Endpoint:</strong> Not Explicitly Available in Provided Data</li>
+        <li><strong>Load Configuration Summary:</strong> 
+            <ul>
+                <li>Ramp-up Users: 20</li>
+                <li>Spawn Rate: 0.5</li>
+                <li>Run Time: 10 seconds</li>
+                <li>Stop Time: 100 seconds</li>
+            </ul>
+        </li>
+    </ul>
+    
+    <h2>Key Metrics Summary</h2>
+    <ul>
+        <li><strong>Average Response Time:</strong> Not Available</li>
+        <li><strong>P95 / P99 Response Time:</strong> Not Available</li>
+        <li><strong>Throughput:</strong> Not Available</li>
+        <li><strong>Error Rate:</strong> Not Available</li>
+    </ul>
+    
+    <h2>Performance Findings</h2>
+    <p>The Locust reports provided do not include extractable performance metrics such as response times, throughput, or errors. There is insufficient information to observe throughput trends, latency under load, or specific failure patterns. Without this data, meaningful analysis of system behavior and bottlenecks is not feasible.</p>
+    
+    <h2>Risk Level</h2>
+    <p><strong>Risk Level:</strong> High</p>
+    <p><strong>Reasoning:</strong> Key performance metrics, including response times, throughput, and failure rates, are missing. This prevents an accurate assessment of API scalability, stability, and adherence to SLA/SLO requirements.</p>
+    
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that Locust exports include detailed and complete performance metrics in both tabular and graphical formats for latency (avg, P95, P99), throughput, and errors.</li>
+        <li>Implement verification of exported Locust HTML reports to confirm the presence of all necessary performance data before analysis.</li>
+        <li>If possible, utilize additional monitoring tools or logs to capture resource utilization metrics (e.g., CPU, memory, disk I/O) during the test in parallel with Locust.</li>
+    </ul>
+    
+    <h2>Production Readiness Verdict</h2>
+    <p><strong>Verdict:</strong> Not Ready</p>
+    <p><strong>Explanation:</strong> The provided test data lacks critical performance metrics required to make a reliable assessment of production readiness. Until metrics are accurately captured and analyzed, the system cannot be deemed ready for production loads.</p>
+</body>
+</html>

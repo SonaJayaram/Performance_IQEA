@@ -1,0 +1,11 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect,"visual_id","query_mode","fe_ms","se_ms","is_cache"
+1778770202241,4619,Root Entry Point,200,"Number of samples in transaction : 1, number of failing samples : 1",Thread Group 1-1,,false,,115944,130,1,1,null,0,0,1410,null,null,null,null,null
+1778770204495,2366,GET /,200,OK,Thread Group 1-1,text,false,Test failed: code expected to contain /302/,115944,130,1,1,https://vsm-tiger.azurewebsites.net/,1883,0,1410,null,null,null,null,null
+1778770206868,2580,Login Interface Assets,200,"Number of samples in transaction : 1, number of failing samples : 1",Thread Group 1-1,,false,,115958,135,1,1,null,0,0,0,null,null,null,null,null
+1778770208870,578,GET /login,200,OK,Thread Group 1-1,text,false,Test failed: code expected to contain /302/,115958,135,1,1,https://vsm-tiger.azurewebsites.net/login,264,0,0,null,null,null,null,null
+1778770209450,2776,IQEA Page,200,"Number of samples in transaction : 1, number of failing samples : 1",Thread Group 1-1,,false,,115944,134,1,1,null,0,0,0,null,null,null,null,null
+1778770211453,773,GET /iqea,200,OK,Thread Group 1-1,text,false,Test failed: code expected to contain /302/,115944,134,1,1,https://vsm-tiger.azurewebsites.net/iqea,295,0,0,null,null,null,null,null
+1778770212227,2527,Home Page,200,"Number of samples in transaction : 1, number of failing samples : 1",Thread Group 1-1,,false,,115951,134,1,1,null,0,0,0,null,null,null,null,null
+1778770214236,518,GET /home,200,OK,Thread Group 1-1,text,false,Test failed: code expected to contain /302/,115951,134,1,1,https://vsm-tiger.azurewebsites.net/home,258,0,0,null,null,null,null,null
+1778770214755,3525,LLM Page,200,"Number of samples in transaction : 1, number of failing samples : 1",Thread Group 1-1,,false,,115951,133,1,1,null,0,0,0,null,null,null,null,null
+1778770216769,1511,GET /llm,200,OK,Thread Group 1-1,text,false,Test failed: code expected to contain /302/,115951,133,1,1,https://vsm-tiger.azurewebsites.net/llm,658,0,0,null,null,null,null,null

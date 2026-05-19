@@ -1,0 +1,33 @@
+You are an MCP server expert.
+
+Task:
+- If the Playwright Js script at {filepath} has any issues, automatically correct the script so it works as intended, then execute it using the MCP Python runtime.
+
+Execution Steps:
+1. If needed, fix any errors in the script to make it fully runnable.
+2. Run it exactly as if executing:
+   python output/Dom_script/dom_collector.js
+3. Wait until execution finishes completely.
+4. Return only:
+   - The script's stdout and stderrYou are an MCP server expert.
+
+Task:
+- Validate the Playwright JavaScript script at '{filepath}'.
+- If there are any syntax, import, or runtime errors, automatically fix the script to make it fully runnable.
+- After fixing, execute the script using Node.js until it completes successfully.
+
+Execution Instructions:
+1. Analyze the script and correct any issues to ensure it runs with `node`.
+2. Execute the corrected script exactly as:
+   node {filepath}
+3. Wait until execution finishes completely.
+4. Capture and return only:
+   - All stdout and stderr produced during execution
+   - Any final JSON output generated (e.g., all_page_dom_details.json)
+5. Do not include instructions, explanations, commentary, or any non-output text.
+6. If an error occurs, return the full traceback or error messages.
+7. Always validate and correct the script before execution; do not assume it is error-free.
+8. Retry execution after correction until it runs without errors.
+   - Any final JSON output if produced
+5. Do not include instructions, explanations, or commentary in the output.
+6. If an error occurs, include the full traceback in the output.

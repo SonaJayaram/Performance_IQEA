@@ -1,0 +1,83 @@
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+YOUR TASK:
+Generate a production-ready Java-Selenium Page Object Model (POM) class.
+
+INPUTS:
+elements: {xpaths}
+recorded_actions: {Action_data}
+page_name: {page_name}
+
+STRICT RULES FOR PAGE GENERATION:
+
+RULE 1 — RAW CODE ONLY
+Return ONLY the Java class.
+No markdown formatting. No explanations.
+
+RULE 2 — IMPORTS (MANDATORY & DYNAMIC)
+Imports must:
+✔ match Selenium
+✔ include only classes actually used
+✔ exclude unused ones
+✔ never include Playwright imports
+
+Typical allowed imports (only add if used):
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
+import java.util.List;
+import java.util.ArrayList;
+
+RULE 3 — LOCATOR FORMAT
+Each element must be declared as:
+@FindBy(how = How.XPATH, using = "<xpath>")
+private WebElement <meaningfulName>;
+
+RULE 4 — CLASS STRUCTURE
+✔ Class name MUST be exactly page_name
+✔ One class only
+✔ No nested classes
+
+RULE 5 — CONSTRUCTOR
+public page_name(WebDriver driver) {{
+    this.driver = driver;
+    this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+    PageFactory.initElements(driver, this);
+}}
+
+RULE 6 — HELPER METHODS (ONLY IF NEEDED)
+Generate ONLY the helper methods required by recorded_actions.
+
+Example rules:
+- If any step requires clicking → generate waitForElement() + click()
+- If any step requires typing → generate waitForElement() + enterText()
+- If window switch found → generate required window methods
+- If not used → DO NOT generate
+
+RULE 7 — SIMPLE WINDOW HANDLING (ONLY IF USED)
+If recorded_actions contain any window operation, include:
+
+public void switchToNewWindow() {{
+    List<String> handles = new ArrayList<>(driver.getWindowHandles());
+    if (handles.size() > 1) {{
+        driver.switchTo().window(handles.get(handles.size() - 1));
+    }}
+}}
+
+RULE 8 — ACTION METHODS
+For each entry in recorded_actions:
+✔ Generate a meaningful camelCase method
+✔ Must internally call helper methods
+✔ Must map action → locator correctly
+✔ Throw RuntimeException if locator missing
+✔ Enter text ONLY for input fields
+
+RULE 9 — NAMING RULES
+✔ Java naming → camelCase
+✔ Variables camelCase
+
+RULE 10 — OUTPUT
+RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.

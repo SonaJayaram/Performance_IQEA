@@ -1,0 +1,6 @@
+Menu: Cut
+Menu: Paste
+Menu: Cut
+Menu: Undo
+Click Close
+Click Don't save

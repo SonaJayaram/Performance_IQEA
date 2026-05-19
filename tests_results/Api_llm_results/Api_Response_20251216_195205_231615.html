@@ -1,0 +1,86 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+
+    <h2>API Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status Code</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>https://reqres.in/api/users/2</td>
+                <td>200</td>
+                <td>PASS</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>https://reqres.in/api/users</td>
+                <td>201</td>
+                <td>PASS</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET https://reqres.in/api/users/2</h3>
+    <ul>
+        <li>Status code validation: Status code 200 matches expected behavior.</li>
+        <li>Field/value validation: The `Actual Response` contains the expected field and value for `first_name` as "Janet".</li>
+    </ul>
+
+    <h3>POST https://reqres.in/api/users</h3>
+    <ul>
+        <li>Status code validation: Status code 201 matches expected behavior.</li>
+        <li>Field/value validation: While the response contains the name "John Doe" and job "Developer", the `Expected Response` mentions `first_name: John` which was not validated in the actual output.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li>For the POST request to `https://reqres.in/api/users`:
+            - There is a mismatch between the `Expected Response` and the `Actual Response`. The `Expected Response` specifies `first_name: John`, but no such field exists in the actual response.
+        </li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <ul>
+        <li>Risk Level: <strong>Medium</strong></li>
+        <li>Justification:
+            - The missing field (`first_name` in POST response) indicates a possible contract mismatch or expectation misalignment.
+            - While the GET request validated successfully, the POST request issue could cause integration problems with clients relying on specific fields.
+        </li>
+    </ul>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that field names and response contracts are aligned between the expected output and the backend implementation.</li>
+        <li>Clarify whether the field `first_name` is required in the POST response. If it was erroneously included in `Expected Response`, update the test case accordingly.</li>
+        <li>If `first_name` is indeed required, update the API implementation to correctly reflect this field in its responses.</li>
+        <li>Perform consistent contract validation to avoid similar issues in the future.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>FAIL</strong>: While the GET request passed all validations, the POST request highlighted a mismatch between the expected and actual response. This inconsistency indicates a quality issue that requires resolution.</p>
+
+</body>
+</html>
+```

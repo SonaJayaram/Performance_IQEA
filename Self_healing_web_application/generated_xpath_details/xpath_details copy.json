@@ -1,0 +1,18 @@
+{
+    "self_inventory": [
+        "InventoryPage:",
+        "//button[@id='add-to-cart-sauce1-labs-backpack']",
+        "//button[@id='add-to-cart-sauce1-labs-bike-light']",
+        "//button[@id='add-to-cart-sauce-labs-bolt-t-shirt']",
+        "//button[@class='remove-sauce-labs-backpack']",
+        "//select[@data-test='product_sort_container']",
+        "//button[@id='react-burger-menu-btn']",
+        "//button[@id='react-burger-cross-btn']"
+    ],
+    "self_login": [
+        "Login_Page:",
+        "///input[@id='user-name']",
+        "///input[@id='pass_word']",
+        "///input[@id='sign-button']"
+    ]
+}

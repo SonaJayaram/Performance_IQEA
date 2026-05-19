@@ -1,0 +1,31 @@
+Switched to new window: [https://www.mckesson.com/business-solutions/our-businesses/specialized-care-pharmacies/]
+Click on "FirstName" (URL: https://www.mckesson.com/business-solutions/our-businesses/specialized-care-pharmacies/)
+Enter "test" in the "FirstName" field
+Enter "test" in the "LastName" field
+Enter "test@test.com" in the "Email" field
+Click on "Company"
+Enter "test" in the "Company" field
+Enter "www.test.com" in the "mKTOWebsite" field
+Click on "Phone"
+Enter "876876687686" in the "Phone" field
+Click on "Title"
+Enter "test" in the "Title" field
+Enter "test" in the "City" field
+Enter "TN" in the "State" field
+Change the value to "TN" in "State"
+Click on "I_m_interested__c"
+Select "Alternate Site Pharmacy (Long-term care, specialty and infusion, hospice, rehabilitation centers)" in the "I_m_interested__c" field
+Click on "I_m_interested__c"
+Select "Non-Acute McKesson Plasma and Biologics (Specialty pharmacies offering infusion services)" in the "I_m_interested__c" field
+Click on "Alternate Site Pharmacy (Long-term care, specialty and infusion, hospice, rehabilitation centers)
+Non-Acute McKesson Plasma and Biologics (Specialty pharmacies offering infusion services)
+Emerging Pharmacy Channels (Digitally native, emerging pharmacies, virtual provider)
+Federally Qualified Health Centers (FQHC)"
+Click on "I_m_interested__c"
+Select "Emerging Pharmacy Channels (Digitally native, emerging pharmacies, virtual provider)" in the "I_m_interested__c" field
+Click on "I_m_interested__c"
+Select "Federally Qualified Health Centers (FQHC)" in the "I_m_interested__c" field
+Click on "mKTOMcKessonCustomer"
+Select "Yes" in the "mKTOMcKessonCustomer" field
+Click on "Primary_Customer_Number__c"
+Enter "test" in the "Primary_Customer_Number__c" field

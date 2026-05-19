@@ -1,0 +1,58 @@
+<h2>Test Overview</h2>
+<ul>
+    <li><strong>API Method & Endpoint:</strong></li>
+    <ul>
+        <li>locust_report_GET_api_users_2_20251216_203956_711579.html</li>
+        <li>locust_report_POST_api_users_20251216_204016_386487.html</li>
+    </ul>
+    <li><strong>Load Configuration Summary:</strong></li>
+    <ul>
+        <li><strong>Number of Users:</strong> 20</li>
+        <li><strong>Spawn Rate:</strong> 0.5 users/second</li>
+        <li><strong>Test Duration:</strong> 10 seconds</li>
+        <li><strong>Stop Time:</strong> 100 seconds</li>
+    </ul>
+</ul>
+
+<h2>Key Metrics Summary</h2>
+<ul>
+    <li><strong>Average Response Time:</strong> Not Available</li>
+    <li><strong>P95 Response Time:</strong> Not Available</li>
+    <li><strong>P99 Response Time:</strong> Not Available</li>
+    <li><strong>Throughput:</strong> Not Available</li>
+    <li><strong>Error Rate:</strong> Not Available</li>
+</ul>
+
+<h2>Performance Findings</h2>
+<ul>
+    <li><strong>Observed Behavior Under Load:</strong> Performance metrics such as latency, throughput, and failure rates could not be determined due to missing data.</li>
+    <li><strong>Bottlenecks or Anomalies:</strong> No definitive bottlenecks could be identified due to lack of measurable performance data. However, the absence of visible metrics itself may indicate potential infrastructure or test configuration inaccuracies.</li>
+</ul>
+
+<h2>Risk Level</h2>
+<ul>
+    <li><strong>Risk Level:</strong> High</li>
+    <li><strong>Reasoning:</strong> The critical performance indicators (response times, throughput, and error rates) are missing, making it impossible to draw any conclusions regarding system performance, scalability, or stability. This poses a significant risk for production readiness.</li>
+</ul>
+
+<h2>Recommendations</h2>
+<ul>
+    <li>Investigate why Locust reports are not generating readable output or metrics. Confirm the reporting mechanism is functioning and properly capturing:
+        <ul>
+            <li>Latency (avg, p95, p99)</li>
+            <li>Throughput (requests/sec)</li>
+            <li>Failure rates</li>
+        </ul>
+    </li>
+    <li>Ensure the test environment is properly configured to simulate realistic load profiles and generate meaningful metrics for the GET and POST endpoints tested.</li>
+    <li>Enable detailed logging to capture granular performance details, allowing future identification of bottlenecks or anomalies.</li>
+    <li>If errors persist, revalidate the Locust test scripts, ensuring that they invoke the APIs correctly and align with the intended test configuration.</li>
+    <li>Improve reporting templates or use alternate mechanisms to capture test outcomes, such as exporting results in JSON or CSV format for analysis.</li>
+    <li>Re-run the load tests with a higher-duration load period and a sufficient number of users to generate meaningful traffic that can expose performance trends.</li>
+</ul>
+
+<h2>Production Readiness Verdict</h2>
+<ul>
+    <li><strong>Verdict:</strong> Not Ready</li>
+    <li><strong>Explanation:</strong> The test data is incomplete and lacks basic performance metrics to assess the API's readiness for production usage. Critical performance attributes such as response times, throughput, and failure rates are unavailable, leaving no basis for evaluating system behavior or identifying potential stability risks.</li>
+</ul>

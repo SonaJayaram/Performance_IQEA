@@ -1,0 +1,10 @@
+Enter text "Application_nameURl
+Sauce_demowww.saucedemo.com"
+Click File Tab
+Click Enter file name here
+Enter text "application
+_de"
+Click Enter file name here
+Click Got it
+Click Close
+Click OK

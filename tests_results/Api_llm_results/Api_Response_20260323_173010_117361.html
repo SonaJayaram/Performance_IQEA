@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>API Quality Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #222; line-height: 1.4; padding: 20px; }
+    h1 { font-size: 20px; }
+    h2 { font-size: 16px; margin-top: 20px; }
+    ul { margin: 6px 0 12px 20px; }
+    .api-block { border: 1px solid #ddd; padding: 10px 14px; margin-bottom: 12px; background: #f9f9f9; }
+    .pass { color: #006600; font-weight: bold; }
+    .fail { color: #cc0000; font-weight: bold; }
+    .medium { color: #cc6600; font-weight: bold; }
+    .low { color: #006699; font-weight: bold; }
+    .mono { font-family: "Courier New", monospace; background:#fff; padding:2px 4px; border-radius:3px; }
+  </style>
+</head>
+<body>
+  <h1>QUALITY ANALYSIS REPORT</h1>
+
+  <h2>API Summary</h2>
+
+  <div class="api-block">
+    <strong>Method:</strong> GET<br/>
+    <strong>Endpoint:</strong> https://reqres.in/api/users/2<br/>
+    <strong>Status Code:</strong> 200<br/>
+    <strong>Result:</strong> <span class="pass">PASS</span>
+  </div>
+
+  <div class="api-block">
+    <strong>Method:</strong> POST<br/>
+    <strong>Endpoint:</strong> https://reqres.in/api/users<br/>
+    <strong>Status Code:</strong> 201<br/>
+    <strong>Result:</strong> <span class="fail">FAIL (contract mismatch)</span>
+  </div>
+
+  <h2>Validation Results</h2>
+
+  <h3>1) GET https://reqres.in/api/users/2</h3>
+  <ul>
+    <li><strong>Status code validation:</strong> Received 200 OK — appropriate for a successful GET of an existing resource. <span class="pass">PASS</span></li>
+    <li><strong>Field/value validation:</strong>
+      <ul>
+        <li>Expected: <span class="mono">first_name: Janet</span>. Actual: <span class="mono">first_name</span> exists and equals <span class="mono">"Janet"</span>. <span class="pass">PASS</span></li>
+        <li>Additional expected fields present: <span class="mono">id, email, last_name, avatar</span> — present and populated.</li>
+        <li>Response is wrapped under <span class="mono">data</span> and includes a <span class="mono">support</span> object and an internal <span class="mono">_meta</span> object — consistent with a documented response wrapper pattern.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>2) POST https://reqres.in/api/users</h3>
+  <ul>
+    <li><strong>Status code validation:</strong> Received 201 Created — appropriate for resource creation. <span class="pass">PASS</span></li>
+    <li><strong>Field/value validation:</strong>
+      <ul>
+        <li>Expected (per test input): <span class="mono">first_name: John</span>.</li>
+        <li>Actual response fields include: <span class="mono">name: "John Doe"</span>, <span class="mono">job: "Developer"</span>, <span class="mono">id</span>, and <span class="mono">createdAt</span>. There is NO <span class="mono">first_name</span> field in the response. <span class="fail">FAIL</span></li>
+        <li>The actual response appears to reflect the submitted high-level properties (e.g., name/job), but because the request payload is not provided in the input set, we cannot definitively assert a one-to-one echo validation against a sent payload. (Input: request payload for POST was not supplied.)</li>
+        <li>Schema/structure mismatch: GET responses use a nested <span class="mono">data</span> object and <span class="mono">first_name</span>/<span class="mono">last_name</span>, while POST returns top-level <span class="mono">name</span> and no nested <span class="mono">data</span>. This inconsistency is a contract issue.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>Issues Identified</h2>
+  <ul>
+    <li>POST response does not include <span class="mono">first_name</span> (expected by the test). Instead it returns <span class="mono">name</span> with the full name. This is a contract mismatch between test expectation and API response.</li>
+    <li>Inconsistent response structure across endpoints: GET uses a <span class="mono">data</span> wrapper and separate <span class="mono">first_name</span>/<span class="mono">last_name</span> fields; POST returns top-level <span class="mono">name</span>. Clients expecting a uniform schema may break.</li>
+    <li>Request payload for the POST test was not provided in the input data — making precise verification (echoing input values) impossible from the current dataset.</li>
+    <li>POST response does not include a <span class="mono">Location</span> header or a consistent resource representation under <span class="mono">data</span>, which reduces discoverability for created resources (noted as a best practice gap).</li>
+  </ul>
+
+  <h2>Risk Assessment</h2>
+
+  <ul>
+    <li><strong>GET /api/users/2:</strong> <span class="low">Low</span> — Response matches expected schema and values for the tested field; minimal risk for consumers relying on this endpoint.</li>
+    <li><strong>POST /api/users:</strong> <span class="medium">Medium</span> — Although creation succeeds (201), the schema inconsistency and missing expected fields (first_name) pose a moderate integration risk for clients that expect the same user object shape as GET responses. This can lead to runtime parsing errors and incorrect UI behavior.</li>
+  </ul>
+
+  <h2>Recommendations</h2>
+  <ul>
+    <li>Align response contracts:
+      <ul>
+        <li>Return created user data in the same schema shape as GET (e.g., nested under <span class="mono">data</span>, include <span class="mono">first_name</span> and <span class="mono">last_name</span>), or clearly document that POST returns a different representation.</li>
+        <li>If API returns <span class="mono">name</span> (full name), document mapping to <span class="mono">first_name</span>/<span class="mono">last_name</span> or provide both to avoid ambiguity.</li>
+      </ul>
+    </li>
+    <li>Enhance API documentation (OpenAPI/Swagger):
+      <ul>
+        <li>Document exact request and response schemas for each endpoint, including examples.</li>
+        <li>Call out differences between endpoints if they intentionally differ (and consider versioning if change is breaking).</li>
+      </ul>
+    </li>
+    <li>Improve test artifacts and automation:
+      <ul>
+        <li>Include the exact request payload used in POST/PUT tests in test input records so response echo validation can be performed deterministically.</li>
+        <li>Update automated tests to assert schema (via JSON Schema / contract tests) rather than single-field presence when appropriate.</li>
+      </ul>
+    </li>
+    <li>API ergonomics & best practices:
+      <ul>
+        <li>Return a Location header pointing to the newly created resource in POST responses (HTTP 201 best practice).</li>
+        <li>Consider returning the canonical resource representation (including server-generated id and timestamps) under the same wrapper (<span class="mono">data</span>) used by GET responses.</li>
+        <li>Add backward-compatible fields if schema changes are required (e.g., include both <span class="mono">name</span> and <span class="mono">first_name</span>/<span class="mono">last_name</span> during a migration period).</li>
+      </ul>
+    </li>
+    <li>Introduce contract validation in CI:
+      <ul>
+        <li>Use schema validation checks against an OpenAPI/JSON Schema contract in CI to detect regressions early.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>Overall Verdict</h2>
+  <ul>
+    <li>GET /api/users/2 — <span class="pass">PASS</span>: Status code and expected field (<span class="mono">first_name: "Janet"</span>) are correct and present.</li>
+    <li>POST /api/users — <span class="fail">FAIL (from a contract/expectation standpoint)</span>: Although the endpoint returns 201 Created, the response does not include the expected <span class="mono">first_name</span> field and uses a different object structure (<span class="mono">name</span> at top-level). This is a schema/contract mismatch that should be addressed.</li>
+  </ul>
+
+  <p>Note: The POST request payload used during execution was not provided in the input dataset; include request payloads in future execution logs to allow exact echo-validation of POST/PUT responses.</p>
+
+</body>
+</html>

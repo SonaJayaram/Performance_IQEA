@@ -1,0 +1,19 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Enter "test" in the "firstName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "ssn" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "***-**-7979" in the "ssn" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "lastName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "lastName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "phoneNumber" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "765-765-**" in the "phoneNumber" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "dateOfBirthMasked" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "addressLine1" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine1" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Business" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "tab1" (URL: https://www.equifax.com/)
+Change the value to "Learn" in "tab1" (URL: https://www.equifax.com/)
+Click on "Credit Scores" (URL: https://www.equifax.com/)

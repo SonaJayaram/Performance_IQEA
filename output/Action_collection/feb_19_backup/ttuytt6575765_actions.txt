@@ -1,0 +1,32 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "close banner" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Place an Alert"
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Enter_text on "ssn" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "dateOfBirthMasked"
+Enter_text on "dateOfBirthMasked"
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "About Us" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Select "Board of Directors" from the "tab-1420970-1" dropdown (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "dropdown-filter-btn__committees"
+Click on "Audit Committee"
+Click on "View Bio"
+Click on "Close"
+Click on "View Bio"
+Click on "Close"
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "phoneNumber" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter_text on "phoneNumber"
+Click on "addressLine1"
+Enter_text on "addressLine1"
+Enter_text on "addressLine2"
+Enter_text on "addressLine2"
+Click on "cityName"
+Enter_text on "cityName"
+Click on "efx-dropdown-label-85693"
+Click on "AS"
+Click on "zipCode"
+Enter_text on "zipCode"
+Switched to window: [https://www.equifax.com/about-equifax/leadership/]
+Click on "tab1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Business"

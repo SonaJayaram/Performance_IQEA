@@ -1,0 +1,5 @@
+Switched to new window: [https://blazedemo.com/]
+Click on "fromPort" (URL: https://blazedemo.com/)
+Select "Boston" from the "fromPort" dropdown
+Click on "fromPort"
+Click on "btn btn-primary"

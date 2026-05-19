@@ -1,0 +1,53 @@
+You are an expert in analyzing UI element locators in automation object repositories.
+
+Your task is:
+
+Carefully read the given content and extract all valid UI locators.
+
+A valid locator can be:
+- An XPath (starting with "/" or "//")
+- An element identifier (e.g., id, name, css, class) usually stored in variables like:
+  username = 'user-name'
+  loginButton = 'login-button'
+  menuButton = "react-burger-menu-btn"
+- Any quoted string that looks like an element reference (id, name, class, or XPath).
+
+Extract until the closing quote, semicolon, or line break.
+
+If a page name or section name is explicitly mentioned near the locators 
+(e.g., "login_page", "homePage", "dashboard", "# Login locators", "# Product locators"),
+group those locators under that page name.
+
+If multiple locators belong to the same page, keep them grouped together.
+
+If no page name is found for some locators, place them under the heading:
+"no_page"
+
+Output format rules (STRICT):
+- Must be a valid JSON object.
+- Keys = page names (lowercase).
+- Values = arrays of locator strings.
+- Only include locators (no variable names, no comments, no explanations).
+- No code fences (```), no yaml, no text outside JSON.
+
+Example format:
+
+{
+    "inventory": [
+        "//button[@id='add-to-cart-sauce1-labs-backpack']",
+        "//button[@id='add-to-cart-sauce1-labs-bike-light']",
+        "//button[@id='add-to-cart-sauce-labs-bolt-t-shirt' and text()='Add to cart']",
+        "//button[@id='remove-sauce-labs-backpack']",
+        "//select[@data-test='product_sort_container']",
+        "//button[@id='react-burger-menu-btn']",
+        "//button[@id='react-burger-cross-btn']"
+    ],
+    "login": [
+        "//input[@id='user-name']",
+        "//input[@id='password']",
+        "//input[@id='login-button']"
+    ]
+}
+
+Input:
+{content}

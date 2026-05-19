@@ -1,0 +1,6 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Enter "standard_user" in the "user-name" field (URL: https://www.saucedemo.com/)
+Click on "password" (URL: https://www.saucedemo.com/)
+Enter "secret_sauce" in the "password" field (URL: https://www.saucedemo.com/)
+Click on "login-button" (URL: https://www.saucedemo.com/)

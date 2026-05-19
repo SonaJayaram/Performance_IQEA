@@ -1,0 +1,83 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #bdc3c7; padding: 8px; text-align: left; }
+        th { background-color: #34495e; color: white; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h2>API Summary</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Status Code</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET</td>
+            <td>https://reqres.in/api/users/2</td>
+            <td>200</td>
+            <td class="pass">PASS</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>https://reqres.in/api/users</td>
+            <td>201</td>
+            <td class="pass">PASS</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Validation Results</h2>
+<h3>GET API (https://reqres.in/api/users/2)</h3>
+<ul>
+    <li><strong>Status code validation:</strong> The Status Code is 200, which is as expected.</li>
+    <li><strong>Field/value validation:</strong> The field <code>first_name</code> exists in the response and is correctly set to <code>Janet</code>.</li>
+</ul>
+
+<h3>POST API (https://reqres.in/api/users)</h3>
+<ul>
+    <li><strong>Status code validation:</strong> The Status Code is 201, which indicates successful creation.</li>
+    <li><strong>Field/value validation:</strong> The response reflects the <code>name</code> field as <code>John Doe</code> and <code>job</code> field as <code>Developer</code>. However, the <code>first_name</code> field is missing, which was part of the expected response.</li>
+</ul>
+
+<h2>Issues Identified</h2>
+<ul>
+    <li><strong>POST API:</strong> The expected field <code>first_name</code> is missing in the response, which indicates a contract mismatch.</li>
+</ul>
+
+<h2>Risk Assessment</h2>
+<ul>
+    <li><strong>GET API:</strong> <span style="color: green;">Low Risk</span> - The API behavior is consistent; no issues identified.</li>
+    <li><strong>POST API:</strong> <span style="color: orange;">Medium Risk</span> - Missing fields in the response can result in downstream failures or integration issues.</li>
+</ul>
+
+<h2>Recommendations</h2>
+<ul>
+    <li>Ensure that the <code>POST</code> API response includes all expected fields as per the contract (e.g., <code>first_name</code> in this case).</li>
+    <li>Implement stricter contract validation and schema enforcement in the API responses.</li>
+    <li>Conduct additional end-to-end testing to identify any hidden contract mismatches or missing response data.</li>
+</ul>
+
+<h2>Overall Verdict</h2>
+<p><strong>FINAL RESULT: <span class="fail">FAIL</span></strong></p>
+<p><strong>Reasoning:</strong> While the <code>GET</code> API passed all validation checks, the <code>POST</code> API has a critical contract mismatch, with the <code>first_name</code> field missing. This failure can impact the usability of the API for dependent systems.</p>
+
+</body>
+</html>
+```

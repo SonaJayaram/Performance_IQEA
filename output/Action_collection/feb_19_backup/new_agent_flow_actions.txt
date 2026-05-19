@@ -1,0 +1,241 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/agent-store]
+Click on "<> Build Yourself" (URL: https://agentflow-uat.tigeranalyticstest.in/agent-store)
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue"
+Click on "Experiment Name"
+Enter "test" in the "Experiment Name" field
+Enter "test" in the "Experiment Description" field
+Click on "Choose Type"
+Change the value to "Create Agent
+
+Agent Name *
+
+Another agent already exists with the same name
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Another agent already exists with the same name
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue"
+Click on "Experiment Name"
+Enter "testjan" in the "Experiment Name" field
+Click on "Continue"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=8a49e5d3-cdd8-4203-8e4b-94ec7c56ef93&agentId=1441&pageType=form)
+Click on "lucide lucide-play w-3 h-4 text-white fill-current"
+Click on "Next Step"
+Click on "Finish Tour"

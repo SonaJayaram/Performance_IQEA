@@ -1,0 +1,16 @@
+Switched to new window: [https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Shell-home]
+Click on "Leave Tour" (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Shell-home)
+Click on "Manufacturing and Supply Chain
+Tile"
+Navigate to "Home" page (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#Launchpad-openFLPPage?pageId=Z_TRIAL_MANUFACTURING&spaceId=Z_TRIAL_MANUFACTURING)
+Click on "My Area Of Responsibility
+Production Supervisor
+Tile"
+Navigate to "Home" page (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#ProdnSupvrAreaOfResponsibility-manage)
+Navigate to "My Area of Responsibility - Production Supervisor" page (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#ProdnSupvrAreaOfResponsibility-manage&/?sap-iapp-state=ASOI0CXAL94KCAT1YFDK57AJGSZ5Q4OPAZTHO75I)
+Click on "__20SGF758LDJ4ZC7IZFLJT52N-cl"
+Click on "i2d.mpe.productionsupervisoraor.assigns1::C_AreaOfResponsibilityFilterList--fe::FilterBar::C_AreaOfResponsibilityFilter::FilterField::Plant-inner-inner"
+Enter_text on "i2d.mpe.productionsupervisoraor.assigns1::C_AreaOfResponsibilityFilterList--fe::FilterBar::C_AreaOfResponsibilityFilter::FilterField::Plant-inner-inner"
+Navigate to "My Area of Responsibility - Production Supervisor" page (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#ProdnSupvrAreaOfResponsibility-manage&/?sap-iapp-state=AS0OY7YQ1OMRVDR2HV67506YQ1E4ASD66HKM247K)
+Click on "i2d.mpe.productionsupervisoraor.assigns1::C_AreaOfResponsibilityFilterList--fe::FilterBar::C_AreaOfResponsibilityFilter-btnSearch"
+Navigate to "My Area of Responsibility - Production Supervisor" page (URL: https://my429998.s4hana.cloud.sap/ui?sap-language=en&help-mixedLanguages=false&help-autoStartTour=11d1565738cd9067e10000000a4450e5#ProdnSupvrAreaOfResponsibility-manage&/?sap-iapp-state=ASLVPVODQ2TNB6HOV1TIQ7IU3H6INPERQE6329IV)

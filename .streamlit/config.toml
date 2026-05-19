@@ -1,0 +1,6 @@
+[server]
+port = 8512
+
+[theme]
+base = "light"
+primaryColor = "purple"

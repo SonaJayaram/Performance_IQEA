@@ -1,0 +1,7 @@
+Switched to new window: [https://mindful-shark-fv3y29-dev-ed.trailblaze.my.salesforce.com/]
+Click on "username" (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.my.salesforce.com/)
+Enter_text on "username"
+Check on "rememberUn"
+Enter_text on "pw"
+Check on "rememberUn"
+Uncheck on "RememberDevice" (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.my.salesforce.com/_ui/identity/verification/method/EmailVerificationFinishUi/e?vcsrf=P2nYWdHoNUort-7nKDoh6ffh_r-hv-YC7PE1EYm9emX3HQOqaCp9muAuoryrvuGlfNfFzEvCOpWbXvVqrXeyJSWq1CKsyRsHGWtFmVyOSOlaB8eGdYpkAybjGf2cR4I5iBviLoDSxB8HXxv3HLDijjyK2OAHiu-Kf9AEh_e71N8_mqnNcF9oEHnaKG4F0VijnNW1b5SZ-rh1Fb2mtTeYYLzKHABYjgk_jZyDAhjXESMMA1vHMkhVDf5-DwuX1kVaNgidMLIK32-1-lyJTCc3VG5WLO8iIAT-3bcNpXwn_sISnHjR8LtH0-jLTX_duv2xwgtgTK7R7mgj09RVRa-go_NEKTqIYsPjQxuMoC2uszT_66c9BtOTUY5c4EBJ8EvFpquvDk68kXF1b75hohUweT9lvpynntEco4l9UfYGX7OWhgLPglYx4DoO-rYQb6fUGVEFa90-fp7XDtzuLGBvpr6xc2PLYRqmv1IOKAfGVOIUkSbf89MX7o4feqsBtjDZuaQFx-nACp_q53ZjHpVzsGuM-hFJRO0LVucHDxT19eMvJ4G28zHvxHV_7neXJN3MOG1IUK6eOuVbPsO3Xvrz2g3ZBWDHP-J677Gs8QsJTx4COl9eUhM505KCi4OaQo9YzB9uXZliKRxlKLAOAGq6w9MYrm2-oofW2loftRmu4HQ%3D&vpol=ic&vflid=0&vfgrp=894625684&retURL=%2Fsecur%2Ffrontdoor.jsp%3Fallp%3D1%26cshc%3Dy00000Dyuz7y00000MXzeM%26apv%3D1%26display%3Dpage%26ucs%3D1)

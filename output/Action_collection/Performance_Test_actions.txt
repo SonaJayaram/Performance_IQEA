@@ -1,0 +1,2 @@
+Switched to new window: [https://blazedemo.com/]
+Click on "btn btn-primary" (URL: https://blazedemo.com/)

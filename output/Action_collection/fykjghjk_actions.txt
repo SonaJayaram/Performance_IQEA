@@ -1,0 +1,26 @@
+
+## Window: recorder_6qbn3mwuu | URL: https://www.saucedemo.com/
+
+Step 1 [17:21:32]: Click on "login_credentials"
+Step 5 [17:21:32]: Copy text "standard_user"
+Step 7 [17:21:34]: Click on "user-name"
+Step 9 [17:21:34]: Paste "Ctrl+V"
+Step 11 [17:21:34]: Paste "standard_user" into "user-name"
+Step 13 [17:21:35]: Enter "standard_user" in the "user-name" field
+Step 15 [17:21:36]: Click on "Password for all users:
+secret_sauce"
+Step 17 [17:21:36]: Click on "Password for all users:
+secret_sauce"
+Step 19 [17:21:36]: Copy text "secret_sauce"
+Step 21 [17:21:37]: Click on "password"
+Step 23 [17:21:38]: Paste "Ctrl+V"
+Step 25 [17:21:38]: Paste "secret_sauce" into "password"
+Step 27 [17:21:39]: Enter "secret_sauce" in the "password" field
+Step 29 [17:21:39]: Click on "login-button"
+
+## Window: recorder_6qbn3mwuu | URL: https://www.saucedemo.com/inventory.html
+
+Step 31 [17:21:41]: Hover over "add-to-cart-sauce-labs-bike-light"
+Step 38 [17:21:42]: Click on "add-to-cart-sauce-labs-bike-light"
+Step 45 [17:21:42]: Hover over "remove-sauce-labs-bike-light"
+Step 52 [17:21:42]: Mouse leave "remove-sauce-labs-bike-light"

@@ -1,0 +1,8 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "close banner" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Place an Alert"
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Enter_text on "firstName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter_text on "lastName"
+Click on "ssn"
+Enter_text on "ssn"

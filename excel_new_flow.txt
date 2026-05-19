@@ -1,0 +1,7 @@
+STEP 7: TYPE_TEXT application="UnknownApp" text="application_nameurl
+saucedemowww.sauce_demo.com"
+STEP 7: CLICK_FIELD application="UnknownApp" name="Enter file name here"
+STEP 7: TYPE_TEXT application="UnknownApp" text="application_march"
+STEP 7: CLICK_BUTTON application="UnknownApp" name="Save"
+STEP 7: CLICK_BUTTON application="UnknownApp" name="Close"
+STEP 7: CLICK_BUTTON application="UnknownApp" name="OK"

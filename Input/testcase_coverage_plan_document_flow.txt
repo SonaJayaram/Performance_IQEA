@@ -1,0 +1,35 @@
+You are an expert QA test estimator. Analyze the following functional requirements, UI image data, and navigation steps.
+
+**Extracted Requirement (Text):**
+{requirements}
+**Extracted Requirement (Image Data - Optional):**
+{image_data}
+**Navigation Details (Optional):**
+{navigation}
+
+Your task is to estimate the **number of test cases required for full coverage**, including:
+1. All positive input scenarios.
+2. All negative input scenarios.
+3. Edge/boundary cases (min, max, empty, special characters).
+4. Workflow scenarios and end-to-end journeys.
+5. All variations of UI actions, clicks, dropdowns, and validations.
+
+**Instructions:**
+- Count each positive, negative, and edge variation as a separate test case.
+- Include all combinations that would be necessary to fully validate each field, page, and action.
+- Include at least one end-to-end workflow per major flow.
+- Do not assume merging of steps reduces test cases; every variation counts.
+
+**Output strictly in JSON format:**
+{{
+    "Positive": <count>,
+    "Negative": <count>,
+    "Edge": <count>,
+    "Workflow": <count>,
+    "RecommendedTotal": <total sum of all above>
+}}
+⚠️ IMPORTANT:
+- Output must be **only valid JSON**.
+- Do NOT add explanations, markdown, notes, or text outside the JSON.
+- No extra newlines, backticks, or comments.
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Performance Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f6f8; }
+    .low { color: green; font-weight: bold; }
+    .medium { color: orange; font-weight: bold; }
+    .high { color: red; font-weight: bold; }
+    .not-ready { color: red; font-weight: bold; }
+    .ready { color: green; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h1>Performance Analysis Report</h1>
+
+<h2>Test Overview</h2>
+<ul>
+  <li><strong>API Methods & Endpoints:</strong> PUT /pet, POST /pet</li>
+  <li><strong>Load Configuration Summary:</strong></li>
+  <ul>
+    <li>Ramp Users: 20</li>
+    <li>Spawn Rate: 0.5 users/sec</li>
+    <li>Run Time: 10 seconds</li>
+    <li>Stop Time: 100 seconds</li>
+  </ul>
+</ul>
+
+<h2>Key Metrics Summary</h2>
+<table>
+  <tr>
+    <th>Metric</th>
+    <th>Value</th>
+  </tr>
+  <tr>
+    <td>Average Response Time</td>
+    <td>Data Not Available</td>
+  </tr>
+  <tr>
+    <td>P95 / P99 Response Time</td>
+    <td>Data Not Available</td>
+  </tr>
+  <tr>
+    <td>Throughput (Requests/Second)</td>
+    <td>Data Not Available</td>
+  </tr>
+  <tr>
+    <td>Error Rate</td>
+    <td>Data Not Available</td>
+  </tr>
+</table>
+
+<h2>Performance Findings</h2>
+<ul>
+  <li>The lack of raw performance data indicates a failure in capturing metrics during the test.</li>
+  <li>Without throughput, latency, and failure rate specifics, no observations on system behavior under load or potential bottlenecks can be made.</li>
+</ul>
+
+<h2>Risk Level</h2>
+<ul>
+  <li><strong>Risk Level:</strong> <span class="high">High</span></li>
+  <li><strong>Reasoning:</strong> Complete absence of performance data is indicative of potential misconfigurations in the test setup or reporting layers. Critical SLA/SLO compliance risks cannot be assessed without proper data.</li>
+</ul>
+
+<h2>Recommendations</h2>
+<ul>
+  <li>Investigate and fix the data collection pipeline within your performance testing setup (e.g., verify Locust configuration, ensure metrics are being captured and stored correctly).</li>
+  <li>Verify the API endpoints to ensure they are fully operational and reachable for the test.</li>
+  <li>Re-run the performance test with the corrected setup.</li>
+  <li>Ensure the following metrics are collected during the next execution: average response time, p95/p99 latency, throughput, and error rates.</li>
+</ul>
+
+<h2>Production Readiness Verdict</h2>
+<ul>
+  <li><strong>Verdict:</strong> <span class="not-ready">Not Ready</span></li>
+  <li><strong>Explanation:</strong> Due to the absence of key performance metrics, the system's compliance with SLAs/SLOs and its behavior under load cannot be determined. The system cannot be deemed production-ready in its current state.</li>
+</ul>
+
+</body>
+</html>

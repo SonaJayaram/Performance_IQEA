@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>API Quality Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.4; color: #111; padding: 20px; }
+    h1 { border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+    h2 { color: #2a5d9f; margin-top: 20px; }
+    .api-block { border: 1px solid #e1e4e8; padding: 12px; margin-bottom: 18px; background: #fbfbfc; }
+    dl { margin: 0 0 12px 0; }
+    dt { font-weight: bold; display: inline-block; width: 120px; vertical-align: top; }
+    dd { margin: 0 0 8px 130px; }
+    ul { margin: 6px 0 12px 20px; }
+    .pass { color: #0a8a0a; font-weight: bold; }
+    .fail { color: #c8302e; font-weight: bold; }
+    .medium { color: #b36b00; font-weight: bold; }
+    .note { font-size: 0.95em; color: #444; }
+  </style>
+</head>
+<body>
+  <h1>API Quality Analysis Report</h1>
+
+  <!-- API 1 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <dl>
+      <dt>Method</dt><dd>GET</dd>
+      <dt>Endpoint</dt><dd>https://reqres.in/api/users/2</dd>
+      <dt>Status Code</dt><dd>200</dd>
+      <dt>Result</dt><dd class="pass">PASS</dd>
+    </dl>
+
+    <h2>Validation Results</h2>
+    <ul>
+      <li><strong>Status code validation:</strong> 200 is appropriate for a successful GET retrieving an existing user. Matches expected behavior.</li>
+      <li><strong>Field/value validation details:</strong>
+        <ul>
+          <li>The response contains a "data" object with fields: id, email, first_name, last_name, avatar. The expected field/value provided was "first_name:Janet". The response has first_name = "Janet" — this matches the expectation.</li>
+          <li>Other fields (id = 2, email = "janet.weaver@reqres.in", last_name = "Weaver") are present and consistent with the returned user record.</li>
+          <li>Response also includes a "_meta" object and a "support" object; these are additional metadata but not contradictory to expected data.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>No defects detected for the asserted expectation ("first_name:Janet"). All required fields for that expectation are present and correct.</li>
+      <li>Note: The report did not include an explicit request payload (not needed for GET) or a formal JSON schema to validate additional contract constraints (optional observation).</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p class="note"><strong>Low:</strong> The GET response returned the expected field and value. No functional issues detected for the validated expectation.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Maintain a JSON schema for the GET /users/{id} response in API documentation and include automated schema validation in tests to catch any future contract changes.</li>
+      <li>Consider asserting additional important fields (email, id) in automated tests to provide broader coverage beyond a single field check.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p class="pass">PASS — The API returned HTTP 200 and included the expected first_name value "Janet".</p>
+  </div>
+
+  <!-- API 2 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <dl>
+      <dt>Method</dt><dd>POST</dd>
+      <dt>Endpoint</dt><dd>https://reqres.in/api/users</dd>
+      <dt>Status Code</dt><dd>201</dd>
+      <dt>Result</dt><dd class="fail">FAIL</dd>
+    </dl>
+
+    <h2>Validation Results</h2>
+    <ul>
+      <li><strong>Status code validation:</strong> 201 is appropriate and expected for a successful resource creation (POST). Status code is correct.</li>
+      <li><strong>Field/value validation details:</strong>
+        <ul>
+          <li>The provided "Expected Response" is "first_name:John". The actual response contains a top-level "name" field with value "John Doe" and a "job" field "Developer". There is NO "first_name" field in the actual response.</li>
+          <li>Because the actual response does not include "first_name", the specific expectation "first_name:John" is not satisfied. The value "John" appears as part of "name" ("John Doe"), but this does not equal a "first_name" field and therefore does not meet the asserted contract.</li>
+          <li>Other returned fields: id = "727" (string), createdAt present and appears ISO-8601-like. The response also contains an "_meta" object. These are present but do not address the missing "first_name" expectation.</li>
+          <li>Request payload was NOT provided in the input data. Without the original request body we cannot fully validate whether the response correctly reflects the submitted payload (e.g., whether "name" should have been "first_name" or if surname was included in the request).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>Contract mismatch: Expected field "first_name" is absent; actual response uses "name" instead. This is a schema/contract inconsistency between expectation and response.</li>
+      <li>Ambiguity: The expected value is "John" but response "name" is "John Doe" — partial match by substring but not by field or exact value.</li>
+      <li>Missing input: The execution data did not include the original POST request payload, preventing end-to-end validation that response fields reflect the submitted values.</li>
+      <li>Type inconsistency risk: returned id is a string ("727"); if other APIs or clients expect numeric id there could be type-related issues. (This is not necessarily incorrect but should be documented and consistent.)</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p class="medium"><strong>Medium:</strong> The HTTP behavior is correct (201), but the contract mismatch (missing first_name field and difference between expected and actual field names/values) can cause downstream failures in clients/tests that rely on a "first_name" attribute. Lack of request payload in test artifacts increases risk of diagnostic delays.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Clarify and align the API contract: decide whether the create-user response should return separate "first_name" and "last_name" fields or a single "name" field. Update API documentation and tests accordingly.</li>
+      <li>Include the request payload in test records and execution logs. Automated validation should assert that submitted values are present in the response as per contract (exact field names and values).</li>
+      <li>Add JSON schema validation for POST /users responses in automated tests. Ensure schema enforces presence/absence and types of fields (e.g., "first_name" vs "name", "id" type).</li>
+      <li>If "id" is expected to be numeric, normalize type (int) or clearly document that id is string. Keep consistency across endpoints.</li>
+      <li>Improve test assertions: avoid substring-based checks. Assert on exact fields and values (e.g., response.first_name == "John"). If only "name" is returned, update the expected assertion to match "name" exactly.</li>
+      <li>Log creation timestamps format expectations and validate createdAt is in ISO-8601 if required by consumers.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p class="fail">FAIL — Although the POST returned HTTP 201, the provided expectation ("first_name:John") is not met: there is no "first_name" field in the response and the "name" field value ("John Doe") does not strictly satisfy the expected field/value. Recommend updating contract/tests or API response to remove this mismatch.</p>
+  </div>
+
+  <p class="note">Notes: This analysis used only the provided execution data. The POST request payload was not supplied; including request bodies in test artifacts will improve precision of future analyses.</p>
+</body>
+</html>

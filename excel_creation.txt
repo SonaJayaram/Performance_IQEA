@@ -1,0 +1,34 @@
+Enter text "appication_nameurl"
+Enter text "Sauce_demowww.saucedemo.coms"
+Click File name
+Enter text "application_details"
+Click Save
+Click Email address
+Enter text "sathanantham.aru@tigeranalytics.com"
+Click Next
+Enter text "Testing@1234
+Testing@1234
+"
+Click Enter the password for sathanantham.aru@tigeranalytics.com
+Enter text "Testing@1234"
+Click Enter the password for sathanantham.aru@tigeranalytics.com
+Click Sign in
+Enter text "Automation@123"
+Click Sign in
+Enter text "Automation@123"
+Click Enter your current password.
+Click Enter your new password.
+Click Enter your current password.
+Click Enter your new password.
+Enter text "Testing@1234"
+Click Confirm your new password.
+Enter text "Testing@1234"
+Click Sign in
+Click Enter your new password.
+Enter text "Automation@1234"
+Click Confirm your new password.
+Enter text "Automation@1234"
+Click Sign in
+Click Got it
+Click Close
+Click OK

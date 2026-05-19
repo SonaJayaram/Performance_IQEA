@@ -1,0 +1,40 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert"
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Enter "test" in the "firstName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "lastName" field
+Enter "04/20/1990" in the "dateOfBirthMasked" field
+Click on "phoneNumber"
+Enter "879-678-***" in the "phoneNumber" field
+Click on "ssn"
+Enter "***-**-5865" in the "ssn" field
+Click on "phoneNumber"
+Enter "879-678-****" in the "phoneNumber" field
+Click on "addressLine1"
+Enter "test" in the "addressLine1" field
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "About Us" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "About Us" in "About Us"
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "cityName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "cityName" field
+Click on "Current address
+Address line 1
+Address line 2"
+Switched to window: [https://www.equifax.com/about-equifax/who-we-are]
+Click on "Leadership" (URL: https://www.equifax.com/about-equifax/who-we-are)
+Click on "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Change the value to "Board of Directors" in "tab-1420970-1"
+Click on "Select"
+Click on "Compensation, Human Resources & Management Succession Committee"
+Click on "View Bio"
+Click on "Close"
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "addressLine2" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine2" field
+Click on "Select state"
+Click on "Alaska"
+Change the value to "Alaska" in "AK"
+Click on "zipCode"
+Enter "87658" in the "zipCode" field

@@ -1,0 +1,113 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #777;
+            padding-bottom: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .pass {
+            color: green;
+            font-weight: bold;
+        }
+        .fail {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>API Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status Code</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>https://reqres.in/api/users/2</td>
+                <td>200</td>
+                <td class="pass">PASS</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>https://reqres.in/api/users</td>
+                <td>201</td>
+                <td class="pass">PASS</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET - https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><b>Status Code Validation:</b> Expected 200, got 200. <span class="pass">PASS</span></li>
+        <li><b>Field/Value Validation:</b> 
+            <ul>
+                <li>Expected "first_name" = "Janet". Actual "first_name" = "Janet". <span class="pass">PASS</span></li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>POST - https://reqres.in/api/users</h3>
+    <ul>
+        <li><b>Status Code Validation:</b> Expected 201, got 201. <span class="pass">PASS</span></li>
+        <li><b>Field/Value Validation:</b> 
+            <ul>
+                <li>Expected "first_name" = "John", but "first_name" field is missing in the response. <span class="fail">FAIL</span></li>
+                <li>Request payload "name" = "John Doe", reflected correctly. <span class="pass">PASS</span></li>
+                <li>Request payload "job" = "Developer", reflected correctly. <span class="pass">PASS</span></li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li><b>POST API:</b> The "first_name" field was expected in the response as per the requirements but was missing in the actual response.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><b>Risk Level:</b> Medium</p>
+    <p><b>Justification:</b> While the GET API passed all validations, the POST API has a missing field ("first_name") in the response, which can lead to issues if the consumer depends on this value.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that the "first_name" field is included in the response for the POST API when it is explicitly part of the expected contract.</li>
+        <li>Enhance test cases with specific assertions for all critical fields to detect similar issues easily.</li>
+        <li>Ensure developer documentation accurately describes the expected response fields and values.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><b>Final Verdict:</b> <span class="fail">FAIL</span></p>
+    <p>Although the GET API passed all validations, the POST API has a field missing ("first_name"), which constitutes a contract violation. This issue requires resolution to ensure API reliability and correctness.</p>
+</body>
+</html>
+```

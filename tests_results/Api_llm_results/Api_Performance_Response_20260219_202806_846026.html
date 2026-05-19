@@ -1,0 +1,85 @@
+<html>
+<head>
+  <title>Performance Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; }
+    h2 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; }
+    th { background-color: #f4f4f4; text-align: left; }
+    .good { color: green; font-weight: bold; }
+    .moderate { color: orange; font-weight: bold; }
+    .poor { color: red; font-weight: bold; }
+    .center { text-align: center; }
+  </style>
+</head>
+<body>
+
+<h1>Performance Analysis Report</h1>
+
+<h2>Test Overview</h2>
+<ul>
+  <li><strong>API Method & Endpoint:</strong> PUT /pet, POST /pet</li>
+  <li><strong>Load Configuration Summary:</strong></li>
+  <ul>
+    <li>Ramp Users: 20</li>
+    <li>Spawn Rate: 0.5 users/sec</li>
+    <li>Run Time: 10 seconds</li>
+    <li>Stop Time: 100 seconds</li>
+  </ul>
+</ul>
+
+<h2>Key Metrics Summary</h2>
+<table>
+  <tr>
+    <th>Metric</th>
+    <th>Value</th>
+  </tr>
+  <tr>
+    <td>Average Response Time</td>
+    <td class="poor">Not Available</td>
+  </tr>
+  <tr>
+    <td>P95 Response Time</td>
+    <td class="poor">Not Available</td>
+  </tr>
+  <tr>
+    <td>P99 Response Time</td>
+    <td class="poor">Not Available</td>
+  </tr>
+  <tr>
+    <td>Throughput (Requests/sec)</td>
+    <td class="poor">Not Available</td>
+  </tr>
+  <tr>
+    <td>Error Rate</td>
+    <td class="poor">Not Available</td>
+  </tr>
+</table>
+
+<h2>Performance Findings</h2>
+<ul>
+  <li>No performance data could be analyzed due to missing metrics in the provided report.</li>
+  <li>Stability, scalability, and reliability assessments are not available.</li>
+  <li>The absence of valid performance data makes it impossible to assess system behavior under load or identify potential bottlenecks and anomalies.</li>
+</ul>
+
+<h2>Risk Level</h2>
+<p><strong>Risk Level:</strong> <span class="poor">High</span></p>
+<p><strong>Reasoning:</strong> The lack of sufficient performance metrics presents significant risks, as the system's behavior under the tested conditions cannot be evaluated. This poses serious challenges for decision-making regarding production readiness and SLA/SLO compliance.</p>
+
+<h2>Recommendations</h2>
+<ul>
+  <li>Review the testing environment configuration and ensure that all necessary performance metrics—such as response times (avg, p95, p99), throughput (requests/sec), and error rates—are being captured correctly by the test tool (e.g., Locust).</li>
+  <li>Validate test input parameters (e.g., ensure proper ramp-up, spawn rate, and duration) to reflect realistic load conditions.</li>
+  <li>Ensure that the test infrastructure (e.g., servers, databases) is monitored during load testing to identify issues such as resource contention or saturation.</li>
+  <li>Re-execute the tests with properly configured logging and monitoring, ensuring granularity in collected metrics.</li>
+  <li>Focus on isolating performance bottlenecks and addressing them iteratively (e.g., by analyzing slow response times or failures).</li>
+</ul>
+
+<h2>Production Readiness Verdict</h2>
+<p><strong>Verdict:</strong> Not Ready</p>
+<p><strong>Explanation:</strong> The absence of critical performance data prevents an accurate assessment of the system's ability to handle the current load configuration. Immediate remediation is required before considering production deployment.</p>
+
+</body>
+</html>

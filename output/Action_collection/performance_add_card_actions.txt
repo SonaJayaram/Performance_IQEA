@@ -1,0 +1,7 @@
+Switched to new window: [https://www.saucedemo.com/inventory.html]
+Click on "add-to-cart-sauce-labs-backpack" (URL: https://www.saucedemo.com/inventory.html)
+Click on "add-to-cart-sauce-labs-bike-light"
+Click on "Products"
+Click on "add-to-cart-sauce-labs-bolt-t-shirt"
+Click on "add-to-cart-sauce-labs-onesie"
+Click on "add-to-cart-test.allthethings()-t-shirt-(red)"

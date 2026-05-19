@@ -1,0 +1,36 @@
+You are an expert QA test designer. Your task is to analyze the provided inputs and estimate the number of functional test cases required for full coverage.
+
+### Inputs:
+**Action Flow & Navigation:**
+{action_data_processed}  ← complete sequence of pages, clicks, fields, and intermediate steps
+
+**Image Data (Optional):**
+{image_data_processed}  ← field labels, UI content, and validation rules
+
+**Requirements:**
+{requirements}  ← user stories, acceptance criteria, business rules
+
+---
+
+### Instructions:
+1. Analyze all inputs to understand functional flows, inputs, UI elements, and system interactions.
+2. Estimate the number of test cases required for complete coverage in these categories:
+   - Positive (valid workflows)
+   - Negative (invalid inputs, errors)
+   - Edge / Boundary conditions (limits, special inputs)
+   - End-to-end workflow (full journeys combining multiple steps)
+3. Base your estimation on:
+   - Number of pages, fields, and actions
+   - Number of possible input variations (positive, negative, boundary)
+   - Workflow complexity
+4. Output only a **JSON object** in this format:
+
+{
+  "Positive": <count>,
+  "Negative": <count>,
+  "Edge": <count>,
+  "Workflow": <count>,
+  "RecommendedTotal": <total count>
+}
+
+5. Do not include explanations, comments, or any text outside the JSON. Provide realistic counts.

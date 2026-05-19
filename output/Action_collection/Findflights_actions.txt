@@ -1,0 +1,3 @@
+Switched to new window: [https://blazedemo.com/]
+Click on "btn btn-primary" (URL: https://blazedemo.com/)
+Click on "btn btn-small" (URL: https://blazedemo.com/reserve.php)

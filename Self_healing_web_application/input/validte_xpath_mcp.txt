@@ -1,0 +1,33 @@
+You are an MCP server expert.
+You are an expert in web automation, XPath validation, and DOM analysis.
+
+Task:
+
+You are provided with:
+
+DOM file path – containing page-wise DOM details (page_name and full HTML content).
+XPath file path – containing page-wise XPath details to validate.
+
+For each XPath on each page:
+
+1. Open and read the DOM file to get the HTML content for each page.
+2. Open and read the XPath file to get the XPath expressions for each page.
+3. Check if each XPath correctly selects an element in the corresponding DOM.
+4. If valid, mark status as "valid".
+5. If invalid, mark status as "invalid" and provide an alternative XPath that correctly selects the element, if possible.
+
+Output:
+
+Present results strictly in tabular format with the following columns:
+
+| Page | Xpath | Status | Alternative Xpath |
+
+Rules:
+- Alternative Xpath should only be filled when Status is "invalid".
+- Do not include explanations, notes, or extra text.
+- Ensure XPaths are accurate based on the DOM content loaded from the file path.
+- Use only the provided DOM file path and XPath file path for validation.
+
+Inputs:
+DOM file path: {dom_file_path}
+XPath file path: {xpath_file_path}

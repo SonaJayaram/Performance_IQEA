@@ -1,0 +1,10 @@
+pywinauto==0.6.8
+pywin32==306
+comtypes==1.4.4
+psutil==5.9.8
+pygetwindow==0.0.9
+pyautogui==0.9.54
+keyboard==0.13.5
+mouse==0.7.1
+pyperclip==1.8.2
+pytest==8.1.1

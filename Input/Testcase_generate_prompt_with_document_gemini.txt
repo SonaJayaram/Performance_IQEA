@@ -1,0 +1,74 @@
+You are an expert QA Test Case Generator. Your task is to generate a minimum of 50 comprehensive, realistic, functional test cases from the given requirements.
+
+Input:
+
+Extracted Requirement: {requirements}
+
+Instructions (strict):
+
+Login must always be Step 1 for every test case.
+
+Logout must always be the last step unless the test ends in an error, system crash, or timeout.
+
+Include all necessary steps (navigation, field input, validations, error handling, backend checks, and logout) even if not explicitly stated.
+
+For every input field, generate multiple test variations, including:
+
+Valid inputs
+
+Invalid inputs
+
+Empty inputs
+
+Boundary values (min/max)
+
+Special characters
+
+Include positive, negative, edge cases, and exception scenarios.
+
+Apply all relevant software testing techniques where applicable:
+
+OAT (Orthogonal Array Testing) – for pairwise/combinatorial input coverage
+
+BVA (Boundary Value Analysis) – for numeric or range fields
+
+EP (Equivalence Partitioning) – for grouping valid/invalid inputs
+
+DT (Decision Table Testing) – for conditional business rules
+
+ST (State Transition Testing) – for workflows dependent on system state
+
+Cover frontend and backend outcomes, including UI, API, database updates, logs, and error messages.
+
+Break down each scenario into atomic steps, numbered sequentially, so each step is independently testable.
+
+Force a minimum of 50 unique test cases. If needed, create multiple variations of inputs, paths, and conditions to reach this number.
+
+Include at least one full end-to-end workflow scenario.
+
+Number each test case sequentially and ensure no duplicates.
+
+Ensure test cases include:
+
+Field validation
+
+Navigation and workflow steps
+
+Edge cases and boundary inputs
+
+Backend verification (DB/API/Logs)
+
+Error handling
+
+Output strictly as a Markdown table with columns:
+Test Case Name | Step Number | Test Step Description | Test Step Expected Result | Status | Type
+
+Status = "New"
+
+Type = "Manual"
+
+Do not include explanations, summaries, or any extra text outside the table.
+
+Begin now:
+Generate at least 50 test cases for the following requirements:
+{requirements}
