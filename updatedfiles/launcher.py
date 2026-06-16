@@ -382,55 +382,125 @@ with col_recorder:
 
                             # user_prompt = f"""You are an expert JMeter Performance Test Engineer.\n\nConvert the following recorded browser workflow actions into a valid Apache JMeter .jmx test plan.\n\nRequirements:\n1. Generate valid JMX XML only.\n2. Include Test Plan, Thread Group, HTTP Samplers, Managers.\n3. Maintain exact flow.\n4. Do not provide explanation.\n5. Return only XML.\n\nRecorded Browser Actions:\n{formatted_actions}\n\nAdditional Performance Requirements:\n{ai_prompt}"""
                             user_prompt = f""" You are an expert Apache JMeter 5.5 Performance Engineer.
-                                                    Convert the recorded browser workflow into a complete, executable Apache JMeter 5.5 JMX test plan.
-                                                    
-                                                    IMPORTANT OUTPUT RULES:
-                                                    1. Return ONLY valid JMeter 5.5 XML (.jmx).
-                                                    2. Do not wrap the code in markdown code blocks like ```xml ... ```.
-                                                    3. Do not include any explanations, introduction, or conversational filler.
-                                                    4. End your response immediately after the closing </jmeterTestPlan> tag.
-                                                    5. Generate executable JMX XML only.
-                                                    
-                                                    JMX STRUCTURE REQUIREMENTS:
-                                                    Generate all of the following:
-                                                    * Test Plan
-                                                    * Thread Group
-                                                    * HTTP Request Defaults (Configure domain/protocol here if shared across requests)
-                                                    * HTTP Cookie Manager
-                                                    * HTTP Cache Manager
-                                                    * HTTP Header Manager (Configure Content-Type: application/json globally as required)
-                                                    * HTTP Samplers for every recorded action
-                                                    * ResultCollector listener (View Results Tree / Summary Report)
-                                                    
-                                                    THREAD GROUP MAPPING RULES:
-                                                    Performance Configuration:
-                                                    {ai_prompt}
-                                                    
-                                                    Apply these mappings exactly:
-                                                    threads -> ThreadGroup.num_threads
-                                                    rampup -> ThreadGroup.ramp_time
-                                                    duration -> ThreadGroup.duration
-                                                    
-                                                    If duration > 0:
-                                                    ThreadGroup.scheduler = true
-                                                    
-                                                    If loops = -1:
-                                                    LoopController.continue_forever = true
-                                                    LoopController.loops = -1
-                                                    
-                                                    If loops > 0:
-                                                    LoopController.continue_forever = false
-                                                    LoopController.loops = loops
-                                                    
-                                                    WORKFLOW REQUIREMENTS:
-                                                    * Preserve the exact execution order of browser actions.
-                                                    * Maintain authentication state using HTTP Cookie Manager.
-                                                    * Follow redirects where appropriate and use KeepAlive=true.
-                                                    * Ensure explicit connect_timeout and response_timeout tags are generated inside EVERY sampler or inside HTTP Request Defaults, defaulted to "5000".
-                                                    * Ensure ThreadGroup.on_sample_error is set exactly to "stopthread" (no spaces) to safely prevent test overruns.
-                                                    
-                                                    Recorded Browser Actions:
-                                                    {formatted_actions}
+
+                                                Generate a COMPLETE, VALID, EXECUTABLE JMeter 5.5 JMX file.
+                                                
+                                                ==================================================
+                                                CRITICAL XML SAFETY RULES (NON-NEGOTIABLE)
+                                                ==========================================
+                                                
+                                                1. DO NOT manually construct SampleSaveConfiguration using <boolProp>.
+                                                   ALWAYS use correct JMeter format:
+                                                
+                                                   ✔ Correct: <time>true</time> <latency>true</latency> <timestamp>true</timestamp>
+                                                
+                                                   ❌ Never use: <boolProp name="time">true</boolProp>
+                                                
+                                                2. DO NOT duplicate any listener or config element.
+                                                
+                                                3. DO NOT place ANY element outside:
+                                                   jmeterTestPlan → hashTree → TestPlan → hashTree
+                                                
+                                                4. Every element MUST be followed by <hashTree/> or <hashTree>...</hashTree>
+                                                
+                                                ==================================================
+                                                BACKEND LISTENER RULES (STRICT)
+                                                ===============================
+                                                
+                                                * EXACTLY ONE Backend Listener in entire JMX
+                                                * Must be a direct child of TestPlan hashTree
+                                                * MUST NOT appear inside ThreadGroup
+                                                * MUST NOT appear after closing root hashTree
+                                                
+                                                Correct structure:
+                                                
+                                                TestPlan
+                                                └── hashTree
+                                                ├── ThreadGroup
+                                                └── BackendListener
+                                                
+                                                ==================================================
+                                                INFLUXDB CONFIG (FIXED)
+                                                =======================
+                                                
+                                                Backend Listener:
+                                                
+                                                * influxdbMetricsSender = org.apache.jmeter.visualizers.backend.influxdb.HttpMetricsSender
+                                                * influxdbUrl = http://localhost:8086/write?db=jmeter
+                                                * application = TigerQE_Automation_Workflow
+                                                * measurement = jmeter
+                                                * summaryOnly = false
+                                                * samplersRegex = .*
+                                                * percentiles = 90;95;99
+                                                * testTitle = Execution_Run
+                                                
+                                                ==================================================
+                                                HTTP RULES
+                                                ==========
+                                                
+                                                * ALL samplers MUST inherit domain from HTTP Request Defaults
+                                                * HTTP Request Defaults MUST include:
+                                                
+                                                  * protocol
+                                                  * domain (NEVER empty)
+                                                
+                                                Sampler rules:
+                                                
+                                                * follow_redirects = true
+                                                * auto_redirects = false
+                                                * use_keepalive = true
+                                                * connect_timeout = 5000
+                                                * response_timeout = 5000
+                                                
+                                                ==================================================
+                                                THREAD GROUP RULES
+                                                ==================
+                                                
+                                                * on_sample_error = stopthread
+                                                * loops = -1 → continue_forever = true
+                                                * scheduler enabled only if duration > 0
+                                                
+                                                ==================================================
+                                                RESULT LISTENER RULES
+                                                =====================
+                                                
+                                                * Include ONE View Results Tree
+                                                * Must be inside ThreadGroup hashTree
+                                                * Use VALID SampleSaveConfiguration format (NO boolProp usage)
+                                                
+                                                ==================================================
+                                                VALIDATION CHECK (MANDATORY BEFORE OUTPUT)
+                                                ==========================================
+                                                
+                                                Before output, ensure:
+                                                
+                                                ✔ No empty HTTPSampler.domain
+                                                ✔ Exactly ONE Backend Listener
+                                                ✔ Backend Listener is inside root hashTree ONLY
+                                                ✔ No element appears after closing </hashTree> of TestPlan
+                                                ✔ No duplicate listeners
+                                                ✔ SampleSaveConfiguration uses <time>, <latency> format only
+                                                ✔ XML is valid JMeter 5.5 structure
+                                                
+                                                If any rule fails → regenerate internally.
+                                                
+                                                ==================================================
+                                                OUTPUT RULES
+                                                ============
+                                                
+                                                * Output ONLY XML
+                                                * No markdown
+                                                * No explanation
+                                                * Start with:
+                                                
+                                                  <?xml version="1.0" encoding="UTF-8"?>
+                                                * End with: </jmeterTestPlan>
+                                                
+                                                ==================================================
+                                                RECORDED WORKFLOW
+                                                =================
+                                                
+                                                {formatted_actions}
                                                 """
                             with st.spinner("🤖 AI is generating JMX..."):
                                 raw_ai_response = utilitymodule.get_output_from_ai(user_prompt)
