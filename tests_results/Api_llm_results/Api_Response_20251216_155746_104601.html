@@ -1,0 +1,78 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Quality Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        table, th, td { border: 1px solid #ccc; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #f9f9f9; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <h2>API Summary</h2>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Status Code</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>https://reqres.in/api/users/2</td>
+            <td>200</td>
+            <td class="pass">PASS</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>https://reqres.in/api/users</td>
+            <td>201</td>
+            <td class="pass">PASS</td>
+        </tr>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET - https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> The returned status code (200) matches the expected behavior for a successful GET request.</li>
+        <li><strong>Field/Value Validation:</strong> The expected field <code>first_name: Janet</code> is present and correctly matches the response.</li>
+    </ul>
+
+    <h3>POST - https://reqres.in/api/users</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> The returned status code (201) is correct for a successful resource creation.</li>
+        <li><strong>Field/Value Validation:</strong> <em>Mismatch Detected:</em> The expected response <code>first_name: John</code> was not found in the actual response. The actual response contains <code>{ "id": "83", "createdAt": "2025-12-16T10:27:18.890Z" }</code>, which lacks confirmation of the submitted user data such as <code>first_name</code>.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li>The POST response does not include the expected field <code>first_name</code> to confirm the creation of the user data as sent in the request payload.</li>
+        <li>The returned response for the POST request only includes <code>id</code> and <code>createdAt</code>, which is insufficient to verify correctness of data creation.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk Level:</strong> Medium</p>
+    <p><strong>Justification:</strong> While the GET request returns correct data, the POST request lacks sufficient response validation. This poses a medium risk as it impacts the ability to confirm the accuracy of create operations.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>For the POST endpoint, return the complete created user object in the response, including all fields passed in the request payload such as <code>first_name</code>, <code>last_name</code>, and <code>email</code>.</li>
+        <li>Ensure the API response aligns with the expected contract by explicitly documenting required fields that should be returned in the response for POST/PUT requests.</li>
+        <li>Consider adding validation rules on the server side to reject incompletely formed requests, and provide informative error messages if mandatory fields are missing in the request.</li>
+        <li>Add automated schema validation tests to verify the response against the expected API contract and ensure responses are consistent across all scenarios.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>Result:</strong> <span class="pass">PASS</span></p>
+    <p>The GET endpoint is working as expected. However, the POST endpoint has certain critical gaps in its response structure that require immediate attention to ensure reliable API functionality and validation. Improving this aspect would enhance overall API quality.</p>
+</body>
+</html>
+```

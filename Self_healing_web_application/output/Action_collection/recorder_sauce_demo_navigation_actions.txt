@@ -1,0 +1,44 @@
+Page: [https://www.saucedemo.com/]
+- Click on "Accepted usernames are:
+standard_user
+locked_out_user
+problem_user
+performance_glitch_user
+error_user
+visual_user
+
+Password for all users:
+secret_sauce"
+- Click on "user-name"
+- Change the value in "user-name"
+- Enter "standard_user" in the "user-name" field
+- Click on "Password for all users:
+secret_sauce"
+- Click on "password"
+- Change the value in "password"
+- Enter "secret_sauce" in the "password" field
+- Click on "login-button"
+Page: [https://www.saucedemo.com/inventory.html]
+- Enter "Login" in the "login-button" field
+- Click on "add-to-cart-sauce-labs-backpack"
+Page: [https://www.saucedemo.com/cart.html]
+- Click on "1"
+Page: [https://www.saucedemo.com/checkout-step-one.html]
+- Click on "checkout"
+- Click on "firstName"
+- Change the value in "firstName"
+- Enter "testT" in the "firstName" field
+- Change the value in "lastName"
+- Enter "test" in the "lastName" field
+- Change the value in "postalCode"
+- Enter "123456" in the "postalCode" field
+- Click on "continue"
+Page: [https://www.saucedemo.com/checkout-step-two.html]
+- Enter "Continue" in the "continue" field
+Page: [https://www.saucedemo.com/checkout-complete.html]
+- Click on "finish"
+Page: [https://www.saucedemo.com/inventory.html]
+- Click on "back-to-products"
+- Click on "react-burger-menu-btn"
+Page: [https://www.saucedemo.com/]
+- Click on "logout_sidebar_link"

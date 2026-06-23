@@ -1,0 +1,11 @@
+tools: ['playwright']
+mode: 'agent'
+---
+Hey I am providing scenarios feature file which has multiple use cases, go through the file and understand the use cases. Once done, using Playwright tools start executing the steps.
+Note: Execute the Each Scenario as separate use case, and if there is a failure take snapshot for reporting. 
+Also I am providing full access and permissions to execute all the steps.
+Finally after execution is complete, close browser and generate a self contained HTML report for analysis saved to reporting folder.
+
+CONTEXT:
+Feature file contents:
+{gherkin_data}

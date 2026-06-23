@@ -1,0 +1,17 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/mcp-server]
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/mcp-server)
+Navigate to "AgentFlow" page
+Click on "submit-btn"
+Click on "submit-btn"
+Select "atlassian" from the "react-select-2-option-1" dropdown
+Select "atlassian" from the "react-select-2-option-1" dropdown
+Click on "[unlabeled]"
+Click on "[unlabeled]"
+Enter_text on "[unlabeled]"
+Enter_text on "[unlabeled]"
+Click on "[unlabeled]"
+Click on "[unlabeled]"
+Enter_text on "[unlabeled]"
+Enter_text on "[unlabeled]"
+Click on "Cancel"
+Click on "Cancel"

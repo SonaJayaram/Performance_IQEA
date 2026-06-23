@@ -1,0 +1,254 @@
+[
+  {
+    "tc_id": "TC_001",
+    "tc_name": "Load Amazon URL from URL bar",
+    "category": "Positive",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Validate that entering a full Amazon URL into the URL bar loads the Amazon search/page and displays search result snippet.",
+    "precondition": "Device has active internet connection. Chrome is launched on Google sdk_gphone64_x86_64.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Tap the URL bar labeled 'Search or type URL'.",
+        "expected": "URL bar is focused and keyboard appears."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Enter the Amazon URL exactly: 'https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_50mih90ikb_e&adgrpid=159067175652&hvpone=&hvptwo=&hvadid=674834481301&hvpos=&hvnetw=g&hvrand=13327485234546991' and submit.",
+        "expected": "Browser navigates and page or search results load. Search results include snippet text 'Shop online at Amazon India' and 'Shopping Made Convenient — Amazon offers an array of unique products from hundreds of brands.' or the Amazon home content appears."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_002",
+    "tc_name": "Open home page using home button",
+    "category": "Positive",
+    "type": "Usability",
+    "priority": "High",
+    "description": "Verify tapping the home button navigates to the browser home (Discover) page and displays home content.",
+    "precondition": "Chrome is launched and not currently on the home page.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Tap the home button with label 'Open the home page'.",
+        "expected": "Browser navigates to the home/Discover page."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Verify visible UI text on the home page.",
+        "expected": "Discover content is visible including 'Continue with this tab', 'Can't refresh Discover', and stories or suggestions."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_003",
+    "tc_name": "Handle No internet connection state",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "Critical",
+    "description": "Validate browser behavior when there is no network connectivity and user attempts to navigate.",
+    "precondition": "Device network is disabled (airplane mode) and Chrome is launched.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "In the URL bar 'Search or type URL' enter a query like 'amazon' and submit.",
+        "expected": "Navigation fails and page displays 'No internet connection' prominently."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Observe home/discover area.",
+        "expected": "Home shows 'Can't refresh Discover' and 'Check back later for new stories' or similar offline messages."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_004",
+    "tc_name": "Display SSL certificate error for invalid authority",
+    "category": "Negative",
+    "type": "Security",
+    "priority": "Critical",
+    "description": "When connecting to a site with an invalid certificate authority, the browser should show 'Your connection is not private' with NET::ERR_CERT_AUTHORITY_INVALID.",
+    "precondition": "Device has internet but the target site is served with an invalid/untrusted certificate (or device date misconfigured).",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Navigate to 'https://www.amazon.in' or the recorded Amazon URL in the URL bar.",
+        "expected": "Browser shows 'Your connection is not private' and the error code 'NET::ERR_CERT_AUTHORITY_INVALID'."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Verify presence of action buttons on the warning page.",
+        "expected": "Buttons 'Back to safety' and 'Advanced' are visible."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_005",
+    "tc_name": "Advanced option on SSL warning allows reveal of proceed option",
+    "category": "Edge Case",
+    "type": "Security",
+    "priority": "High",
+    "description": "Validate that tapping 'Advanced' on the SSL warning reveals additional options (such as allowing proceed) and that proceeding behaves as expected.",
+    "precondition": "SSL warning 'Your connection is not private' is displayed (NET::ERR_CERT_AUTHORITY_INVALID).",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "On the 'Your connection is not private' page tap 'Advanced'.",
+        "expected": "'Advanced' section expands and additional details about the certificate and a 'Proceed to www.amazon.in (unsafe)' or similar proceed link is displayed."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap the 'Proceed to www.amazon.in (unsafe)' link (if present).",
+        "expected": "Browser attempts to load the site despite the warning. Page content may be shown, or the app may continue to block depending on security policy. App should not crash."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_006",
+    "tc_name": "Handle malformed URL input in URL bar",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "Medium",
+    "description": "Ensure that entering a malformed URL or partial query into the URL bar results in a search or proper handling, not a crash.",
+    "precondition": "Chrome is launched and has internet connectivity.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Enter the malformed/partial URL 'google.com/search?gs_ssp=eJzj4tDP1TfITc9OV2A0YHRg8GJLzE2sys8' into 'Search or type URL' and submit.",
+        "expected": "Browser performs a search or navigates to a valid URL. Results show search content (e.g., Google results) and the app does not crash."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Verify the search results contain relevant text such as 'Amazon' when query parameters include q=amazon.",
+        "expected": "Search results are displayed. UI shows result snippets like 'Sponsored result' or 'Amazon.in' where applicable."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_007",
+    "tc_name": "Accept and display very long URL input",
+    "category": "Edge Case",
+    "type": "Compatibility",
+    "priority": "Medium",
+    "description": "Verify the URL bar accepts extremely long URLs (scrollable) and navigation can be initiated without UI breakage.",
+    "precondition": "Chrome is launched and device has internet connectivity.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Paste or enter the very long Amazon URL used in recorded actions into 'Search or type URL'.",
+        "expected": "URL bar displays the long text (scrollable/truncated) and no UI overlap or crash occurs."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Submit the long URL to begin navigation.",
+        "expected": "Navigation is initiated; either page loads or appropriate error (SSL/connection) is shown. App remains responsive."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_008",
+    "tc_name": "Presence of 'Continue with this tab' on home page",
+    "category": "UI",
+    "type": "Usability",
+    "priority": "Low",
+    "description": "Verify that the home page shows the 'Continue with this tab' control and related Discover content.",
+    "precondition": "Chrome is launched and on home/Discover page.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Open the home page by tapping 'Open the home page' or launching Chrome when home is default.",
+        "expected": "Home/Discover page is visible."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Locate the label or control that reads 'Continue with this tab'.",
+        "expected": "The text 'Continue with this tab' is visible on the home page along with Discover stories and 'Can't refresh Discover'."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_009",
+    "tc_name": "Back to safety prevents navigation from SSL warning",
+    "category": "Security",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Verify that tapping 'Back to safety' on the 'Your connection is not private' page prevents navigation to the unsafe site and returns user to a safe page.",
+    "precondition": "SSL warning page 'Your connection is not private' is displayed.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "On the 'Your connection is not private' page tap 'Back to safety'.",
+        "expected": "Browser returns to the previous safe page or search results. The unsafe site is not loaded."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Attempt to access the site again via the URL bar and expect the warning to reappear.",
+        "expected": "When trying to navigate again the browser either re-displays 'Your connection is not private' or blocks navigation. No credentials or insecure inputs are exposed."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_010",
+    "tc_name": "Page load performance for Amazon page",
+    "category": "Performance",
+    "type": "Non-Functional",
+    "priority": "Medium",
+    "description": "Measure time to load Amazon page under normal network conditions and ensure acceptable performance.",
+    "precondition": "Device has a stable high-speed internet connection. Chrome is launched.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Enter the Amazon URL into 'Search or type URL' and submit.",
+        "expected": "Navigation begins and page load timer starts."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Measure time to first meaningful paint and full page load.",
+        "expected": "Page loads and displays 'Shop online at Amazon India' within acceptable threshold (e.g., under 5 seconds). No UI freezes."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_011",
+    "tc_name": "Click sponsored result when offline",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "Medium",
+    "description": "Verify clicking a search result while offline shows appropriate error messaging rather than crashing.",
+    "precondition": "Device network is disabled and Google search results showing 'Sponsored result' and 'Amazon.in' are visible in current view.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Tap the 'Amazon.in' sponsored result in the search results.",
+        "expected": "Navigation fails and the browser shows 'No internet connection' or appropriate offline error. The app does not crash."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Observe any on-screen messages.",
+        "expected": "UI displays 'No internet connection' and guidance such as 'Can't refresh Discover' if on home; user is not able to load remote content."
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_012",
+    "tc_name": "Robustness when repeatedly tapping home button",
+    "category": "Edge Case",
+    "type": "Compatibility",
+    "priority": "Low",
+    "description": "Verify that rapid repeated taps on 'Open the home page' do not cause instability or crashes and that home remains visible.",
+    "precondition": "Chrome is launched and not currently on home page.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Rapidly tap the 'Open the home page' button multiple times (e.g., 10 times within 5 seconds).",
+        "expected": "App remains responsive, does not crash, and lands on the home/Discover page."
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Verify home page content after the rapid taps.",
+        "expected": "Discover content is displayed with 'Continue with this tab' and no rendering errors."
+      }
+    ]
+  }
+]

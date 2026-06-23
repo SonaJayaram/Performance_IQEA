@@ -1,0 +1,75 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        p {
+            margin: 5px 0;
+        }
+        ul {
+            margin: 10px 0 10px 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <div class="section">
+        <h2>API Summary</h2>
+        <p><strong>Method:</strong> POST</p>
+        <p><strong>Endpoint:</strong> https://virtserver.swaggerhub.com/tigernew/equifxi_test/1.0.0/pet</p>
+        <p><strong>Status Code:</strong> 200</p>
+        <p><strong>Result:</strong> PASS</p>
+    </div>
+
+    <div class="section">
+        <h2>Validation Results</h2>
+        <p><strong>Status code validation:</strong> HTTP 200 indicates success, which is expected for the POST request.</p>
+        <p><strong>Field/value validation:</strong> No information has been provided regarding the request payload or the API response JSON. Validation of fields and values cannot be conducted.</p>
+    </div>
+
+    <div class="section">
+        <h2>Issues Identified</h2>
+        <p>No defects or mismatches could be identified. However, the lack of detailed response and payload data introduces potential gaps in validation coverage.</p>
+    </div>
+
+    <div class="section">
+        <h2>Risk Assessment</h2>
+        <p><strong>Risk Level:</strong> Medium</p>
+        <p><strong>Justification:</strong> The API responded with an HTTP 200 status as expected, but due to the absence of payload and response validation, there is a medium functional risk of unverified issues such as missing fields, incorrect values, or contract violations.</p>
+    </div>
+
+    <div class="section">
+        <h2>Recommendations</h2>
+        <ul>
+            <li>Provide the complete request payload for POST/PUT APIs to enable proper validation of field mappings.</li>
+            <li>Include the full response JSON to validate field accuracy, contract adherence, and correctness of values.</li>
+            <li>Define clear expected outputs or contract specifications for the API to allow detailed comparison with the actual response.</li>
+            <li>Introduce stricter test cases to verify boundary conditions, error responses, and failure scenarios.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Overall Verdict</h2>
+        <p><strong>Final Verdict:</strong> FAIL</p>
+        <p><strong>Reasoning:</strong> While the API passed with an HTTP 200 status, the absence of payload and response validations prevents a comprehensive assessment of functional and contract-level correctness.</p>
+    </div>
+</body>
+</html>
+```

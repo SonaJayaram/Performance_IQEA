@@ -1,0 +1,139 @@
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+
+YOUR TASK:
+Generate a COMPLETE, runnable, production-ready Java TestNG test script for Selenium using the provided inputs.
+
+INPUTS (provide when invoking the LLM):
+- test_file_language = Java-Selenium
+- page_files_content = {page_files_content}      # string containing one or more Java POM class sources
+- test_files_content = {test_files_content}      # structured test cases / steps / expected results
+- recorded_actions (optional) = {recorded_actions}
+
+MANDATORY EXECUTION ORDER (MUST FOLLOW EXACTLY):
+1. Parse test_files_content → extract all test cases, scenario steps, expected validations, input values, and determine the primary assertion for each test.
+2. Parse recorded_actions → detect base URL (first recorded URL only), user flows, element interactions, input values, and window/tab opens.
+3. Parse page_files_content thoroughly BEFORE generating code:
+   - Extract exact module/file name (file_key) for each POM.
+   - Extract exact class name (class_name) as declared in the file (respect casing).
+   - Extract all method names and exact parameter signatures.
+   - Extract constructor signatures and all locators (field names, @FindBy keys).
+   - DO NOT rename, append, change casing, or alter any POM identifiers — use them exactly as provided.
+4. Only after steps 1–3 generate the final executable Java TestNG test file.
+
+POM IMPORTS (EXACT & MINIMAL):
+- For each POM referenced by the tests include exactly:
+  import output.page_file_generator.<file_key>.<class_name>;
+- Import only POM classes actually used by the generated tests.
+- If a POM class referenced in test_files_content is absent from page_files_content, DO NOT invent names — create a local helper (see HELPER RULES).
+
+TEST RUNNER & STRUCTURE (TestNG):
+- Use TestNG by default unless test_files_content explicitly requests JUnit.
+- Use @BeforeClass to initialize WebDriver / browser options and instantiate POM classes using the exact constructor signatures parsed earlier.
+- Use @AfterClass to quit WebDriver and flush any pending Allure lifecycle as needed.
+- Create one @Test method per test case found in test_files_content, mapping names/descriptions exactly.
+
+IMPORTS (DYNAMIC, MINIMAL & REQUIRED):
+- Import ONLY used classes. Typical allowed imports (add only when used):
+  import org.openqa.selenium.WebDriver;
+  import org.openqa.selenium.chrome.ChromeDriver;
+  import org.openqa.selenium.chrome.ChromeOptions;
+  import org.openqa.selenium.By;
+  import org.openqa.selenium.WebElement;
+  import org.openqa.selenium.TakesScreenshot;
+  import org.openqa.selenium.OutputType;
+  import org.openqa.selenium.support.ui.WebDriverWait;
+  import org.openqa.selenium.support.ui.ExpectedConditions;
+  import org.openqa.selenium.support.PageFactory;
+  import org.testng.annotations.*;
+  import org.testng.Assert;
+  import io.qameta.allure.Allure;
+  import io.qameta.allure.Step;
+  import java.io.ByteArrayInputStream;
+  import java.time.Duration;
+  import java.util.List;
+  import java.util.ArrayList;
+- Do NOT include unused imports.
+
+DRIVER SETUP / TEARDOWN:
+- In @BeforeClass:
+  - Create ChromeOptions with sensible defaults (e.g., --start-maximized).
+  - Initialize ChromeDriver (or driver indicated by test_files_content).
+  - Set implicit/explicit timeouts only if required by tests (prefer explicit waits).
+  - Instantiate POM classes using the constructors parsed from page_files_content.
+- In @AfterClass:
+  - Quit driver and ensure any Allure lifecycle flushes are performed.
+
+METHOD USAGE & HELPER RULES:
+- For each step in test_files_content:
+  - If an exact POM method exists (exact name & signature), CALL it with parameters mapped from test_files_content/recorded_actions (match params case-insensitively).
+  - If an exact POM method is MISSING, create a local helper inside the test class named helper_<action>_<file_key> and implement using direct driver.findElement(By.XPATH, "...") or alternate locators from the POM. Wrap helper calls in Allure.step and attach screenshots.
+  - If an exact POM method EXISTS but is clearly inappropriate for the required action (wrong signature or behavior), attempt to call it once, log failure as an Allure.step with screenshot, then create helper_<action>_<file_key> and continue. Do NOT rename POM methods.
+- Helper naming convention: helper_<action>_<file_key> (camelCase when appropriate for Java method names is acceptable, but preserve readability).
+
+WINDOW / POPUP HANDLING (Selenium):
+- Preferred: use POM window methods when present and correct.
+- If POM lacks window helpers or they are invalid, create a local helper implementing:
+  public void switchToNewWindow(WebDriver driver) {{
+      List<String> handles = new ArrayList<>(driver.getWindowHandles());
+      if (handles.size() > 1) {{
+          driver.switchTo().window(handles.get(handles.size() - 1));
+      }}
+  }}
+- Behavior:
+  - Store original handle if test needs switching back.
+  - Wait until handle count increases (poll with timeout) before switching.
+  - Do NOT require URL validation unless the test explicitly demands it.
+
+ALLURE & REPORTING (MANDATORY):
+- Use Allure annotations (@Epic, @Feature, @Story, @Severity) when metadata exists in test_files_content.
+- Wrap major steps in Allure.step (or call @Step methods).
+- Attach screenshots at key steps and after any healing attempt:
+  Allure.addAttachment("screenshot", new ByteArrayInputStream(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES)));
+- On assertion failure attach screenshot and page HTML (driver.getPageSource()). If Allure is unavailable at runtime, write JSON + HTML snapshot into /reports and reference it in test logs.
+- Ensure the script triggers attachments into allure-results directory at runtime via Allure APIs. Do NOT include CLI commands.
+
+WAITING, RETRY & SELF-HEALING (MANDATORY):
+Interaction algorithm:
+1. Attempt direct interaction (POM method or driver action).
+2. If it fails, retry once after a short pause (Thread.sleep(500–1000ms)).
+3. If still failing, fallback to explicit wait:
+   new WebDriverWait(driver, Duration.ofSeconds(5–10))
+       .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("<xpath>")));
+Healing procedure if locator issues persist:
+- Attempt alternate locator keys present in the same POM (if any).
+- Generate and try up to 2 fallback selectors (id/name/data-* or visible text).
+- Log every healing attempt as an Allure.step and attach before/after screenshots.
+- If healing required, continue the test and clearly log the healing steps via Allure.
+
+POST-GENERATION SELF-HEAL (MANDATORY):
+After generating the test script, perform a static validation pass and auto-fix issues before returning code. Validation & fixes MUST include:
+- Ensuring all imports used are present and minimal.
+- Ensuring all referenced POM classes and constructor signatures exist in page_files_content; if a referenced POM is missing or constructor signature differs, create a local helper and adapt usage accordingly.
+- Ensuring each method call maps to an existing method (exact name & signature). If not, create helper_<action>_<file_key> helpers as described above.
+- Consolidating duplicate assertions so each test contains EXACTLY ONE primary assertion.
+- Ensuring no undefined variables remain.
+- Ensuring popup handling uses the Selenium window-handle construct.
+- Ensuring Allure attachments will be created during execution (insert missing attachments if needed).
+- If any automatic fix is applied, the generated script MUST include Allure.step calls documenting the fix (so runtime logs show what was healed).
+Return only the corrected, executable-ready Java TestNG script (raw code).
+
+ASSERTIONS:
+- Implement EXACTLY ONE primary assertion per test using org.testng.Assert (or Assert from TestNG).
+- The primary assertion must reflect the Expected Result parsed from test_files_content.
+- Additional non-primary checks are allowed only if they do not conflict with the single-primary-assertion rule.
+
+FINAL VALIDATIONS (BEFORE RETURNING):
+- All referenced POM classes/methods exist or corresponding helpers are implemented and logged via Allure steps.
+- All imports used are present and stack-appropriate.
+- No undefined variables remain.
+- No unused imports remain.
+- Popup handling uses Selenium window-handle flow where applicable.
+- Allure attachments will be produced during script execution.
+- Each test contains exactly one primary assertion.
+
+OUTPUT RULE (ABSOLUTE):
+- RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+- Do NOT include explanations, comments, or markdown.
+- Do NOT wrap in triple backticks.
+
+NOW GENERATE the final TestNG Java test script using the supplied inputs.

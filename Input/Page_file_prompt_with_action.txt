@@ -1,0 +1,81 @@
+You are an expert in generating Page Object Model (POM) classes for Selenium frameworks.
+
+Your task is to generate a complete, syntactically correct, and production-ready {language} class based on the provided input.
+
+Inputs:
+1. Elements (with XPaths):
+{xpaths}
+
+2. Recorded User Actions (to derive methods and behavior):
+{Action_data}
+
+Strict Requirements:
+
+1. The output must be a ready-to-use {language} Selenium Page Object file with correct syntax and structure.
+
+2. **All import statements must be at the top of the file**, outside the class. Include all required Selenium and language-specific modules based on the code that is generated — no missing or hardcoded imports. Example modules: `WebDriverWait`, `EC`, `Select`, `By`, `ActionChains`, `WebDriver`.
+
+3. Use {language}-specific locator annotations or dictionary-based locators consistently:
+   - Java → `@FindBy(how = How.XPATH, using = "...")`
+   - Python → LOCATORS dict with `(By.XPATH, "...")`
+   - C# → `[FindsBy(How = How.XPath, Using = "...")]`
+   (Adjust automatically based on {language}.)
+
+4. Only **one class per page file**; do not create nested classes.
+
+5. Proper constructor/init method must be declared, initializing WebDriver and wait utilities correctly.
+
+6. Reusable helper methods must be created for:
+   - wait_for_element(locator)
+   - click(locator)
+   - enter_text(locator, text)
+   - switch_to_window_by_index(index)
+   - switch_to_window_by_handle(handle)
+   - switch_to_window_matching_url(url)
+   - switch_to_new_window(url)
+
+   Notes:
+
+   - **switch_to_new_window(url):**
+     - Must be simple, correct, and fully executable.
+     - Steps:
+         1. Get all window handles
+         2. If count > 1, switch to the newest window
+         3. Optionally verify URL matches the expected one
+     - Must not rely on other potentially broken methods.
+     - Must not raise exceptions due to missing helpers.
+
+   - **wait_for_element(locator):**
+     - Only called inside page feature methods.
+     - Do not call `wait_for_element` directly from test scripts.
+     - Every page feature method that interacts with an element must first call `wait_for_element` for its own locators.
+       Example:
+         def click_close_button(self):
+             self.wait_for_element(self.LOCATORS["close_button"])
+             self.click(self.LOCATORS["close_button"])
+
+7. Action Method Generation Rules:
+   - Every method derived from "Action_data" must call the reusable helpers (click, enter_text, wait_for_element, etc.).
+   - Placeholders (`raise RuntimeError("...")`) are allowed **only** if the locator key is truly missing.
+   - Composite flows (multi-step actions) must chain multiple helpers in sequence.
+   - No empty methods are allowed. Each must be fully functional or explicitly raise a RuntimeError if locator(s) are missing.
+   - **Do not call `enter_text` on non-input elements.** For buttons or links, use `wait_for_element` + `click`.
+
+8. Method names must reflect the intent of the action (e.g., `enter_first_name`, `click_place_an_alert`, `switch_to_registration_window`).
+
+9. Naming conventions for classes, methods, and variables must follow {language} standards. Always detect the **actual class name** from the provided input and use it exactly in imports and object creation.
+
+10. Do not include explanations, comments, markdown, or extra text — return only the complete {language} class code.
+
+11. The generated class must be executable as-is, without requiring manual fixes, and directly usable inside a test file.
+
+Dynamic Imports Rule:
+- Scan all generated methods, including helper calls and nested logic.
+- Extract every external class, function, or constant used (e.g., WebDriverWait, EC, Select, By, ActionChains).
+- Include imports for each detected usage.
+- No missing imports: If a method calls a library function, the corresponding import must be included.
+- No extra imports: Do not include libraries unless at least one method uses them.
+- Always resolve aliases correctly: If using EC for ExpectedConditions, include `from selenium.webdriver.support import expected_conditions as EC`.
+12. Class name must be {page_name}
+13. Only the final {language} class code that includes all required elements above with dynamically resolved imports.
+14. The model must return **raw code only** — no ```{language}``` or other wrappers.

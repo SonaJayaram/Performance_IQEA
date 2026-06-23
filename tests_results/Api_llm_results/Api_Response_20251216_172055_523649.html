@@ -1,0 +1,91 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <h2>API Summary</h2>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Status Code</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>https://reqres.in/api/users/2</td>
+            <td>200</td>
+            <td>PASS</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>https://reqres.in/api/users</td>
+            <td>201</td>
+            <td>PASS</td>
+        </tr>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET - https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><b>Status Code Validation:</b> Expected 200, Received 200 (Valid)</li>
+        <li><b>Field/Value Validation:</b> The response contains the "first_name" field with the expected value "Janet". No discrepancies were found in the response.</li>
+    </ul>
+
+    <h3>POST - https://reqres.in/api/users</h3>
+    <ul>
+        <li><b>Status Code Validation:</b> Expected 201, Received 201 (Valid)</li>
+        <li><b>Field/Value Validation:</b> Mismatch detected. The expected response contained "first_name:John", but the response did not include a "first_name" field. Instead, the response contained "name: John Doe" which does not match the expected field format.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li>POST https://reqres.in/api/users: The response does not contain a "first_name" field as expected and returned "name: John Doe" instead. This indicates a contract mismatch between the request and response.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <ul>
+        <li><b>Risk Level:</b> Medium</li>
+        <li><b>Justification:</b> The GET API performed as expected with no issues identified, indicating low risk. However, the POST API displayed a contract mismatch, which could lead to integration issues and incorrectly processed data if the identifier "first_name" is expected downstream.</li>
+    </ul>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that the response for POST APIs adheres to the expected contract by including all required fields such as "first_name".</li>
+        <li>Perform end-to-end testing between APIs to ensure consistency in the field names and data structure.</li>
+        <li>Review the API documentation to ensure it is up to date and accurately describes the expected outputs for each API endpoint.</li>
+        <li>Implement additional validation checks in the test automation to automatically detect these types of contract mismatches.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><b>FAIL:</b> While the GET API performed correctly, the POST API shows a critical mismatch in the response structure, which indicates a potential contract issue. Further action is required to address this inconsistency before the APIs can be considered production-ready.</p>
+</body>
+</html>
+```

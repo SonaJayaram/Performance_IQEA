@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Performance Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f6f8; }
+    .good { color: green; font-weight: bold; }
+    .moderate { color: orange; font-weight: bold; }
+    .poor { color: red; font-weight: bold; }
+    .na { color: gray; }
+  </style>
+</head>
+
+<body>
+
+<h1>Test Execution Configuration</h1>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Ramp Users</td><td>20</td></tr>
+  <tr><td>Spawn Rate (users/sec)</td><td>0.5</td></tr>
+  <tr><td>Run Time</td><td>10s</td></tr>
+  <tr><td>Stop Time</td><td>100</td></tr>
+</table>
+
+<hr/>
+
+<h1>Overall Performance Summary</h1>
+<ul>
+  <li><strong>Total APIs Tested:</strong> 2</li>
+  <li><strong>Overall Health:</strong> <span class="na">Not Available</span></li>
+</ul>
+
+<h2>Key Risks</h2>
+<ul>
+  <li>Missing performance data: CSV-derived metrics (stats, history, failures, exceptions) are empty for all APIs, preventing objective assessment.</li>
+  <li>Inability to validate SLA compliance or stability due to absent throughput/latency/failure metrics.</li>
+  <li>Potential hidden failures or resource saturation that were not captured; operational issues may be undetected.</li>
+</ul>
+
+<hr/>
+
+<h1>API-wise Performance Analysis</h1>
+
+<!-- One section per API -->
+<section>
+  <h2>API: C:\Users\sathanantham.aru\PycharmProjects\ai-accelerator\tests_results\locust_reports\locust_report_GET_api_users_2_20260325_114808_487868.html</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td class="na">Not Available</td></tr>
+    <tr><td>Total Requests</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td class="na">Not Available</td></tr>
+    <tr><td>P95 Response Time</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td class="na">Not Available</td></tr>
+    <tr><td>Failure Rate</td><td class="na">Not Available</td></tr>
+    <tr><td>Observations</td><td class="na">No failures or exceptions records were provided in the extracted CSV data.</td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p class="na">Not Available</p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Ensure Locust is configured to write stats.csv, stats_history.csv, failures.csv, and exceptions.csv and verify paths after the run.</li>
+    <li>Re-run the test with sufficient steady-state duration and validate that CSV files contain rows (steady-state sampling).</li>
+    <li>Enable or collect additional metrics (server-side telemetry, APM, system CPU/memory) to correlate with load.</li>
+    <li>Automate post-run verification to fail the pipeline when expected CSV artifacts are empty or missing.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<section>
+  <h2>API: C:\Users\sathanantham.aru\PycharmProjects\ai-accelerator\tests_results\locust_reports\locust_report_POST_api_users_20260325_114838_435523.html</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td class="na">Not Available</td></tr>
+    <tr><td>Total Requests</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td class="na">Not Available</td></tr>
+    <tr><td>P95 Response Time</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td class="na">Not Available</td></tr>
+    <tr><td>Failure Rate</td><td class="na">Not Available</td></tr>
+    <tr><td>Observations</td><td class="na">No failure or exception entries were extracted from the CSV artifacts.</td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p class="na">Not Available</p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Validate that POST request payloads and assertions are not causing Locust to skip recording results; confirm test code emits requests and captures responses.</li>
+    <li>Check file permissions and that the process had time to flush and close CSV files at test completion.</li>
+    <li>Increase diagnostic logging in the load test to capture why CSVs are empty (exceptions in runner, early termination, or misconfigured reporters).</li>
+    <li>Perform a controlled single-user run to confirm that CSV outputs are produced, then scale incrementally.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<h1>Final Recommendation</h1>
+<p>
+Given that the CSV-derived metrics (stats, history, failures, exceptions) are empty for both tested APIs, no objective conclusions can be drawn about throughput, latency, reliability, or stability. Do not use these test results for production readiness decisions. Re-execute the tests after addressing test artifact generation and collection issues, capture complementary server-side telemetry, and ensure steady-state sampling long enough to reflect realistic behavior before making release decisions.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h2 {
+            border-bottom: 2px solid #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .pass {
+            color: green;
+            font-weight: bold;
+        }
+        .fail {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+    
+    <h2>API Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status Code</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>https://reqres.in/api/users/2</td>
+                <td>200</td>
+                <td class="pass">PASS</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>https://reqres.in/api/users</td>
+                <td>201</td>
+                <td class="fail">FAIL</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Expected and actual status codes match (200).</li>
+        <li><strong>Field/Value Validation:</strong> 
+            <ul>
+                <li>Field <code>first_name</code>: Expected value is "Janet" and actual value is "Janet". Validation PASSED.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>POST https://reqres.in/api/users</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Expected and actual status codes match (201).</li>
+        <li><strong>Field/Value Validation:</strong> 
+            <ul>
+                <li>Expected response mentions <code>first_name: John</code>, but the response JSON contains fields <code>name: John Doe</code> and <code>job: Developer</code>. The mismatch indicates that the response schema does not correctly reflect the expected field structure. Validation FAILED.</li>
+                <li>No <code>first_name</code> field was found in the response, causing a contract mismatch.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li>POST API: Response JSON does not include the field <code>first_name</code>. The response schema does not align with the expected schema.</li>
+        <li>POST API: Field values ("name: John Doe") differ from expected <code>first_name: John</code>. This points to either a documentation issue or an implementation inconsistency.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <ul>
+        <li><strong>Risk Level:</strong> Medium</li>
+        <li><strong>Justification:</strong> For the POST API, the response schema and field naming issues could lead to downstream integration errors. The GET API performs as expected, indicating low risk for read-only operations.</li>
+    </ul>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that the response schema for the POST API aligns with the expected payload and field names (e.g., include <code>first_name</code> instead of <code>name</code>).</li>
+        <li>Update API documentation to clearly define the expected response format and field names.</li>
+        <li>Introduce contract testing to validate API responses for all possible CRUD operations.</li>
+        <li>Implement stricter validation in test cases to identify schema mismatches during development.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>FAIL:</strong> While the GET API passed, the POST API has critical issues with schema alignment and field naming conventions, which could impact integration and functionality. These issues need to be resolved before promotion to production.</p>
+</body>
+</html>
+```

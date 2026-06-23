@@ -1,0 +1,52 @@
+You are an expert data parser and chunker for test-case generation.
+
+Inputs (do not expand here, they will be provided once):
+- {ACTION_DATA} = full action file (navigation, actions, order, URLs)
+- {IMAGE_DATA} = full image/screenshot metadata (page titles, field labels, validations)
+- MAX_CASES_PER_CHUNK = integer limit for max test cases per chunk (default 5–8)
+
+Task:
+Split ACTION_DATA and IMAGE_DATA into logical, balanced chunks for downstream test-case prompts.
+
+Rules:
+1. Use ACTION_DATA as the primary source for grouping; group by page/feature/URL or logical flow. Preserve order.
+2. Attach related IMAGE_DATA entries to the same chunk by matching page/title/URL.
+3. Keep chunks balanced so none exceeds MAX_CASES_PER_CHUNK. Split large flows into sub-chunks with parent_id.
+4. Remove duplicates but keep IDs traceable. Flag orphaned actions/images (no match).
+5. Estimate test cases per chunk = min(MAX_CASES_PER_CHUNK, max(1, round(actions_in_chunk / 2))).
+Strict Output Instructions:
+- Return **ONLY valid JSON** following the exact schema below.
+- Do **NOT** include ```json```, ```text```, or any code fences.
+- Do **NOT** include any extra text, explanations, or notes outside the JSON.
+- Ensure all angle brackets (<>) in the schema remain as placeholders for numeric or string values, do not replace them in the output.
+Output:
+Return ONLY a JSON object with this schema (no extra text):
+
+{{
+  "summary": {{
+    "total_actions": <int>,
+    "total_images": <int>,
+    "total_chunks": <int>,
+    "estimated_total_test_cases": <int>
+  }},
+  "chunks": [
+    {{
+      "id": "chunk-001",
+      "title": "Short title (page or flow)",
+      "sequence_range": {{"start_index": <int>, "end_index": <int>}},
+      "parent_id": null | "chunk-000",
+      "action_chunk": [
+        {{"action_id": "<orig id/index>", "page": "<page title/URL>", "summary": "<one-line summary>", "original_text": "<trimmed original text>"}}
+      ],
+      "image_chunk": [
+        {{"image_id": "<filename/id>", "page": "<page title/URL>", "summary": "<one-line description>"}}
+      ],
+      "estimated_test_cases": <int>,
+      "notes": "<optional>"
+    }}
+  ],
+  "orphan_actions": [ {{ "action_id": "...", "summary": "..." }} ],
+  "orphan_images": [ {{ "image_id": "...", "summary": "..." }} ]
+}}
+
+Important: Output must be valid JSON only.

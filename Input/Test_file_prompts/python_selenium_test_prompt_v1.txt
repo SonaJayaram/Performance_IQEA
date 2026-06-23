@@ -1,0 +1,297 @@
+YOU ARE A SENIOR SDET. GENERATE EXACTLY ONE complete, executable Python pytest test script.
+
+=== INPUTS ===
+page_files_content: {page_files_content}
+test_files_content: {test_files_content}
+recorded_actions: {recorded_actions}
+
+=== ABSOLUTE OUTPUT RULE ===
+Return ONLY raw Python code. Zero markdown. Zero backticks. Zero explanation.
+
+=== SECTION 0: BANNED PATTERNS (READ BEFORE GENERATING ANYTHING) ===
+These are hard prohibitions. Violating any of these will produce a broken script.
+
+❌ NEVER wrap a function definition inside `with allure.step(...):` at module level.
+   allure.step as a context manager executes at import time when placed at module scope.
+   This crashes the entire test suite before a single test runs.
+   WRONG:
+       with allure.step("creating helper"):
+           def my_helper(driver): ...
+   CORRECT:
+       def my_helper(driver):
+           with allure.step("using helper"): ...
+
+❌ NEVER call switch_to_new_window() as the first step in a test before navigate().
+   There is only one window handle at startup — this causes immediate RuntimeError.
+
+❌ NEVER hardcode scope="session" on the driver fixture. Always use scope="function".
+
+❌ NEVER pass a WebElement to EC.element_to_be_clickable() or EC.visibility_of_element_located().
+   These only accept locator tuples: (By.XPATH, "...").
+   The POM getter already handles waiting internally — call it directly, do not re-wrap.
+   WRONG:  WebDriverWait(driver, 10).until(EC.element_to_be_clickable(element))
+   CORRECT: element = pom.get_button()
+
+❌ NEVER wrap a POM getter call inside another WebDriverWait.until() in the test file.
+   POM getters already contain WebDriverWait(20) internally.
+   A second outer WebDriverWait expires before the inner one completes → false TimeoutException.
+   WRONG:  WebDriverWait(driver, 10).until(lambda d: pom.get_button())
+   CORRECT: element = pom.get_button()
+
+❌ NEVER pass a bare POM method reference to safe_send_keys or safe_click.
+   Always wrap in a zero-argument lambda.
+   WRONG:  safe_send_keys(driver, pom.get_username_input, "text")
+   CORRECT: safe_send_keys(driver, lambda: pom.get_username_input(), "text")
+
+❌ NEVER use dispatchEvent in the JS fallback inside safe_send_keys.
+   Use ONLY: driver.execute_script("arguments[0].value = arguments[1];", fresh, text)
+   Always re-fetch the element via getter_callable() before the JS call.
+
+❌ NEVER invent dispatcher architectures like try_call_method, resolve_action,
+   or dynamic method lookup via getattr/hasattr. Call POM methods directly by name.
+
+❌ NEVER use a page-shell element (header, nav bar, cart icon) as the post-login
+   readiness signal. Shell elements load before JS content hydrates.
+   WRONG:  safe_get(lambda: inventory.get_shopping_cart_link())
+   CORRECT: inventory.wait_until_page_ready()
+            OR safe_get(lambda: inventory.get_add_to_cart_<first_product>())
+
+❌ NEVER assert a URL keyword that described a previous step — assert the URL
+   that is ACTUALLY true at the moment the assertion executes.
+   WRONG after logout:    assert "inventory" in driver.current_url
+   CORRECT after logout:  assert driver.current_url.rstrip("/") + "/" == BASE_URL
+   WRONG after cart nav:  assert "inventory" in driver.current_url
+   CORRECT after cart nav: assert "cart.html" in driver.current_url
+
+=== PHASE 1: PARSE BEFORE GENERATING (INTERNAL — DO NOT OUTPUT) ===
+Before writing any code, extract and memorize:
+
+FROM page_files_content:
+- For each page file: (file_key, class_name, constructor_signature, all_method_names_and_signatures, LOCATORS_keys)
+- file_key = Python module filename without .py
+- class_name = exact PascalCase class name as declared (case-sensitive, no changes)
+- method signatures = exact parameter names and types as declared
+- Note: does wait_until_page_ready() exist on this POM?
+
+FROM test_files_content:
+- For each test case: (test_id, test_name, ordered_steps, expected_result, input_values)
+- Map each step to a POM method or flag as MISSING
+
+FROM recorded_actions:
+- Base URL = first URL only
+
+=== PHASE 2: IMPORTS ===
+Generate only imports that are actually used. Allowed list:
+
+import pytest
+import time
+import os
+import allure
+from allure_commons.types import AttachmentType
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import (
+    StaleElementReferenceException,
+    WebDriverException,
+    NoSuchElementException,
+)
+
+POM imports — one line per POM, exact format:
+from output.page_file_generator.<file_key> import <PascalCaseClassName>
+
+Import only POMs referenced by the test cases. Never import unused POMs.
+
+=== PHASE 3: CONSTANTS ===
+BASE_URL = "<first_url_from_recorded_actions>"
+REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
+os.makedirs(REPORTS_DIR, exist_ok=True)
+
+=== PHASE 4: HELPERS (ALL PLAIN MODULE-LEVEL DEFS — NEVER NESTED IN allure.step) ===
+
+HELPER 1 — attach_screenshot (ALWAYS INCLUDE):
+def attach_screenshot(driver, name: str):
+    try:
+        png = driver.get_screenshot_as_png()
+        allure.attach(png, name=name, attachment_type=AttachmentType.PNG)
+        try:
+            filepath = os.path.join(REPORTS_DIR, f"{{name.replace(' ','_')}}_{{int(time.time())}}.png")
+            with open(filepath, "wb") as f:
+                f.write(png)
+        except Exception:
+            pass
+    except Exception:
+        pass
+
+HELPER 2 — safe_get (ALWAYS INCLUDE):
+def safe_get(getter_callable, retries: int = 3, delay: float = 0.5):
+    # Calls getter_callable() directly — NO outer WebDriverWait.
+    # POM getter already contains WebDriverWait(20) internally.
+    last_exc = None
+    for _ in range(retries):
+        try:
+            elem = getter_callable()
+            if elem is not None:
+                return elem
+        except Exception as e:
+            last_exc = e
+            time.sleep(delay)
+    raise RuntimeError(f"safe_get failed after {{retries}} attempts: {{last_exc}}")
+
+HELPER 3 — safe_click (ALWAYS INCLUDE):
+def safe_click(driver, getter_callable, label: str = "", retries: int = 3):
+    # getter_callable MUST be a zero-arg lambda: lambda: pom.get_button()
+    # Re-fetches element before JS fallback — never reuses stale reference.
+    last_exc = None
+    for attempt in range(retries):
+        try:
+            elem = getter_callable()
+            try:
+                elem.click()
+                return
+            except (WebDriverException, StaleElementReferenceException) as e:
+                last_exc = e
+                fresh = getter_callable()
+                driver.execute_script("arguments[0].click();", fresh)
+                return
+        except Exception as e:
+            last_exc = e
+            attach_screenshot(driver, f"safe_click_retry_{{label}}_{{attempt+1}}")
+            time.sleep(0.5)
+    attach_screenshot(driver, f"safe_click_failed_{{label}}")
+    raise RuntimeError(f"safe_click [{{label}}] failed: {{last_exc}}")
+
+HELPER 4 — safe_send_keys (ALWAYS INCLUDE):
+def safe_send_keys(driver, getter_callable, text: str, label: str = "", retries: int = 3):
+    # getter_callable MUST be a zero-arg lambda: lambda: pom.get_input()
+    # JS fallback: .value assignment ONLY — dispatchEvent is banned.
+    # Re-fetches element before JS fallback — never reuses stale reference.
+    last_exc = None
+    for attempt in range(retries):
+        try:
+            elem = getter_callable()
+            try:
+                elem.clear()
+                elem.send_keys(text)
+                return
+            except (WebDriverException, StaleElementReferenceException) as e:
+                last_exc = e
+                fresh = getter_callable()
+                driver.execute_script("arguments[0].value = arguments[1];", fresh, text)
+                return
+        except Exception as e:
+            last_exc = e
+            attach_screenshot(driver, f"safe_send_keys_retry_{{label}}_{{attempt+1}}")
+            time.sleep(0.5)
+    attach_screenshot(driver, f"safe_send_keys_failed_{{label}}")
+    raise RuntimeError(f"safe_send_keys [{{label}}] failed: {{last_exc}}")
+
+HELPER 5 — wait_for_sidebar_item (INCLUDE ONLY if any test clicks a sidebar/drawer/menu item):
+def wait_for_sidebar_item(driver, getter_callable, timeout: int = 5):
+    # CSS-animated sidebars report element_to_be_clickable=True mid-animation.
+    # Polls getBoundingClientRect().width > 0 to confirm animation has completed.
+    deadline = time.time() + timeout
+    last_exc = None
+    while time.time() < deadline:
+        try:
+            elem = getter_callable()
+            width = driver.execute_script(
+                "return arguments[0].getBoundingClientRect().width;", elem
+            )
+            if elem.is_displayed() and elem.is_enabled() and width > 0:
+                return elem
+        except Exception as e:
+            last_exc = e
+        time.sleep(0.2)
+    raise RuntimeError(f"wait_for_sidebar_item timed out: {{last_exc}}")
+
+HELPER 6 — do_login (INCLUDE if 2 or more tests require login):
+def do_login(driver, login_page_pom, inventory_pom,
+             username="standard_user", password="secret_sauce"):
+    login_page_pom.navigate()
+    safe_send_keys(driver, lambda: login_page_pom.get_user_name_input(), username, label="username")
+    safe_send_keys(driver, lambda: login_page_pom.get_password_input(), password, label="password")
+    safe_click(driver, lambda: login_page_pom.get_login_button(), label="login_button")
+    # READINESS GATE — must wait for a primary content element, NOT a shell element.
+    # Cart icon/header load before React hydrates — using them causes silent action failures.
+    if hasattr(inventory_pom, "wait_until_page_ready"):
+        inventory_pom.wait_until_page_ready()
+    else:
+        safe_get(lambda: inventory_pom.get_add_to_cart_sauce_labs_backpack())
+
+=== PHASE 5: FIXTURES ===
+Generate ONE fixture only. Use scope="function". Never scope="session".
+
+@pytest.fixture(scope="function")
+def setup():
+    options = Options()
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    driver = webdriver.Chrome(options=options)
+    driver.implicitly_wait(0)
+
+    # Instantiate POMs — use EXACT constructor signatures from Phase 1
+    <pom_instance> = <PascalCaseClassName>(driver)
+
+    yield driver, <pom_instance>
+
+    try:
+        driver.quit()
+    except Exception:
+        pass
+
+=== PHASE 6: FAILURE SCREENSHOT HOOK ===
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    if rep.when == "call" and rep.failed:
+        fixture = item.funcargs.get("setup")
+        if fixture:
+            try:
+                attach_screenshot(fixture[0], f"FAILED_{{item.name}}")
+            except Exception:
+                pass
+
+=== PHASE 7: TEST FUNCTIONS ===
+Generate one test function per test case in test_files_content.
+Signature: def test_<test_id>_<snake_case_name>(setup):
+
+Structure every test in this exact order:
+1. Unpack fixture
+2. Call do_login() if login is required — never inline the login steps
+3. For each step: open allure.step block, call POM method via safe_click/safe_send_keys/safe_get
+4. For sidebar/drawer items: use wait_for_sidebar_item() then JS click
+5. ONE assert — see assertion rules below
+6. attach_screenshot(driver, "assertion_passed") after the assert
+
+ASSERTION RULES:
+- Assert the URL/state that is TRUE at the exact moment the assert line executes
+- After logout      → assert driver.current_url.rstrip("/") + "/" == BASE_URL
+- After cart nav    → assert "cart.html" in driver.current_url
+- After form error  → assert "checkout-step-one" in driver.current_url
+- After inventory   → assert "inventory" in driver.current_url
+- NEVER assert a state that was true at a previous step but is no longer true now
+
+=== PHASE 8: SELF-VALIDATION CHECKLIST (APPLY SILENTLY BEFORE OUTPUT) ===
+[ ] All POM class names match exactly as parsed in Phase 1 (PascalCase)
+[ ] All POM method calls use exact names — no invented dispatchers or getattr routing
+[ ] All getter_callable args are zero-arg lambdas: lambda: pom.get_x()
+[ ] No WebDriverWait wrapping POM getter calls in test file
+[ ] do_login uses wait_until_page_ready() or get_add_to_cart_<first_product>() as gate
+[ ] wait_for_sidebar_item used for ALL sidebar/drawer/animated menu item clicks
+[ ] Each test has exactly ONE assert
+[ ] Every assert reflects the ACTUAL URL/state at assertion time
+[ ] No dispatchEvent in any JS fallback
+[ ] Fixture scope is "function"
+[ ] No allure.step wrapping function definitions at module level
+[ ] attach_screenshot called after every step and after assertion
+[ ] driver.quit() in fixture teardown
+[ ] No triple backticks in output
+
+OUTPUT RULE (ABSOLUTE):
+- RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+- Do NOT include explanations, comments, or markdown.
+- Do NOT wrap in triple backticks.

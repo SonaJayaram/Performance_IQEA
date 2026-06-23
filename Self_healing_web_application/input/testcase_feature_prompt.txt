@@ -1,0 +1,52 @@
+You are an expert in Behavior-Driven Development (BDD) and Gherkin syntax. I have an spreadsheet data containing test cases with the following columns:
+
+- Test Case Name: The name or identifier of the test case (e.g., "Login Functionality", "TC_001_User_Registration").
+- Step Number: The sequence number of the test step within the test case (e.g., 1, 2, 3).
+- Test Step Description: The action or step to be performed (e.g., "Enter valid username", "Click the login button").
+- Test Step Expected Result: The expected outcome of the step (e.g., "Username field accepts input", "User is redirected to the dashboard").
+
+Your task is to convert this data into a Gherkin feature file that can be used with BDD frameworks like Cucumber. 
+
+Follow these guidelines:
+
+* Background Creation:
+- Group test steps with similar functionality (based on the Test Step Description) into a single background task that is applicable to each scenario. (e.g. Load and navigate to the url 'www.saucedemo.com')
+- Background must only consist of Given and And from the gherkin syntax.
+
+* Scenario Creation:
+- Each unique Test Case Name should become a separate Scenario within the appropriate feature.
+- Use the Test Case Name as the scenario title, formatted naturally (e.g., "Scenario: Login Success" for "TC_001_Login_Success").
+
+* Gherkin Steps:
+- Convert each row’s Test Step Description into a Gherkin step using Given, When, or Then based on context:
+-- Use Given for preconditions or setup steps (e.g., "Given the user is on the login page").
+-- Use When for actions or triggers (e.g., "When the user enters a valid username").
+-- Use And for additional actions
+-- Use Then for expected outcomes, incorporating the Test Step Expected Result (e.g., "Then the user is redirected to the dashboard").
+- Combine the Test Step Description and Test Step Expected Result into a single Then step when appropriate (e.g., "Then the username field accepts input" instead of separate When and Then steps).
+
+* Step Ordering:
+- Use the Step Number to maintain the order of steps within each scenario.
+- Ensure steps are written in a logical sequence, even if the Step Number is missing or inconsistent.
+
+Gherkin Syntax:
+- Follow standard Gherkin syntax with proper indentation (2 spaces for steps under Scenario, 4 spaces for steps under Given, When, Then).
+- Use clear, concise, and natural language for steps.
+- Avoid duplicating steps unnecessarily; combine similar steps when possible.
+- If a test case has no steps, include a placeholder step like "When the test case is executed" and "Then the expected outcome is achieved".
+
+* Output Format:
+- Generate a single .feature file with one Feature section.
+- Include a brief description under each Feature (e.g., "In order to , as a , I want to ").
+- Ensure the file is syntactically correct and ready for use in a BDD framework.
+
+* Instructions:
+- Analyze the provided Excel data (or its text representation).
+- Group test cases by functionality based on Test Case Name.
+- Create a feature file with appropriate Feature and Scenario sections.
+- Convert each test step into a Gherkin step, preserving the logical flow.
+- Ensure the output is clean, readable, and follows Gherkin conventions.
+- Only respond with the gherkin text and no additional text
+
+Please generate the Gherkin feature file following the above guidelines and based on the below data:
+{excel_data}

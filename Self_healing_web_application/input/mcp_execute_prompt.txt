@@ -1,0 +1,33 @@
+You are an MCP server expert.
+Convert the feature file steps into a fully functional Playwright async JavaScript script that:
+
+- Opens the browser using WebKit in non-headless mode.
+- Accepts cookies if prompted.
+- Closes/dismisses any overlay or pop-up windows if they appear.
+- Navigates through all pages mentioned in the feature file.
+- Captures the full DOM of every visited page, including the initial login page before interaction, using page.content().
+- Before capturing the login page DOM, always wait for a stable element on the page (such as #login-button) to ensure it is fully rendered.
+- Use element-based waits (page.waitForSelector) or page.waitForLoadState('networkidle') after navigation events only. Do not use waitForNavigation.
+- Always wait for a stable page-specific element (e.g., filter dropdown on inventory page, cart button on cart page, continue button on checkout page) before interacting with the page.
+- Implement helper functions:
+  - clickSafe(selector): waits for the element and clicks, otherwise logs a warning.
+  - typeSafe(selector, text): waits and fills the field, otherwise logs a warning.
+  - selectSafe(selector, optionTextOrValue): waits for <select>, then selects the requested option. If the feature file does not specify a value, pick the first valid non-default option.
+  - captureDom(pageName): waits for page load and saves DOM.
+- Avoid hardcoding dropdown values unless explicitly provided in the feature file.
+- Wrap all waits and actions in try/catch so the script continues instead of failing on missing elements.
+- Add safe fallbacks (timeouts wrapped in try/catch) for non-critical waits so the script doesn’t fail.
+- Store DOM data as a list of objects: { page_name: "<name>", html: "<content>" }.
+- Save the list to output/Dom_details/all_page_dom_details.json.
+- Save the script itself to output/Dom_script/dom_collector.js by copying the running script file (use fs.copyFileSync(__filename, scriptFilePath)).
+- At the end, print exactly:
+Execution completed. DOM file saved to: output/Dom_details/all_page_dom_details.json
+- Close the browser when done.
+
+Strict Instruction:
+The generated code must be immediately runnable in Node.js with Playwright installed.
+Do not include Python, markdown, or any non-JavaScript text. No ``` fencing, no explanations, no additional text.
+
+Context:
+Feature file contents:
+{gherkin_data}

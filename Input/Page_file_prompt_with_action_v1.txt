@@ -1,0 +1,86 @@
+    You are an expert in generating Page Object Model (POM) classes for Selenium and Playwright automation frameworks across multiple languages.
+    Your task is to generate a complete, syntactically correct, and production-ready class file based on the selected language_library combination.
+    Inputs:
+    1. Elements (with XPaths): {xpaths}
+    2. Recorded User Actions: {Action_data}
+    3. Selected language/library combination: {language_library}
+       (Possible values: "Java-Selenium", "Java-Playwright", "Python-Selenium", "Python-Playwright", "C#-Selenium")
+    Strict Requirements:
+    1. Output must be ONLY the final class code.
+       No markdown, no comments, no explanation.
+    2. All import statements must be at the top of the file, outside the class.
+       Imports must be dynamically generated based on language_library.
+       No mixing between Selenium and Playwright.
+       No unused imports.
+    3. Locator Rules (must match the selected language_library):
+       Java-Selenium:
+          @FindBy(how = How.XPATH, using = "...")
+          private WebElement name;
+       Java-Playwright:
+          private Locator name;
+       Python-Selenium:
+          LOCATORS = "key": (By.XPATH, "...")
+       Python-Playwright:
+          self.key = page.locator("xpath=...")
+       C#-Selenium:
+          [FindsBy(How = How.XPath, Using = "...")]
+          private IWebElement Name  get; set;
+    4. One class per file. No nested classes.
+       Class name must be page_name.
+    5. Constructor Rules:
+       Java-Selenium:
+          this.driver = driver;
+          this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+          PageFactory.initElements(driver, this);
+       Java-Playwright:
+          this.page = page;
+       Python-Selenium:
+          self.driver = driver
+          self.wait = WebDriverWait(driver, 20)
+       Python-Playwright:
+          self.page = page
+       C#-Selenium:
+          this.driver = driver;
+          this.wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+          PageFactory.InitElements(driver, this);
+    6. Mandatory Helper Methods:
+       You MUST generate these helpers using syntax that matches Selenium or Playwright:
+       - wait_for_element(locator)
+       - click(locator)
+       - enter_text(locator, text)
+       - switch_to_window_by_index(index)
+       - switch_to_window_by_handle(handle)
+       - switch_to_window_matching_url(url)
+       - switch_to_new_window(url)
+       Selenium must use:
+          WebDriverWait, driver.find_element, driver.switchTo(), driver.getWindowHandles()
+       Playwright must use:
+          locator.wait_for(), locator.click(), locator.fill()
+          page.context.pages, page.context.wait_for_event("page")
+    7. switch_to_new_window(url) must:
+         1. Get all window handles (or pages for Playwright)
+         2. If more than one exists, switch to the newest one
+         3. Optionally check the URL
+         4. Must not depend on any other helper
+    8. Action Method Rules:
+       - Every action in Action_data must produce a method.
+       - Method names must reflect user intent (click_login_button, enter_email, etc.)
+       - Each method MUST:
+            * call wait_for_element()
+            * call click() or enter_text() appropriately
+       - enter_text() must NOT be used on non-input elements.
+       - Missing locators must raise RuntimeError with a clear message.
+       - Composite actions must chain helpers.
+    9. Naming Conventions:
+       Java → camelCase
+       Python → snake_case
+       C# → PascalCase
+    10. Dynamic Import Rules:
+       - Scan all generated code
+       - Include imports for all used classes (WebDriverWait, EC, Select, By, ActionChains, Locator, Page, etc.)
+       - No missing imports
+       - No unused imports
+       - Selenium EC must be imported as alias:
+            from selenium.webdriver.support import expected_conditions as EC
+    11. Do not output anything except the final class code.
+    12. [Strict rule]The model must return **raw code only** — no ```language,```java,```python,``` or other wrappers.

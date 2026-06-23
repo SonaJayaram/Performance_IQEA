@@ -1,0 +1,4 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "ketch-h-6 ketch-w-6 !ketch-fill-[--k-banner-header-returnButton-icon-color]" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)

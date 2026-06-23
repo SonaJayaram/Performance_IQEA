@@ -1,0 +1,11 @@
+Generate a complete {language} Page Object Model (POM) class file using Selenium, with the following elements:
+{xpaths}
+
+Requirements:
+1. Use @FindBy annotation with How.XPATH for element identification.
+2. Initialize WebDriver and use PageFactory.initElements() in the constructor.
+3. Provide methods for each element (e.g., enterText(), clickButton()).
+4. Use meaningful naming conventions for class, methods, and variables.
+5. Only generate the complete Java file content without any additional explanation or comments.
+6. Ensure the class name is based on the page name, and it must be a valid Java class name.
+7. Do not include any unnecessary comments or extra text.

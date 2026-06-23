@@ -1,0 +1,112 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .pass {
+            color: green;
+            font-weight: bold;
+        }
+        .fail {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <h2>API Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status Code</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>https://reqres.in/api/users/2</td>
+                <td>200</td>
+                <td class="pass">PASS</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>https://reqres.in/api/users</td>
+                <td>201</td>
+                <td class="pass">PASS</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET: https://reqres.in/api/users/2</h3>
+    <p><strong>Status Code Validation:</strong> Valid (Expected: 200, Actual: 200)</p>
+    <p><strong>Field/Value Validation:</strong></p>
+    <ul>
+        <li>Field <code>first_name</code> matches expected value: <em>Janet</em>.</li>
+    </ul>
+
+    <h3>POST: https://reqres.in/api/users</h3>
+    <p><strong>Status Code Validation:</strong> Valid (Expected: 201, Actual: 201)</p>
+    <p><strong>Field/Value Validation:</strong></p>
+    <ul>
+        <li>Field <code>name</code> matches payload value: <em>John Doe</em>.</li>
+        <li>Field <code>job</code> matches payload value: <em>Developer</em>.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li><strong>POST API:</strong> The response does not contain the field <code>first_name</code>, which was expected according to requirements.</li>
+        <li><strong>POST API:</strong> Time formatting <em>createdAt</em> indicates a future timestamp ('2025'), which is inconsistent.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk Level:</strong> Medium</p>
+    <p><strong>Justification:</strong> While both tests passed, the POST API result showed deviations from expected output (<code>first_name</code> missing and future timestamp), which indicates potential contract issues. Additionally, inconsistent behavior observed in response formatting increases the risk for integrations.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that the POST API response matches the contract, particularly by including all required fields like <code>first_name</code>.</li>
+        <li>Investigate and correct the future timestamp in the <code>createdAt</code> field to ensure accurate and realistic time values.</li>
+        <li>Enhance validation in API testing by implementing stricter checks for payload-to-response mapping and timestamp consistency.</li>
+        <li>Update API documentation to ensure field expectations are clearly defined and adhered to by the development team.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>Final Verdict:</strong> <span class="fail">FAIL</span></p>
+    <p><strong>Reasoning:</strong> While the tests returned a "PASS" result, critical issues like missing fields (<code>first_name</code> in POST API) and inconsistent time formatting (future timestamps) highlight potential risks that need to be addressed before the API can be deemed production-ready.</p>
+</body>
+</html>
+```

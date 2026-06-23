@@ -1,0 +1,335 @@
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+
+YOUR TASK:
+Generate a COMPLETE, runnable, production-ready Python pytest test script using Playwright (sync).
+
+INPUTS (provided when invoking the LLM):
+
+test_file_language = Python-Playwright
+page_files_content = {page_files_content}
+test_files_content = {test_files_content}
+recorded_actions (optional) = {recorded_actions}
+
+PREPROCESSING & EXECUTION ORDER (MANDATORY)
+
+Parse test_files_content
+Extract:
+
+All test cases
+
+Step-by-step actions
+
+Input values
+
+Expected validations
+
+Identify ONE primary assertion per test
+
+Parse recorded_actions
+Extract:
+
+Base URL
+
+Element interactions
+
+Input values
+
+Clicks
+
+Window/tab open actions
+
+Parse page_files_content (STRICT)
+You must extract EXACTLY:
+
+file_key (module/file name)
+
+class_name
+
+constructor signature
+
+variable names
+
+ALL locators exactly as declared
+
+ALL methods with exact signatures
+⚠️ DO NOT rename, change, modify, camel-case, append, or generate new identifiers.
+
+GENERATE ONE TEST PER TEST-CASE (MANDATORY)
+
+Two allowed patterns:
+
+Option 1 — One pytest function per test case
+
+def test_<sanitized_test_name>(…)
+
+Unique sanitized names
+
+Each test includes allure.title() + allure.step()
+
+Option 2 — Parametrized test
+
+@pytest.mark.parametrize(…)
+
+ids = sanitized test names
+
+EXACT one primary assertion per test iteration
+
+Coverage rule
+
+If any test case is missing required info → generate a pytest test that auto-fails with an Allure step.
+
+Script must verify
+
+At runtime: number of generated tests == number of parsed cases.
+
+PLAYWRIGHT LOCATOR RULES (STRICT)
+
+Inside init of every page class:
+
+self.locator_name = page.locator("<selector>")
+
+NEVER generate:
+
+get_locator()
+
+locator-return helpers
+
+Interactions must be:
+
+self.button.click()
+self.input.fill("value")
+
+wait_for_element must be:
+
+def wait_for_element(self, locator_key: str):
+locator = getattr(self, locator_key)
+locator.wait_for(state="visible")
+return locator
+
+POM IMPORT RULES
+
+from output.page_file_generator.<file_key> import <class_name>
+
+If missing → create helper inside test file.
+
+XPATH / LOCATOR SELF-HEALING RULE
+
+On failure:
+
+sleep 0.5–1 sec
+
+retry
+
+wait_for visible
+
+fallback to recorded_actions selector
+
+final fallback → auto-generate stable selector using id / name / data-* / placeholder / label / visible text
+
+Every fallback wrapped in allure.step("healing: …")
+
+TEST STRUCTURE (pytest + Playwright sync)
+FIXTURE RULES
+
+Use sync_playwright()
+
+Launch WebKit by default
+
+Use HEADLESS env toggle
+
+MUST create Browser → Context → Page
+
+NEW STRICT RULE — POM INITIALIZATION MUST BE DONE ONLY AFTER page.goto()
+
+The test fixture MUST NOT instantiate POM classes.
+Only create and yield the page.
+
+Inside each test:
+
+page.goto(base_url)
+
+THEN:
+
+home = HomePage(page)
+details = DetailsPage(page)
+
+Because initializing POM locators before navigation causes frozen selectors.
+
+Context must include:
+
+context = browser.new_context(
+user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+java_script_enabled=True,
+ignore_https_errors=True,
+viewport={{"width": 1400, "height": 900}}
+)
+
+Do NOT add unnecessary sleeps.
+
+WINDOW/TAB HANDLING (MANDATORY)
+
+with page.expect_popup() as popup_info:
+trigger_click()
+new_page = popup_info.value
+new_page.bring_to_front()
+
+Fallback:
+pages = page.context.pages
+if len(pages) > 1:
+new_page = pages[-1]
+
+After switching:
+Recreate POM instances using parsed constructor.
+
+Never switch window after page.goto().
+
+ALLURE REPORTING RULES
+
+Every meaningful step wrapped in allure.step
+
+Every interaction attaches screenshot
+
+Failure → attach screenshot + page.content()
+
+Script must create allure-results folder
+
+HELPER FUNCTION RULES
+
+Create helpers when:
+
+POM method missing
+
+signature mismatch
+
+locator missing
+
+interaction fails
+
+Name format: helper_<action>_<file_key>
+
+Helpers must:
+
+Use POM locators
+
+Or fallback selectors
+
+Attach before/after screenshots
+
+Wrap in allure.step()
+
+SELF-HEAL RETRY LOGIC
+
+On interaction failure:
+
+sleep
+
+wait_for
+
+retry
+
+try alternates
+
+fallback selector
+
+MUST wrap fallback with allure.step("healing: …")
+
+ASSERTIONS
+
+Each test MUST have:
+
+EXACTLY ONE primary assertion
+
+Match Expected Result from test_files_content.
+
+FINAL VALIDATION BEFORE RETURNING SCRIPT
+
+Generated output MUST ensure:
+
+All imports exist
+
+No unused imports
+
+All POMs or helper functions exist
+
+No undefined variables
+
+expect_popup used correctly
+
+Allure attached for all steps
+
+Exactly one primary assertion per test
+
+Script fully runnable without modification
+
+TEST NAMING & METADATA
+
+Sanitized test function names
+
+allure.title(test_case_name)
+
+Optional allure.description
+
+Test tags if provided
+
+RULE A — Allure folder creation
+
+import os
+os.makedirs("allure-results", exist_ok=True)
+
+RULE B — Constants
+
+DEFAULT_WAIT = 5
+EXPLICIT_WAIT = 10
+RETRY_ATTEMPTS = 1
+
+RULE C — POM Constructor Adaptation
+
+Try exact constructor.
+If mismatch:
+
+with allure.step("auto-fix constructor adaptation"):
+page_obj = ClassName(page)
+
+Or fallback: ClassName(page, 10)
+
+RULE D — Locator function detection
+
+If locator is callable:
+
+with allure.step("auto-fix: locator function → locator object"):
+locator = page.locator(locator())
+
+RULE E — Allure Attachment API
+
+Attach screenshots and HTML exactly as:
+
+allure.attach(page.screenshot(), name="...", attachment_type=allure.attachment_type.PNG)
+allure.attach(page.content(), name="page_html", attachment_type=allure.attachment_type.HTML)
+
+RULE F — Popup fallback & POM reinit
+
+Always re-instantiate POMs after popup switch.
+
+RULE G — Base URL fallback
+
+Priority:
+
+recorded_actions[0]["url"]
+
+first navigation step in test_files_content
+
+Else → auto-fail test for missing base URL
+
+RULE H — Headless toggle
+
+HEADLESS = os.environ.get("HEADLESS","false").lower() in ("1","true","yes")
+
+MISSING / UNIMPLEMENTABLE TESTS RULE
+
+Generate failing pytest test with Allure step explaining the missing info.
+
+OUTPUT RULE
+RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+NO Markdown.
+NO triple backticks.
+NO explanations.

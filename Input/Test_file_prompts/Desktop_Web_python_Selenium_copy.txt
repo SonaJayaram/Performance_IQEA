@@ -1,0 +1,190 @@
+You are an expert automation engineer. Your task is to generate a complete, executable Python automation script using pytest that performs hybrid automation (Windows desktop application + web application) based on the provided inputs.
+
+---
+
+### 🔹 INPUTS
+
+Application Path:
+{application_path}
+
+Workflow Steps:
+{workflow_steps}
+
+---
+
+### 🔹 OBJECTIVE
+
+Convert the given workflow steps into a fully working Python automation script that:
+
+* Automates a Windows desktop application
+* Continues the flow in a web application (if applicable)
+* Executes end-to-end without manual intervention
+
+---
+
+### 🔹 TECHNOLOGY STACK
+
+Use the following libraries:
+
+* pywinauto (desktop automation)
+* selenium (web automation)
+* pytest (test execution)
+* time, os (utility)
+* selenium.webdriver.common.action_chains.ActionChains (MANDATORY for keyboard actions in web)
+
+---
+
+### 🔹 CORE AUTOMATION RULES
+
+#### 1. Desktop Automation (VERY IMPORTANT)
+
+* Launch application using given application path
+* Use pywinauto with backend="uia"
+* Always bring window to focus before every action
+* STRONGLY prefer keyboard shortcuts instead of mouse/UI clicks
+
+##### 🔹 Keyboard-First Strategy (MANDATORY)
+
+Use shortcuts wherever possible:
+
+* Open / Default selection → ENTER
+* New file → CTRL+N
+* Save → CTRL+S
+* Navigation → TAB / ENTER
+* Close → ALT+F4
+* Text entry → send_keys()
+
+Avoid mouse-based clicking unless absolutely necessary.
+
+---
+
+#### 2. Web Automation (MANDATORY ACTIONCHAINS USAGE)
+
+* Use Selenium with Chrome WebDriver
+* Configure Chrome options for stability
+* Maximize browser window
+* Use ActionChains for:
+
+  * Typing inputs
+  * Pressing ENTER
+  * Keyboard shortcuts (ALT, CTRL combinations)
+
+Example:
+
+* actions.send_keys("text").perform()
+* actions.send_keys(Keys.ENTER).perform()
+
+Avoid direct send_keys() on elements when possible — prefer ActionChains for better reliability.
+
+---
+
+#### 3. Window / Tab Handling (MANDATORY)
+
+* ALWAYS handle multiple windows/tabs properly
+* After any action that may open a new window:
+
+  * Detect all window handles
+  * Switch to the new window
+
+Example logic:
+
+* Store current window
+* Loop through driver.window_handles
+* Switch to the new one
+
+This must be implemented wherever applicable in the workflow.
+
+---
+
+#### 4. Hybrid Flow Handling
+
+* Maintain correct sequence: Desktop → Web → Desktop (if applicable)
+* Ensure smooth transition between applications
+* Do NOT open browser unless required in workflow
+
+---
+
+#### 5. Workflow Interpretation Rules
+
+* Convert user steps into logical automation actions
+* Replace UI-heavy steps with keyboard shortcuts
+* Merge steps where appropriate for efficiency
+
+Examples:
+
+* "Click Save" → CTRL+S
+* "Open new file" → ENTER or CTRL+N
+* "Search and download" → Use keyboard-based command execution
+
+---
+
+#### 6. Synchronization
+
+* Use time.sleep() for stability
+* Add sufficient wait after:
+
+  * App launch
+  * Page load
+  * File operations
+  * Window switches
+
+---
+
+#### 7. Resilience
+
+* Avoid fragile locators
+* Use simple XPath or keyboard actions
+* Add try/except for optional steps (like "Stay signed in")
+
+---
+
+### 🔹 SCRIPT STRUCTURE
+
+Generate code with the following structure:
+
+1. Imports
+2. Global variables
+3. Desktop-related functions
+4. Web-related functions
+5. Utility functions (window switch, keyboard actions)
+6. Main pytest function:
+
+   def test_end_to_end_flow():
+
+---
+
+### 🔹 FUNCTION DESIGN
+
+Create modular reusable functions such as:
+
+* launch_application()
+* perform_desktop_actions()
+* save_file()
+* open_browser()
+* perform_web_actions()
+* switch_to_new_window()
+* execute_keyboard_actions()
+
+---
+
+### 🔹 OUTPUT REQUIREMENTS
+OUTPUT RULE (ABSOLUTE):
+- RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+- Do NOT include explanations, comments, or markdown.
+- Do NOT wrap in triple backticks.
+- Code must be executable as-is
+- Mask passwords as "************"
+- Maintain clean structure and indentation
+
+---
+
+### 🔹 IMPORTANT BEHAVIOR ENFORCEMENT
+
+* MUST use keyboard shortcuts for desktop automation wherever possible
+* MUST use ActionChains for web interactions wherever typing or key actions are required
+* MUST implement window switching logic wherever new window/tab is expected
+* MUST ensure script runs end-to-end without manual intervention
+
+---
+
+### 🔹 GENERATE THE SCRIPT NOW

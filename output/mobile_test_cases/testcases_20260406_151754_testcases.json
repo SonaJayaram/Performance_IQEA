@@ -1,0 +1,344 @@
+[
+  {
+    "tc_id": "TC_001",
+    "tc_name": "Search mobile and add single product quantity to 3 then verify cart",
+    "category": "Positive",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Validates searching for a mobile, selecting the product, increasing quantity to 3, adding to cart and verifying cart shows quantity 3",
+    "precondition": "Amazon app installed on Samsung SM-A226B, user on home screen, network available",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Tap the Search icon on the Amazon home screen",
+        "expected": "Search input opens and keyboard visible"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Enter search term 'OnePlus 15' in search input and submit",
+        "expected": "Search results for 'OnePlus 15' are displayed"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Select the desired mobile product from results (tap product item)",
+        "expected": "Product detail page opens for the selected mobile"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "If required, select mandatory variant options (color, storage)",
+        "expected": "Variant options selected and enabled for purchase"
+      },
+      {
+        "step_no": 5,
+        "step_desc": "Increase the quantity selector to 3",
+        "expected": "Quantity shows 3 and UI reflects selection"
+      },
+      {
+        "step_no": 6,
+        "step_desc": "Tap 'Add to Cart' button",
+        "expected": "Item with quantity 3 is added to cart and confirmation/toast appears"
+      },
+      {
+        "step_no": 7,
+        "step_desc": "Open Cart from action bar",
+        "expected": "Cart screen displays the product with quantity 3 and correct subtotal"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_002",
+    "tc_name": "Add two different mobiles, then remove one to leave only the first with quantity 3",
+    "category": "Positive",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Validates adding multiple products, updating quantities and removing a product from cart",
+    "precondition": "Amazon app installed, user on home, stable network, guest or logged-in user",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Search and add Mobile A (OnePlus 15) with quantity set to 3 (use steps from TC_001)",
+        "expected": "Mobile A added to cart with quantity 3"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap Search, search for Mobile B (e.g., Samsung model), select and add to cart with quantity 1",
+        "expected": "Mobile B added to cart with quantity 1"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Open Cart",
+        "expected": "Cart page shows Mobile A (qty 3) and Mobile B (qty 1)"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "Remove Mobile B from cart using 'Remove' or trash action",
+        "expected": "Mobile B removed and cart updates to show only Mobile A (qty 3)"
+      },
+      {
+        "step_no": 5,
+        "step_desc": "Verify subtotal and item count reflect only Mobile A with quantity 3",
+        "expected": "Cart total and item count match expected values for 3 units of Mobile A"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_003",
+    "tc_name": "Attempt to increase quantity beyond available stock",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Validates system prevents increasing quantity beyond stock and shows appropriate error/limit",
+    "precondition": "Product available with limited stock (e.g., stock = 2), user on product page",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Open product detail page for item with limited stock",
+        "expected": "Product page displays available stock information"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Attempt to set quantity to a value greater than available stock (e.g., 5)",
+        "expected": "App prevents quantity selection beyond stock OR prompts 'Only X available' message"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Try to add the excessive quantity to cart",
+        "expected": "Add to cart is blocked or adjusted to max available; user sees clear error or suggestion"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_004",
+    "tc_name": "Network interruption while adding to cart",
+    "category": "Edge Case",
+    "type": "Non-Functional",
+    "priority": "Critical",
+    "description": "Validates app behavior when network disconnects during add-to-cart operation and ensures data integrity",
+    "precondition": "Amazon app installed, network available then will be toggled off (simulate flaky network)",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Start adding a product to cart (tap Add to Cart) while network is active",
+        "expected": "Add to Cart request is initiated"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "During the add operation, disable network (turn off Wi-Fi and mobile data) to simulate interruption",
+        "expected": "Add operation fails or times out gracefully"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Observe app notification/error and try retrying when network is restored",
+        "expected": "App shows retry option or queued action; upon restoring network, add completes without duplicate items"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_005",
+    "tc_name": "Use 'See more like this' comparison view and ensure add to cart is handled correctly",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "Medium",
+    "description": "Validates behavior when user navigates to comparison (See more like this) and attempts to add from compare view",
+    "precondition": "Search results include 'See more like this' button for a product",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "From product listing, tap 'See more like this' for a product",
+        "expected": "Comparison lite view opens listing similar products"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Attempt to add a product directly from the comparison view to cart",
+        "expected": "Either add to cart is available and functions, or user is navigated to product page to select options before adding"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Verify cart reflects correct product(s) and quantities",
+        "expected": "Cart updated correctly without missing variant selections or incorrect quantities"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_006",
+    "tc_name": "Back navigation from search and product page behavior",
+    "category": "UI",
+    "type": "Usability",
+    "priority": "Medium",
+    "description": "Checks that tapping Back from search/product returns to expected previous screens and preserves state",
+    "precondition": "Open app, perform a search to reach search results, open a product detail",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Tap the Search icon and perform a search (e.g., 'OnePlus')",
+        "expected": "Search results display"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Open a product from results, then tap the Back icon on the action bar",
+        "expected": "Navigates back to the search results and preserves scroll position"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "From search results, tap Back again to return to home screen",
+        "expected": "Navigates back to the home screen or previous app state"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_007",
+    "tc_name": "Orientation change while selecting quantity and adding to cart (compatibility)",
+    "category": "UI",
+    "type": "Compatibility",
+    "priority": "Medium",
+    "description": "Validates app maintains selected product, variant and quantity when device orientation changes",
+    "precondition": "Device Samsung SM-A226B, product page open with variant and quantity selected",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "On product page select variant and set quantity to 3",
+        "expected": "Variant and quantity set correctly"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Rotate device from portrait to landscape and back",
+        "expected": "Product page state (selected variant and quantity) is preserved and UI adjusts to orientation"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Tap Add to Cart after orientation changes",
+        "expected": "Add to Cart succeeds and cart reflects selected quantity and variant"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_008",
+    "tc_name": "Attempt to add to cart without selecting mandatory variant options",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Ensures app forces selection of mandatory options (like color or storage) before allowing add to cart",
+    "precondition": "Product with mandatory options (color, storage) is opened",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Open product page that requires selecting variant options",
+        "expected": "Product page shows variant selection UI"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Without selecting mandatory options, tap 'Add to Cart'",
+        "expected": "App prevents add and displays validation message prompting user to select required options"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Select required options and tap 'Add to Cart' again",
+        "expected": "Product is added to cart successfully"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_009",
+    "tc_name": "Rapid repeated add-to-cart actions to reach quantity 3 (concurrency/race)",
+    "category": "Edge Case",
+    "type": "Non-Functional",
+    "priority": "High",
+    "description": "Tests rapid user taps on 'Add to Cart' or quantity increment to ensure final cart quantity is correct and no duplicates are created",
+    "precondition": "Product page open, stable or simulated delayed network",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Rapidly tap the quantity increment button or 'Add to Cart' three times quickly",
+        "expected": "UI should debounce clicks and resulting quantity in cart should be exactly 3 (no duplicates beyond 3)"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Open Cart and verify the quantity for the product",
+        "expected": "Cart shows quantity 3; no duplicate line items"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_010",
+    "tc_name": "Apply 'All Filters' to narrow search to specific storage option then add product",
+    "category": "Positive",
+    "type": "Functional",
+    "priority": "Medium",
+    "description": "Validates using All Filters to find a 16GB+512GB variant and add it to cart with quantity 3",
+    "precondition": "Amazon app open on home screen",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Tap Search and enter broad term like 'OnePlus' then submit",
+        "expected": "Search results populate"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap 'All Filters' icon and select storage filter '16GB+512GB', apply filters",
+        "expected": "Results updated to show devices matching 16GB+512GB"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Select the filtered product, set quantity to 3 and tap 'Add to Cart'",
+        "expected": "Correct variant added with quantity 3 and confirmation shown"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "Open Cart and verify only the selected filtered product is present with qty 3",
+        "expected": "Cart shows the product with qty 3 and correct pricing"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_011",
+    "tc_name": "Guest cart persistence and merge after login",
+    "category": "Positive",
+    "type": "Security",
+    "priority": "High",
+    "description": "Validates items added to cart as a guest persist locally and merge with account cart after login",
+    "precondition": "User not logged in (guest), Amazon app installed",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "As guest, search and add a mobile to cart with quantity 3",
+        "expected": "Item added to local guest cart with qty 3"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap Sign-in and log in with valid credentials",
+        "expected": "Login successful and app navigates back to previous screen"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Open Cart after login",
+        "expected": "Guest cart items are merged into the user's account cart and quantity remains 3"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_012",
+    "tc_name": "Remove items until cart is empty and verify empty cart UI",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "Medium",
+    "description": "Ensures removing last item updates the cart to an empty state with appropriate messaging and actions",
+    "precondition": "Cart contains at least one product (could be qty 3 of one product)",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Open Cart and remove the product(s) using 'Remove' action until no items remain",
+        "expected": "Each remove updates the cart; after last removal the cart becomes empty"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Verify empty cart screen content (message, recommended products, navigation options)",
+        "expected": "Empty cart UI appears with 'Your Cart is empty' message and CTAs like 'Continue shopping'"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Attempt to remove an item when cart is already empty",
+        "expected": "Remove action is disabled or not visible; app does not crash and shows empty cart state"
+      }
+    ]
+  }
+]

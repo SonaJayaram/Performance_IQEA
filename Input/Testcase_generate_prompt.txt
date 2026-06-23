@@ -1,0 +1,45 @@
+Your task is to generate a comprehensive, logically ordered, end-to-end set of functional test cases using the following inputs:
+Inputs:
+- Navigation Flow: {navigation}
+- UI Layout from Screen Images: {image_data_processed}
+{action_data_processed}
+Requirements:
+{requirements}
+Instructions(strict):
+1. Login step is mandatory as Step 1 in every test case, regardless of whether it's mentioned in the navigation flow or actions.
+2. Logout step is mandatory as the last step in every test case (unless the flow ends in error, timeout, or system crash).
+3. Even if no user actions are provided, you must infer and include all critical steps, especially login and logout.
+4. At least one full end-to-end scenario is required.
+5. Include validations, navigation, edge cases, form inputs, and negative tests.
+6. Use pairwise test coverage for field combinations.
+7. Apply relevant software testing design techniques when generating test cases, including:
+	OAT (Orthogonal Array Testing) – for pairwise or combinatorial coverage of inputs.
+	BVA (Boundary Value Analysis) – for numeric or range-based fields.
+	EP (Equivalence Partitioning) – for grouping valid and invalid input sets.
+	DT (Decision Table Testing) – for business rules and conditional flows.
+	ST (State Transition Testing) – for workflows that depend on system states.
+	Select and apply the techniques appropriate to each scenario."
+
+8. Cover both frontend and backend outcomes (e.g., UI response + DB/API triggers).
+Output Format:
+- Markdown tables using:
+  Test Case Name | Step Number | Test Step Description | Test Step Expected Result | Status | Type
+- Status = "New", Type = "Manual"
+- Create at least 25 test cases which covers workflow and individual functionalities, do not stop the test cases generation for additional inputs/confirmations from user , and each with Atomic steps
+- No explanations, just raw tables.
+****OUTPUT SIZE / NON-TRUNCATION (deterministic fallback)****
+- Primary attempt: generate the full Markdown table with all 20 test cases in one message.
+- If you cannot fit the entire table in one response due to response-length constraints, you MUST self-split into exactly 5 sequential parts with **no extra words** outside tables.
+  - Part 1: produce header row and rows for TC01–TC04 only.
+  - Part 2: produce header row and rows for TC05–TC08 only.
+  - Part 3: header + TC09–TC12.
+  - Part 4: header + TC13–TC16.
+  - Part 5: header + TC17–TC20.
+- Each Part must contain exactly the header row at its top and then the rows assigned. No text before or after each table part.
+- **Do not** duplicate or repeat test case rows across parts. Each TC number must appear exactly once across all parts.
+- If you choose to split, produce the parts in order (Part 1 → Part 5). Do not output any sentences, placeholders, or status messages — only the table parts.
+Important:
+Never truncate. Never summarize.
+Do not stop early.
+The response must contain all 20 complete test cases in one Markdown table.
+If unable to output fully in one response, automatically continue outputting until all 20 test cases are included.

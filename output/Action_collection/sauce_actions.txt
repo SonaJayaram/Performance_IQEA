@@ -1,0 +1,19 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "login_credentials" (URL: https://www.saucedemo.com/)
+Copy on "login_credentials"
+Click on "user-name"
+Shortcut_paste on "user-name"
+Paste on "user-name"
+Enter "standard_user" in the "user-name" field
+Click on "Password for all users:
+secret_sauce"
+Click on "Password for all users:
+secret_sauce"
+Copy on "Password for all users:
+secret_sauce"
+Click on "password"
+Shortcut_paste on "password"
+Paste on "password"
+Enter "secret_sauce" in the "password" field
+Click on "login-button"
+Click on "add-to-cart-sauce-labs-backpack" (URL: https://www.saucedemo.com/inventory.html)

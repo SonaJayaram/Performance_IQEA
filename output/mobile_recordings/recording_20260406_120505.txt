@@ -1,0 +1,101 @@
+================================================================================
+IQEA MOBILE AUTOMATION — RECORDED SESSION
+================================================================================
+Generated  : 2026-04-06 12:05:38
+Device     : samsung SM-A226B (Android)
+OS         : Android Android 13
+Session ID : SES-PHTXDDUC
+Total Steps: 11
+
+================================================================================
+RECORDED ACTIONS
+================================================================================
+
+[STEP #01]  INPUT
+  Time      : 12:02:23.194
+  Label     : Search Amazon.in
+  XPath     : //android.widget.EditText[@resource-id="in.amazon.mShop.android.shopping:id/rs_search_src_text"]
+  Value     : Search Amazon.in
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #02]  TAP
+  Time      : 12:02:30.016
+  Label     : Use my current location
+  XPath     : //android.widget.Button[@resource-id="in.amazon.mShop.android.shopping:id/loc_ux_gps_auto_detect"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #03]  TAP
+  Time      : 12:02:38.095
+  Label     : Close
+  XPath     : //android.widget.Button[@resource-id="closeButton"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #04]  TAP
+  Time      : 12:02:44.424
+  Label     : Cancel
+  XPath     : //android.widget.Button[@resource-id="in.amazon.mShop.android.shopping:id/top_bar_cancel_text_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #05]  TAP
+  Time      : 12:03:22.130
+  Label     : Monday, 6 April
+  XPath     : //android.widget.TextView[@resource-id="com.samsung.android.app.clockpack:id/common_date"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #06]  TAP
+  Time      : 12:03:28.391
+  Label     : Monday, 6 April
+  XPath     : //android.widget.TextView[@resource-id="com.samsung.android.app.clockpack:id/common_date"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #07]  TAP
+  Time      : 12:04:02.707
+  Label     : Cancel
+  XPath     : //android.widget.Button[@resource-id="in.amazon.mShop.android.shopping:id/top_bar_cancel_text_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #08]  TAP
+  Time      : 12:04:09.114
+  Label     : Back
+  XPath     : //android.widget.ImageButton[@resource-id="in.amazon.mShop.android.shopping:id/chrome_action_bar_back_icon"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #09]  TAP
+  Time      : 12:04:15.810
+  Label     : apwebview
+  XPath     : //android.webkit.WebView[@resource-id="in.amazon.mShop.android.shopping:id/apwebview"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #10]  INPUT
+  Time      : 12:04:21.678
+  Label     : ap_email_login
+  XPath     : //android.widget.EditText[@resource-id="ap_email_login"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #11]  TAP
+  Time      : 12:04:28.244
+  Label     : Resend OTP
+  XPath     : //android.view.View[@resource-id="cvf-resend-link"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------

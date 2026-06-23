@@ -1,0 +1,180 @@
+YOU ARE A SENIOR SDET. FROM ONE RECORDED USER SESSION, GENERATE A COMPLETE PYTEST AUTOMATION SCRIPT COVERING MULTIPLE TEST SCENARIOS.
+
+=== TARGET LANGUAGE / FRAMEWORK ===
+{language}
+
+=== RECORDED USER ACTIONS ===
+Each step includes exact element metadata captured at recording time.
+Fields: Locator (ready-to-use Selenium locator), tag, inputType, NAV_LINK href, URL.
+{recorded_actions}
+
+=== ABSOLUTE OUTPUT RULE ===
+Return ONLY raw Python code. No markdown, no backticks, no explanation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 0 — SCENARIO ANALYSIS  (internal — do NOT output)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Read all steps and identify 4-6 independently runnable test scenarios:
+  1. Happy path = full recorded flow
+  2. Negative = wrong credentials / invalid input (same locators, different values)
+  3. Boundary = empty required field / submit without filling form
+  4. Sub-flows = focused scenarios for each major operation (cart, checkout, logout)
+Do NOT invent steps not present in the recording.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1 — LOCATOR RULES  (read the Locator field — it is already resolved)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The "Locator:" field in each step is pre-resolved. Use it directly:
+
+  By.ID='x'                      → By.ID, "x"
+  By.NAME='x'                    → By.NAME, "x"
+  By.CSS_SELECTOR='[data-testid="x"]' → By.CSS_SELECTOR, '[data-testid="x"]'
+  By.CLASS_NAME='x'              → By.CLASS_NAME, "x"
+  By.XPATH='...'                 → By.XPATH, "..."
+  badge_text=N USE_PARENT_NAV_LINK css_classes='...'
+      → use the first stable class from css_classes as:
+          By.CSS_SELECTOR, "a.<first_class>"
+      → this is always a navigation link — apply NAV_LINK rules below
+
+NEVER invent a locator. NEVER use By.ID with a number.
+If Locator says "By.ID='x' (derived-from-label)" treat it exactly as By.ID, "x".
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2 — CLICK STRATEGY  (based on NAV_LINK flag and tag)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[CLICK] with NAV_LINK href='/some/path':
+    el = wait.until(EC.presence_of_element_located((<locator>)))
+    driver.execute_script("arguments[0].click();", el)
+    wait.until(EC.url_contains("/some/path"))
+    attach_screenshot(driver, "navigated_to_<page>")
+
+[CLICK] without NAV_LINK (tag=button, div, span, etc.):
+    el = wait.until(EC.element_to_be_clickable((<locator>)))
+    el.click()
+
+MENU/SIDEBAR toggle (tag=button opening a drawer):
+    btn = wait.until(EC.presence_of_element_located((<locator>)))
+    driver.execute_script("arguments[0].click();", btn)
+    time.sleep(0.5)   # allow CSS animation to complete
+    # then click the menu item with element_to_be_clickable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3 — INPUT / SELECT STRATEGY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[TYPE 'value'] inputType=text/password/email:
+    el = wait.until(EC.presence_of_element_located((<locator>)))
+    el.clear()
+    el.send_keys("value")
+
+[TYPE 'value'] inputType=checkbox/radio (or tag=select):
+    el = wait.until(EC.presence_of_element_located((<locator>)))
+    Select(el).select_by_visible_text("value")
+
+[SKIP_KEY_TAB] [SKIP_KEY_ENTER] [SKIP_KEY_ESCAPE] → skip entirely, do not generate code.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4 — RETRY RULE  (targeted, not blanket)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Apply retry ONLY to the FIRST interaction after a [PAGE_CHANGE] marker:
+    attempt, last_err = 0, None
+    while attempt < 2:
+        try:
+            <interaction>
+            break
+        except Exception as e:
+            last_err = e
+            attach_screenshot(driver, f"retry_<label>_{attempt}")
+            time.sleep(0.5)
+            attempt += 1
+    if attempt == 2:
+        attach_screenshot(driver, "failed_<label>")
+        raise RuntimeError(f"<label> failed: {last_err}")
+
+Do NOT retry stable same-page elements (login fields, static buttons).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 5 — FILE STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[A] Imports
+[B] BASE_URL + REPORTS_DIR constants
+[C] attach_screenshot helper
+[D] @pytest.fixture(scope="function") def setup():
+[E] One def test_XXX(setup): per scenario
+[F] if __name__ == "__main__": block
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 6 — IMPORTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+import pytest
+import allure
+import time
+import os
+from allure_commons.types import AttachmentType
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait, Select
+from selenium.webdriver.support import expected_conditions as EC
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 7 — CONSTANTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BASE_URL = "<first URL from recorded actions>"
+REPORTS_DIR = os.path.join(os.path.dirname(__file__), "reports")
+os.makedirs(REPORTS_DIR, exist_ok=True)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 8 — SCREENSHOT HELPER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+def attach_screenshot(driver, name: str):
+    try:
+        allure.attach(driver.get_screenshot_as_png(),
+                      name=name, attachment_type=AttachmentType.PNG)
+    except Exception:
+        pass
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 9 — FIXTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@pytest.fixture(scope="function")
+def setup():
+    options = Options()
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    driver = webdriver.Chrome(options=options)
+    driver.implicitly_wait(0)
+    yield driver
+    driver.quit()
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 10 — TEST FUNCTION RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Each test function:
+  1. Starts: driver.get(BASE_URL) + attach_screenshot(driver, "start")
+  2. Groups steps under allure.step() context managers
+  3. Uses attach_screenshot after each PAGE_CHANGE navigation and after final assertion
+  4. Applies retry ONLY on the first step after each [PAGE_CHANGE]
+  5. Ends with EXACTLY ONE assert + attach_screenshot(driver, "assertion_passed")
+  6. Has @allure.title("...") and @pytest.mark.<smoke|regression|negative|boundary>
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 11 — MAIN BLOCK  (always last)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+if __name__ == "__main__":
+    import sys
+    sys.exit(pytest.main([__file__, "-v", "--tb=short"]))
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 12 — SELF-VALIDATION  (silently before output)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[ ] 4-6 independent test functions covering different scenarios
+[ ] Every Locator field used exactly as given — no invented locators
+[ ] NAV_LINK steps use JS click + url_contains(href)
+[ ] Sidebar/menu toggles use JS click + time.sleep(0.5)
+[ ] SKIP steps produce no code
+[ ] Retry applied only on first step after each [PAGE_CHANGE]
+[ ] attach_screenshot after every navigation + after assertion
+[ ] Exactly ONE assert per test function
+[ ] options.headless NEVER set, driver.implicitly_wait(0) in fixture
+[ ] if __name__ == "__main__": present as last block
+[ ] No triple backticks, no placeholders, no TODOs in output

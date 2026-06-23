@@ -1,0 +1,6 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Enter "sdssdsd" in the "user-name" field
+Click on "password"
+Enter "dasdf" in the "password" field
+Click on "login-button"

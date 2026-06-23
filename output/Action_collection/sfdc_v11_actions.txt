@@ -1,0 +1,16 @@
+Switched to new window: [https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D0hL7IAJ/edit?count=3&backgroundContext=%2Flightning%2Fr%2FContact%2F003Qy00001D0hL7IAJ%2Fview]
+Navigate to "test test | Contact | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D0hL7IAJ/edit?count=3&backgroundContext=%2Flightning%2Fr%2FContact%2F003Qy00001D0hL7IAJ%2Fview)
+Click on "Cancel and close"
+Navigate to "test test | Contact | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D0hL7IAJ/view)
+Navigate to "New Case | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/action/quick/Global.NewCase?objectApiName=Case&context=RECORD_DETAIL&recordId=003Qy00001D0hL7IAJ&backgroundContext=%2Flightning%2Fr%2FContact%2F003Qy00001D0hL7IAJ%2Fview)
+Click on "2501:0"
+Select "test test
+test Household" from the "1:2688;a" dropdown
+Click on "New"
+Select "Working" from the "Working" dropdown
+Click on "2641:0"
+Enter_text on "2641:0"
+Click on "Save"
+Navigate to "test test | Contact | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D0hL7IAJ/view)
+Navigate to "Edit test test | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D0hL7IAJ/edit?count=4&backgroundContext=%2Flightning%2Fr%2FContact%2F003Qy00001D0hL7IAJ%2Fview)
+Navigate to "test test | Contact | Salesforce" page (URL: https://mindful-shark-fv3y29-dev-ed.trailblaze.lightning.force.com/lightning/r/Contact/003Qy00001D0hL7IAJ/view)

@@ -1,0 +1,97 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #2980b9; padding-bottom: 5px; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .pass { color: green; font-weight: bold; }
+        .fail { color: red; font-weight: bold; }
+        .section { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <div class="section">
+        <h2>API Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Status Code</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>https://reqres.in/api/users/2</td>
+                    <td>200</td>
+                    <td class="pass">PASS</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>https://reqres.in/api/users</td>
+                    <td>201</td>
+                    <td class="fail">FAIL</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Validation Results</h2>
+        <h3>GET API: https://reqres.in/api/users/2</h3>
+        <ul>
+            <li>Status Code Validation: <span class="pass">PASS</span> (Expected: 200, Actual: 200)</li>
+            <li>Field/Value Validation: <span class="pass">PASS</span> - The field <code>first_name</code> matched the expected value: Janet.</li>
+        </ul>
+
+        <h3>POST API: https://reqres.in/api/users</h3>
+        <ul>
+            <li>Status Code Validation: <span class="pass">PASS</span> (Expected: 201, Actual: 201)</li>
+            <li>Field/Value Validation: <span class="fail">FAIL</span> - The expected value for <code>first_name</code> was "John" but was not present in the response. Instead, the response returned fields "name" and "job" which did not align with the provided expectation.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Issues Identified</h2>
+        <ul>
+            <li>POST API: Mismatch in field names for the expected response. The response contained "name: John Doe" instead of "first_name: John".</li>
+            <li>GET API: No issues identified.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Risk Assessment</h2>
+        <ul>
+            <li>GET API: <strong>Low</strong> - The API response matches the expectation fully and functions as intended.</li>
+            <li>POST API: <strong>Medium</strong> - The response returned a different field ("name") than the expected "first_name". This inconsistency may cause downstream integration failures or misunderstandings for users relying on the contract as defined in the expectation.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Recommendations</h2>
+        <ul>
+            <li>For the POST API: Update the API contract to clearly define the expected fields in the response (e.g., "name" instead of "first_name") or modify the API logic to conform to the contract if the contract is already defined.</li>
+            <li>Perform additional schema validation in unit testing to avoid mismatched field names.</li>
+            <li>Include a detailed response schema in the API documentation to avoid confusion for users.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Overall Verdict</h2>
+        <p><strong>FAIL</strong> - While the GET API passes all validations, the POST API has inconsistent field naming in the response that deviates from the expected contract. This poses a medium-level functional risk and requires immediate attention.</p>
+    </div>
+</body>
+</html>
+```

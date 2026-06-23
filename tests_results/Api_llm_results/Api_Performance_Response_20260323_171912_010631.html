@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Performance Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f6f8; }
+    .good { color: green; font-weight: bold; }
+    .moderate { color: orange; font-weight: bold; }
+    .poor { color: red; font-weight: bold; }
+    .na { color: gray; font-weight: bold; }
+  </style>
+</head>
+
+<body>
+
+<h1>Test Execution Configuration</h1>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Ramp Users</td><td>20</td></tr>
+  <tr><td>Spawn Rate (users/sec)</td><td>0.5</td></tr>
+  <tr><td>Run Time</td><td>10s</td></tr>
+  <tr><td>Stop Time</td><td>100</td></tr>
+</table>
+
+<p>
+  Contextual note: The test configuration indicates a small-scale load pattern (20 virtual users ramped at 0.5 users/sec with a short steady-state of 10 seconds). This context is provided for interpretation only and is not used to compute or infer any performance metrics.
+</p>
+
+<hr/>
+
+<h1>Overall Performance Summary</h1>
+<ul>
+  <li><strong>Total APIs Tested:</strong> 0</li>
+  <li><strong>Overall Health:</strong> <span class="na">Not Available</span></li>
+</ul>
+
+<h2>Key Risks</h2>
+<ul>
+  <li>Missing measurement data: No CSV metrics were provided, preventing validation of throughput, latency, and error behavior.</li>
+  <li>Undetected performance issues: Without recorded statistics or failure logs, regressions or instability could be present but are not observable from the supplied artifacts.</li>
+</ul>
+
+<hr/>
+
+<h1>API-wise Performance Analysis</h1>
+
+<section>
+  <h2>API: Not Available</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Total Requests</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>P95 Response Time</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Failure Rate</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Observations</td><td><span class="na">Not Available - no failures.csv or exceptions.csv data provided</span></td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p><span class="na">Not Available</span></p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Ensure Locust CSV artifacts (stats.csv, stats_history.csv, failures.csv, exceptions.csv) are collected and supplied for analysis.</li>
+    <li>Rerun the test with sufficient steady-state duration (longer than 10s) to capture representative behavior and steady-state metrics.</li>
+    <li>Confirm test runner completed gracefully and that CSV files were written to the expected output directory before collection.</li>
+    <li>If intermittent issues are suspected, enable more detailed sampling (increase metrics frequency) and include system-level metrics (CPU, memory, network) alongside Locust outputs.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<h1>Final Recommendation</h1>
+<p>
+  Production readiness cannot be assessed because no performance metrics were provided in the Locust CSV extracts. Before making a release decision:
+</p>
+<ul>
+  <li>Re-run the test and collect the required CSV outputs (stats.csv, stats_history.csv, failures.csv, exceptions.csv).</li>
+  <li>Increase steady-state run time to capture stable performance characteristics and transient behavior.</li>
+  <li>Correlate application and infrastructure metrics with Locust statistics to identify root causes of any latency or failures.</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+You are an expert in analyzing automation Page files.
+
+TASK:
+1. Read the provided Page file content and extract **all raw XPath string values** that appear in the content.
+2. Return **only** a single JSON object (no extra text, no explanation). The JSON must exactly follow the structure below and contain only string values.
+
+OUTPUT RULES:
+- Only return raw XPath strings inside quotes, e.g. "//input[@id='user-name']". Do NOT return By.ID, By.NAME, variable names, method calls, or any other code — just the XPath strings.
+- Accept XPaths that appear in:
+  - single quotes '...'
+  - double quotes "..."
+  - triple single/double quotes ('''...''' or """...""")
+  - f-strings like f"//div[@id='{var}']" — if variable parts exist, include the literal text present in the file (do not attempt to resolve runtime values).
+  - concatenations like "//div" + "[@id='x']" — join contiguous string parts into the combined literal if they are string constants.
+  - By.xpath("..."), driver.find_element_by_xpath("..."), find_element(By.XPATH, "..."), or any other call that passes XPath as a literal string.
+- Preserve the order of first appearance in the file.
+- Remove exact-duplicate XPaths but preserve the order of the first occurrence (i.e., unique list in appearance order).
+- If an XPath spans multiple lines inside a multi-line string, extract the full literal content, preserving slashes and predicates.
+- Ignore any identifiers or variables that only reference an XPath (e.g., skip the variable name; extract the string literal).
+- If no XPath strings are found, return an empty array for that page.
+
+PAGE NAME RULES:
+- If a class name is present (e.g., "class LoginPage"), use that class name as the page name.
+- If multiple classes exist, use the class closest above the locators; if ambiguous, use the first class declared in the file.
+- If a meaningful filename or comment indicates the page name (e.g., "# Login Page" or "login_page.py"), prefer that if no class exists.
+- If no page name can be determined, use "no page" as the page name.
+
+OUTPUT FORMAT (strict — EXACTLY this structure, no extra whitespace outside JSON keys/values):
+{{
+    "self_<page_name>": [
+        "<Page_Name>:",
+        "<XPath_1>",
+        "<XPath_2>",
+        ...
+    ],
+    ... (one object entry per page found in the file)
+}}
+
+ADDITIONAL IMPLEMENTATION HINTS (for the extractor implementation/regex):
+- Search for patterns that contain '//' or '/html' as an initial sign of XPath.
+- Regex examples to find candidates (implementer note — not part of the output): 
+  - string literals: (?s)(?:"([^"]*//[^"]*)"|'([^']*//[^']*)'|"""([^"]*//[^"]*)"""|'''([^']*//[^']*)''')
+  - by/xpath calls: By\.xpath\((?P<q>["'])(?P<x>.*?//.*?)(?P=q)\)
+  - driver\.find_element.*xpath.*\((["']).*?//.*?\1\)
+- After collecting matches, normalize by concatenating adjacent string-literal tokens that are directly concatenated in code (e.g., "//a" + "[@id='x']" => "//a[@id='x']").
+- Preserve the literal content exactly as it appears (do not add or remove escape characters beyond normalizing concatenated string literals).
+- Keep output JSON keys safe: replace spaces in page names with underscores if necessary (but still show the Page_Name line with original readable spacing).
+
+EXAMPLE:
+If file contains:
+class LoginPage:
+    username_xpath = "//input[@id='user-name']"
+    login_btn = By.xpath("//button[@id='login-button']")
+Then output:
+{{
+    "self_LoginPage": [
+        "LoginPage:",
+        "//input[@id='user-name']",
+        "//button[@id='login-button']"
+    ]
+}}
+
+INPUT:
+{page_file_content}

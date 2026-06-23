@@ -1,0 +1,912 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/datasource]
+Click on "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+Execution Mode
+Manual Trigger (Ad-hoc)
+
+Manual data ingestion triggered by the user.
+
+Batch Processing
+
+Scheduled data ingestion on a regular cadence.
+
+Event-Based Processing
+BETA
+
+Near real-time ingestion triggered by new file uploads or changes.
+
+Frequency
+Monthly
+Date & Time
+
+
+Select the date and hour (24-hour format) for monthly execution. Minutes are automatically set to :00.
+
+Cancel
+Previous
+Create Data Source
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+test_source_test
+
+Unstructured
+B. Connection Details
+
+s3://test_source_test
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Batch
+
+Frequency: monthly
+
+Time: 02:00
+
+Missing required fields
+S3 Path has not been validated or failed validation.
+No files or folders have been selected for ingestion.
+Schedule Time is required for Batch mode." (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Change the value to "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+Execution Mode
+Manual Trigger (Ad-hoc)
+
+Manual data ingestion triggered by the user.
+
+Batch Processing
+
+Scheduled data ingestion on a regular cadence.
+
+Event-Based Processing
+BETA
+
+Near real-time ingestion triggered by new file uploads or changes.
+
+Frequency
+Monthly
+Date & Time
+
+
+Select the date and hour (24-hour format) for monthly execution. Minutes are automatically set to :00.
+
+Cancel
+Previous
+Create Data Source
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+test_source_test
+
+Unstructured
+B. Connection Details
+
+s3://test_source_test
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Batch
+
+Frequency: monthly
+
+Time: 02:00
+
+Missing required fields
+S3 Path has not been validated or failed validation.
+No files or folders have been selected for ingestion.
+Schedule Time is required for Batch mode." in "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+Execution Mode
+Manual Trigger (Ad-hoc)
+
+Manual data ingestion triggered by the user.
+
+Batch Processing
+
+Scheduled data ingestion on a regular cadence.
+
+Event-Based Processing
+BETA
+
+Near real-time ingestion triggered by new file uploads or changes.
+
+Frequency
+Monthly
+Date & Time
+
+
+Select the date and hour (24-hour format) for monthly execution. Minutes are automatically set to :00.
+
+Cancel
+Previous
+Create Data Source
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+test_source_test
+
+Unstructured
+B. Connection Details
+
+s3://test_source_test
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Batch
+
+Frequency: monthly
+
+Time: 02:00
+
+Missing required fields
+S3 Path has not been validated or failed validation.
+No files or folders have been selected for ingestion.
+Schedule Time is required for Batch mode."
+Click on "link-Agent Store"
+Change the value to "" in "link-Agent Store" (URL: https://agentflow-uat.tigeranalyticstest.in/agent-store)
+Click on "<> Build Yourself"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue"
+Click on "Experiment Name"
+Enter "myjantest" in the "Experiment Name" field
+Click on "Experiment Description"
+Enter "myjantest" in the "Experiment Description" field
+Click on "Continue"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Choose Type
+
+HAL Assistant
+
+AI-powered workflow generation
+
+Manual Build
+
+Generate workflow from scratch
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=2c35d633-9100-4711-b93c-53f79c27f60f&agentId=1443&pageType=form)
+Click on ""
+Change the value to "" in "link-Data Store" (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Click on "Add Data Store"
+Change the value to "Add Data Store
+
+
+Cloud Storage
+
+S3
+
+Database Connectors
+
+Snowflake" in "Add Data Store
+
+
+Cloud Storage
+
+S3
+
+Database Connectors
+
+Snowflake"
+Click on "MuiBox-root css-1iw0rvi"
+Change the value to "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Data Source Name *
+
+
+
+Data Source Description
+
+Connection Details
+
+How would you like to access your data? *
+
+Select Existing Bucket
+
+Choose from connected buckets and folders.
+
+Upload New Files
+
+Upload files and specify destination path.
+
+S3 Bucket/Prefix *
+
+
+s3://
+
+Fetch Files
+Discover Datasets
+Select Entire Bucket
+
+Browse and select individual files
+
+0 items selected
+No files or folders found at the root of the connection.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+New Data Source
+
+Unstructured
+B. Connection Details
+
+Not specified
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Auto-Detect
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual" in "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Data Source Name *
+
+
+
+Data Source Description
+
+Connection Details
+
+How would you like to access your data? *
+
+Select Existing Bucket
+
+Choose from connected buckets and folders.
+
+Upload New Files
+
+Upload files and specify destination path.
+
+S3 Bucket/Prefix *
+
+
+s3://
+
+Fetch Files
+Discover Datasets
+Select Entire Bucket
+
+Browse and select individual files
+
+0 items selected
+No files or folders found at the root of the connection.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+New Data Source
+
+Unstructured
+B. Connection Details
+
+Not specified
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Auto-Detect
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual"
+Click on "Enter Data Source Name"
+Enter "myjantest" in the "Enter Data Source Name" field
+Click on "Data Source Description"
+Enter "myjantest" in the "Data Source Description" field
+Change the value to "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Data Source Name *
+
+
+
+Data Source Description
+
+Connection Details
+
+How would you like to access your data? *
+
+Select Existing Bucket
+
+Choose from connected buckets and folders.
+
+Upload New Files
+
+Upload files and specify destination path.
+
+S3 Bucket/Prefix *
+
+
+s3://
+
+Fetch Files
+Discover Datasets
+Select Entire Bucket
+
+Browse and select individual files
+
+0 items selected
+No files or folders found at the root of the connection.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+Not specified
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Auto-Detect
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual" in "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Data Source Name *
+
+
+
+Data Source Description
+
+Connection Details
+
+How would you like to access your data? *
+
+Select Existing Bucket
+
+Choose from connected buckets and folders.
+
+Upload New Files
+
+Upload files and specify destination path.
+
+S3 Bucket/Prefix *
+
+
+s3://
+
+Fetch Files
+Discover Datasets
+Select Entire Bucket
+
+Browse and select individual files
+
+0 items selected
+No files or folders found at the root of the connection.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+Not specified
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Auto-Detect
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual"
+Click on "text"
+Enter "myjantest" in the "myjantest" field
+Click on "Next"
+Click on "select__input-container css-19bb58m"
+Click on "react-select-8-option-1"
+Click on "select__input-container css-19bb58m"
+Click on "react-select-10-option-1"
+Click on "Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+s3://myjantest
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual"
+Change the value to "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Parser auto-selected as "auto" based on your source type. Adjust if needed.
+
+Parser
+Manual
+Parser Configuration
+PDF
+PPTX / DOCX
+IMAGES
+Parser (PDF)
+PyPDF2
+Embedding Model *
+Select Embedding Model
+General Processing
+Qualitative Evaluation using LLM
+Enable AI-powered quality assessment.
+Entity Extraction
+Extract people, places, organizations, and more.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+s3://myjantest
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual" in "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Parser auto-selected as "auto" based on your source type. Adjust if needed.
+
+Parser
+Manual
+Parser Configuration
+PDF
+PPTX / DOCX
+IMAGES
+Parser (PDF)
+PyPDF2
+Embedding Model *
+Select Embedding Model
+General Processing
+Qualitative Evaluation using LLM
+Enable AI-powered quality assessment.
+Entity Extraction
+Extract people, places, organizations, and more.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+s3://myjantest
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual"
+Click on "css-8mmkcg"
+Click on "react-select-9-option-0"
+Click on "Next"
+Change the value to "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+Execution Mode
+Manual Trigger (Ad-hoc)
+
+Manual data ingestion triggered by the user.
+
+Batch Processing
+
+Scheduled data ingestion on a regular cadence.
+
+Event-Based Processing
+BETA
+
+Near real-time ingestion triggered by new file uploads or changes.
+
+Cancel
+Previous
+Create Data Source
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+s3://myjantest
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual
+
+Missing required fields
+S3 Path has not been validated or failed validation.
+No files or folders have been selected for ingestion." in "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+Execution Mode
+Manual Trigger (Ad-hoc)
+
+Manual data ingestion triggered by the user.
+
+Batch Processing
+
+Scheduled data ingestion on a regular cadence.
+
+Event-Based Processing
+BETA
+
+Near real-time ingestion triggered by new file uploads or changes.
+
+Cancel
+Previous
+Create Data Source
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+myjantest
+
+Unstructured
+B. Connection Details
+
+s3://myjantest
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Manual
+PDF: PyPDF2
+PPTX: Unstructured
+IMAGES: DocLing
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual
+
+Missing required fields
+S3 Path has not been validated or failed validation.
+No files or folders have been selected for ingestion."

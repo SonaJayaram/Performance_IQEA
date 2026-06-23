@@ -1,0 +1,11 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "output/test_file_generator",
+        "-v",
+        "--tb=short"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.terminal.activateEnvironment": true
+}

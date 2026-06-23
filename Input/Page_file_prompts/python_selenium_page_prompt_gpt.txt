@@ -1,0 +1,61 @@
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+YOUR TASK: Generate a production-ready Python-Selenium Page Object Model (POM) class.
+
+INPUTS:
+
+elements: {xpaths}
+
+recorded_actions: {Action_data}
+
+page_name: {page_name}
+
+REQUIREMENTS (strict):
+
+RAW CODE ONLY — Return only a single Python class definition for the page. No extra text, no comments, no markdown, no backticks.
+
+TOP-LEVEL IMPORTS (MANDATORY) — The class file must include only:
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+Do NOT add other imports.
+
+LOCATORS — Provide a LOCATORS dictionary exactly in this format:
+
+LOCATORS = {{
+    "key_name": (By.XPATH, "<xpath>"),
+    ...
+}}
+
+
+Keys must be pythonic snake_case and derived from element meaning (e.g., submit_button, last_name_input).
+
+CLASS NAME — Must be exactly the provided page_name (case-sensitive).
+
+CONSTRUCTOR — Must be exactly:
+
+def __init__(self, driver):
+    self.driver = driver
+    self.wait = WebDriverWait(driver, 20)
+
+
+NO GENERIC HELPER METHODS — Do NOT include generic helpers such as click_element, enter_text, or window switching inside the page class. The page class may include read-only accessor methods that return WebElement objects or simple convenience wrappers that call self.wait and return elements (not actions). Example allowed method:
+
+def get_submit_button(self):
+    return self.wait.until(EC.element_to_be_clickable(self.LOCATORS["submit_button"]))
+
+
+But do not perform actions (no .click() or .send_keys() inside the POM).
+
+ACTION METHODS — If recorded_actions include complex multi-element flows that are only meaningful as a single page-level behavior (e.g., open_modal_and_return_handle()), you MAY include at most one such method — but it must be minimal and must NOT include global helpers. Prefer exposing elements and locators for tests to operate on.
+
+MISSING/XPATH-ONLY LOCATORS — If only XPaths are available, use them exactly. Do not invent ids or names.
+
+ERROR ON MISSING LOCATOR — Accessor methods must raise RuntimeError("Locator '<key>' not found in LOCATORS") if the key is missing.
+
+OUTPUT:
+RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+Do NOT wrap output in triple backticks.
+Do NOT add explanations, comments, markdown, or text outside the class.

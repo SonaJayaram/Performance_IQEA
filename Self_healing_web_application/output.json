@@ -1,0 +1,635 @@
+{
+  "wf12_study_author": "Yip Jamie (JAMIE.YIP)",
+  "wf12_study_date": "2024-01-25T14:23:45.615Z",
+  "wf12_study_title": "SDC_UAT Draft Silicone",
+  "wf12_study_type": "Silicone Deposition Measurement",
+  "wf12_study_project": "Project 1",
+  "wf12_study_site": "Port Sunlight",
+  "wf12_study_category": "Hair Care",
+  "wf12_study_function": "Design",
+  "wf12_study_cbp": "Dry Damage",
+  "wf12_study_brand": "Dove",
+  "wf12_study_region": "Global",
+  "wf12_study_country": "Countries",
+  "wf12_study_objective": "The Objective is to train new user",
+  "wf12_study_method": "We used XRF for silicone",
+  "wf12_study_result": "Test shampoo was the best yippy",
+  "wf12_study_conclusion": "Test shampoo is gunna make me a millionaire",
+  "g_formulation": [
+    {
+      "wf12_formulation_name": "SDC trial - COMPLEX batch",
+      "wf12_formulation_descriptor": "Test Shampoo 1",
+      "wf12_formulation_format": "Wash & Care: Shampoo - Beauty Shampoo",
+      "wf12_formulation_site": "Port Sunlight",
+      "wf12_formulation_mm": "Lab",
+      "wf12_formulation_plm_code": "200000068069/023/000",
+      "wf12_formulation_competitor": "False",
+      "g_formulation_ingredient": [
+        {
+          "wf12_formulation_ingredient_index": "1",
+          "wf12_formulation_ingredient_name": "MICRO TREATED DEMIN WATER",
+          "wf12_formulation_ingredient_spec": "100000002250",
+          "wf12_formulation_ingredient_percent_active": "False",
+          "wf12_formulation_ingredient_percent_weight": "65.182496"
+        },
+        {
+          "wf12_formulation_ingredient_index": "2",
+          "wf12_formulation_ingredient_name": "Glycerine 99.5% low water",
+          "wf12_formulation_ingredient_spec": "100000010822",
+          "wf12_formulation_ingredient_percent_active": "99.5",
+          "wf12_formulation_ingredient_percent_weight": "2"
+        },
+        {
+          "wf12_formulation_ingredient_index": "3",
+          "wf12_formulation_ingredient_name": "Fluorescer DSBP type - POWDER",
+          "wf12_formulation_ingredient_spec": "100000013413",
+          "wf12_formulation_ingredient_percent_active": "90",
+          "wf12_formulation_ingredient_percent_weight": "0.09"
+        },
+        {
+          "wf12_formulation_ingredient_index": "4",
+          "wf12_formulation_ingredient_name": "Sodium Chloride Powder",
+          "wf12_formulation_ingredient_spec": "100000009579",
+          "wf12_formulation_ingredient_percent_active": "99.5",
+          "wf12_formulation_ingredient_percent_weight": "0.2"
+        },
+        {
+          "wf12_formulation_ingredient_index": "5",
+          "wf12_formulation_ingredient_name": "CITRIC ACID (50% LIQUID)",
+          "wf12_formulation_ingredient_spec": "100000009132",
+          "wf12_formulation_ingredient_percent_active": "50",
+          "wf12_formulation_ingredient_percent_weight": "0.3"
+        },
+        {
+          "wf12_formulation_ingredient_index": "6",
+          "wf12_formulation_ingredient_name": "Sodium Hydroxide (min 45%  pure)",
+          "wf12_formulation_ingredient_spec": "100000007956",
+          "wf12_formulation_ingredient_percent_active": "47",
+          "wf12_formulation_ingredient_percent_weight": "1.36"
+        },
+        {
+          "wf12_formulation_ingredient_index": "7",
+          "wf12_formulation_ingredient_name": "Triethanolamine (99%)",
+          "wf12_formulation_ingredient_spec": "100000007236",
+          "wf12_formulation_ingredient_percent_active": "100",
+          "wf12_formulation_ingredient_percent_weight": "0.4"
+        },
+        {
+          "wf12_formulation_ingredient_index": "8",
+          "wf12_formulation_ingredient_name": "Hardened Topped Lauric Acid",
+          "wf12_formulation_ingredient_spec": "100000008773",
+          "wf12_formulation_ingredient_percent_active": "55",
+          "wf12_formulation_ingredient_percent_weight": "0.003667"
+        },
+        {
+          "wf12_formulation_ingredient_index": "9",
+          "wf12_formulation_ingredient_name": "Alcohol Ethoxylate Type 24A-7 low C16",
+          "wf12_formulation_ingredient_spec": "100000008992",
+          "wf12_formulation_ingredient_percent_active": "100",
+          "wf12_formulation_ingredient_percent_weight": "5"
+        },
+        {
+          "wf12_formulation_ingredient_index": "10",
+          "wf12_formulation_ingredient_name": "LAS acid (ex HF LAB MWT 238-244) low klett",
+          "wf12_formulation_ingredient_spec": "100000007584",
+          "wf12_formulation_ingredient_percent_active": "96.5",
+          "wf12_formulation_ingredient_percent_weight": "7.76"
+        },
+        {
+          "wf12_formulation_ingredient_index": "11",
+          "wf12_formulation_ingredient_name": "SLES Laureth-2 Sodium salt 70% Low Alkaline",
+          "wf12_formulation_ingredient_spec": "100000002482",
+          "wf12_formulation_ingredient_percent_active": "70",
+          "wf12_formulation_ingredient_percent_weight": "1.5"
+        }
+      ],
+      "g_formulation_process": [
+        {
+          "wf12_formulation_process_dosage": "0.1",
+          "wf12_formulation_process_dosage_units": "g/g hair",
+          "wf12_formulation_process_application": "30",
+          "wf12_formulation_process_application_units": "Second(s)",
+          "wf12_formulation_process_rinse": "30",
+          "wf12_formulation_process_rinse_units": "Second(s)",
+          "wf12_formulation_process_applications": "2",
+          "wf12_formulation_process_drying": "No drying between washes",
+          "wf12_formulation_process_styling": "Natural Dry (20\u00b0C / 50% RH)",
+          "wf12_formulation_process_operator": "Jamie"
+        }
+      ]
+    },
+    {
+      "wf12_formulation_name": "SDC trial - LARGE batch",
+      "wf12_formulation_descriptor": "Test Shampoo 3",
+      "wf12_formulation_format": "Wash & Care: Shampoo - Beauty Shampoo",
+      "wf12_formulation_site": "Port Sunlight",
+      "wf12_formulation_mm": "Pilot Plant",
+      "wf12_formulation_plm_code": "200000068069/024/000",
+      "wf12_formulation_competitor": "False",
+      "g_formulation_ingredient": [
+        {
+          "wf12_formulation_ingredient_index": "1",
+          "wf12_formulation_ingredient_name": "MICRO TREATED DEMIN WATER",
+          "wf12_formulation_ingredient_spec": "100000002250",
+          "wf12_formulation_ingredient_percent_active": "False",
+          "wf12_formulation_ingredient_percent_weight": "79.66983"
+        },
+        {
+          "wf12_formulation_ingredient_index": "2",
+          "wf12_formulation_ingredient_name": "Propylene Glycol (MPG) Technical grade",
+          "wf12_formulation_ingredient_spec": "100000004633",
+          "wf12_formulation_ingredient_percent_active": "99.8",
+          "wf12_formulation_ingredient_percent_weight": "1"
+        }
+      ],
+      "g_formulation_process": [
+        {
+          "wf12_formulation_process_dosage": "0.1",
+          "wf12_formulation_process_dosage_units": "g/g hair",
+          "wf12_formulation_process_application": "30",
+          "wf12_formulation_process_application_units": "Second(s)",
+          "wf12_formulation_process_rinse": "30",
+          "wf12_formulation_process_rinse_units": "Second(s)",
+          "wf12_formulation_process_applications": "2",
+          "wf12_formulation_process_drying": "No drying between washes",
+          "wf12_formulation_process_styling": "Natural Dry (20\u00b0C / 50% RH)",
+          "wf12_formulation_process_operator": "Jamie",
+          "wf12_experiment_instrument": "X-ray Fluorescence (Intertek)",
+          "wf12_experiment_location": "Intertek Labtest Leigh (UK)",
+          "wf12_experiment_protocol": "XRF_Silicone Deposition Measure",
+          "wf12_experiment_deviation": "False"
+        }
+      ]
+    }
+  ],
+  "g_experiment_type": [
+    {
+      "wf12_experiment_type_index": "1",
+      "wf12_experiment_type_ethnicity": "European",
+      "wf12_experiment_type_hair_colour": "Dark Brown",
+      "wf12_experiment_type_hair_texture": "Standard - Medium",
+      "wf12_experiment_type_hair_shape": "Straight",
+      "wf12_experiment_type_hair_source": "Mixed Source",
+      "wf12_experiment_type_switch_weight": "g",
+      "wf12_experiment_type_switch_length": "''",
+      "wf12_experiment_type_crimp": "Flat Metal",
+      "wf12_experiment_type_pretreatment": "0 Virgin",
+      "wf12_experiment_type_pretreatment_protocol": "No Current Protocol",
+      "wf12_experiment_type_location": "Port Sunlight",
+      "wf12_experiment_type_operator": "Jamie Yip",
+      "wf12_experiment_type_substrate": "Switch",
+      "wf12_experiment_type_adhesive_type": "Epoxy",
+      "wf12_experiment_type_switch_width": "cm",
+      "wf12_experiment_type_other_switch_width": "5"
+    }
+  ],
+  "g_cell": [
+    {
+      "wf12_cell_description": "Test Shampoo 1",
+      "wf12_cell_cycles": "1",
+      "wf12_cell_humidity": "50",
+      "wf12_cell_temperature": "50",
+      "wf12_cell_switch_index": "False",
+      "wf12_cell_switch": "European | Dark Brown | Standard - Medium | Straight",
+      "wf12_cell_switch_code": "SC-005",
+      "g_cell_timepoint": [
+        {
+          "wf12_cell_timepoint": "False",
+          "wf12_cell_timepoint_units": "Second(s)"
+        }
+      ],
+      "g_cell_product": [
+        {
+          "wf12_cell_product_name": "SDC trial - COMPLEX batch",
+          "wf12_cell_product_dosage": "0.1",
+          "wf12_cell_product_dosage_units": "g/g hair",
+          "wf12_cell_product_application": "30",
+          "wf12_cell_product_application_units": "Second(s)",
+          "wf12_cell_product_rinse": "30",
+          "wf12_cell_product_rinse_units": "Second(s)"
+        },
+        {
+          "wf12_cell_product_name": "SDC trial - LARGE batch",
+          "wf12_cell_product_dosage": "0.1",
+          "wf12_cell_product_dosage_units": "g/g hair",
+          "wf12_cell_product_application": "30",
+          "wf12_cell_product_application_units": "Second(s)",
+          "wf12_cell_product_rinse": "30",
+          "wf12_cell_product_rinse_units": "Second(s)",
+          "wf12_cell_product_operator": "Jamie"
+        }
+      ]
+    },
+    {
+      "wf12_cell_description": "Test Shampoo 2",
+      "wf12_cell_cycles": "1",
+      "wf12_cell_humidity": "50",
+      "wf12_cell_temperature": "50",
+      "wf12_cell_switch": "Caucasian | Standard - Dark Brown / Black | Standard - Medium | Straight",
+      "wf12_cell_switch_code": "SC-010",
+      "g_cell_timepoint": [
+        {
+          "wf12_cell_timepoint": "False",
+          "wf12_cell_timepoint_units": "Second(s)"
+        }
+      ],
+      "g_cell_product": [
+        {
+          "wf12_cell_product_name": "SDC trial - COMPLEX batch",
+          "wf12_cell_product_dosage": "0.1",
+          "wf12_cell_product_dosage_units": "g/g hair",
+          "wf12_cell_product_application": "30",
+          "wf12_cell_product_application_units": "Second(s)",
+          "wf12_cell_product_rinse": "30",
+          "wf12_cell_product_rinse_units": "Second(s)",
+          "wf12_cell_product_operator": "Jamie"
+        }
+      ]
+    },
+    {
+      "wf12_cell_description": "Test 3",
+      "wf12_cell_cycles": "1",
+      "wf12_cell_humidity": "50",
+      "wf12_cell_temperature": "50",
+      "wf12_cell_switch": "Caucasian | Standard - Dark Brown / Black | Standard - Medium | Straight",
+      "wf12_cell_switch_code": "SC-015",
+      "g_cell_timepoint": [
+        {
+          "wf12_cell_timepoint": "False",
+          "wf12_cell_timepoint_units": "Second(s)"
+        }
+      ],
+      "g_cell_product": [
+        {
+          "wf12_cell_product_name": "SDC trial - LARGE batch",
+          "wf12_cell_product_dosage": "0.1",
+          "wf12_cell_product_dosage_units": "g/g hair",
+          "wf12_cell_product_application": "30",
+          "wf12_cell_product_application_units": "Second(s)",
+          "wf12_cell_product_rinse": "30",
+          "wf12_cell_product_rinse_units": "Second(s)"
+        },
+        {
+          "wf12_cell_product_name": "SDC trial - LARGE batch",
+          "wf12_cell_product_dosage": "0.1",
+          "wf12_cell_product_dosage_units": "g/g hair",
+          "wf12_cell_product_application": "30",
+          "wf12_cell_product_application_units": "Second(s)",
+          "wf12_cell_product_rinse": "30",
+          "wf12_cell_product_rinse_units": "Second(s)",
+          "wf12_cell_product_operator": "Jamie"
+        },
+        {
+          "wf12_cell_product_name": "DOVE HAIR THERAPY DEEP MOISTURE SHAMPOO",
+          "wf12_cell_product_dosage": "0.1",
+          "wf12_cell_product_dosage_units": "g/g hair",
+          "wf12_cell_product_application": "30",
+          "wf12_cell_product_application_units": "Second(s)",
+          "wf12_cell_product_rinse": "30",
+          "wf12_cell_product_rinse_units": "Second(s)",
+          "wf12_cell_product_operator": "Jamie"
+        }
+      ]
+    }
+  ],
+  "g_analysis_summary": [
+    {
+      "wf12_summary_index": "1",
+      "wf12_summary_mean": "3074.8",
+      "wf12_summary_n": "5",
+      "wf12_summary_stddev": "3601.2857703881264",
+      "wf12_summary_cell": "Test Shampoo 1",
+      "wf12_summary_endpoint": "[Si] / ppm",
+      "wf12_summary_timepoint": "0Second(s)"
+    },
+    {
+      "wf12_summary_index": "2",
+      "wf12_summary_mean": "250.6",
+      "wf12_summary_n": "5",
+      "wf12_summary_stddev": "272.54595942702946",
+      "wf12_summary_cell": "Test Shampoo 2",
+      "wf12_summary_endpoint": "[Si] / ppm",
+      "wf12_summary_timepoint": "0Second(s)"
+    },
+    {
+      "wf12_summary_index": "3",
+      "wf12_summary_mean": "46.8",
+      "wf12_summary_n": "5",
+      "wf12_summary_stddev": "41.996428419569206",
+      "wf12_summary_cell": "Test 3",
+      "wf12_summary_endpoint": "[Si] / ppm",
+      "wf12_summary_timepoint": "0Second(s)"
+    }
+  ],
+  "g_analysis_annova": [
+    {
+      "wf12_annova_index": "1",
+      "wf12_annova_degrees_of_freedom": "2",
+      "wf12_annova_fvalue": "3.2936035481641",
+      "wf12_annova_mean_square": "14322020.0666667",
+      "wf12_annova_pvalue": "0.0724106839108191",
+      "wf12_annova_sum_of_squares": "28644040.1333333",
+      "wf12_annova_endpoint": "[Si] / ppm",
+      "wf12_annova_timepoint": "0Second(s)",
+      "wf12_annova_cell_group": "Group 1",
+      "wf12_annova_annova_source": "cell"
+    },
+    {
+      "wf12_annova_index": "2",
+      "wf12_annova_degrees_of_freedom": "12",
+      "wf12_annova_fvalue": "False",
+      "wf12_annova_mean_square": "4348434.73333333",
+      "wf12_annova_pvalue": "False",
+      "wf12_annova_sum_of_squares": "52181216.8",
+      "wf12_annova_endpoint": "[Si] / ppm",
+      "wf12_annova_timepoint": "0Second(s)",
+      "wf12_annova_cell_group": "Group 1",
+      "wf12_annova_annova_source": "Residuals"
+    }
+  ],
+  "g_analysis_ls_means_ttest": [
+    {
+      "wf12_ls_means_ttest_index": "1",
+      "wf12_ls_means_ttest_se": "932.57007600859",
+      "wf12_ls_means_ttest_cell": "Test Shampoo 1",
+      "wf12_ls_means_ttest_df": "12",
+      "wf12_ls_means_ttest_endpoint": "[Si] / ppm",
+      "wf12_ls_means_ttest_group": "B",
+      "wf12_ls_means_ttest_lowercl": "1042.904353828743",
+      "wf12_ls_means_ttest_lsmean": "3074.800000000001",
+      "wf12_ls_means_ttest_timepoint": "0Second(s)",
+      "wf12_ls_means_ttest_uppercl": "5106.695646171259",
+      "wf12_ls_means_ttest_confidence_level": "0.95",
+      "wf12_ls_means_ttest_cell_group": "Group 1"
+    },
+    {
+      "wf12_ls_means_ttest_index": "2",
+      "wf12_ls_means_ttest_se": "932.5700760085896",
+      "wf12_ls_means_ttest_cell": "Test Shampoo 2",
+      "wf12_ls_means_ttest_df": "12",
+      "wf12_ls_means_ttest_endpoint": "[Si] / ppm",
+      "wf12_ls_means_ttest_group": "AB",
+      "wf12_ls_means_ttest_lowercl": "-1781.295646171257",
+      "wf12_ls_means_ttest_lsmean": "250.60000000000002",
+      "wf12_ls_means_ttest_timepoint": "0Second(s)",
+      "wf12_ls_means_ttest_uppercl": "2282.4956461712572",
+      "wf12_ls_means_ttest_confidence_level": "0.95",
+      "wf12_ls_means_ttest_cell_group": "Group 1"
+    },
+    {
+      "wf12_ls_means_ttest_index": "3",
+      "wf12_ls_means_ttest_se": "932.5700760085894",
+      "wf12_ls_means_ttest_cell": "Test 3",
+      "wf12_ls_means_ttest_df": "12",
+      "wf12_ls_means_ttest_endpoint": "[Si] / ppm",
+      "wf12_ls_means_ttest_group": "A",
+      "wf12_ls_means_ttest_lowercl": "-1985.0956461712565",
+      "wf12_ls_means_ttest_lsmean": "46.80000000000042",
+      "wf12_ls_means_ttest_timepoint": "0Second(s)",
+      "wf12_ls_means_ttest_uppercl": "2078.6956461712575",
+      "wf12_ls_means_ttest_confidence_level": "0.95",
+      "wf12_ls_means_ttest_cell_group": "Group 1"
+    }
+  ],
+  "g_analysis_comparison_ttest": [
+    {
+      "wf12_comparison_ttest_index": "1",
+      "wf12_comparison_ttest_se": "1318.853249354656",
+      "wf12_comparison_ttest_contrast": "Test 3 - Test Shampoo 1",
+      "wf12_comparison_ttest_df": "12",
+      "wf12_comparison_ttest_endpoint": "[Si] / ppm",
+      "wf12_comparison_ttest_estimate": "-3028.0000000000005",
+      "wf12_comparison_ttest_pvalue": "False",
+      "wf12_comparison_ttest_timepoint": "0Second(s)",
+      "wf12_comparison_ttest_tratio": "False",
+      "wf12_comparison_ttest_cell_group": "Group 1"
+    },
+    {
+      "wf12_comparison_ttest_index": "2",
+      "wf12_comparison_ttest_se": "1318.8532493546556",
+      "wf12_comparison_ttest_contrast": "Test Shampoo 1 - Test Shampoo 2",
+      "wf12_comparison_ttest_df": "12",
+      "wf12_comparison_ttest_endpoint": "[Si] / ppm",
+      "wf12_comparison_ttest_estimate": "2824.2000000000007",
+      "wf12_comparison_ttest_pvalue": "False",
+      "wf12_comparison_ttest_timepoint": "0Second(s)",
+      "wf12_comparison_ttest_tratio": "False",
+      "wf12_comparison_ttest_cell_group": "Group 1"
+    },
+    {
+      "wf12_comparison_ttest_index": "3",
+      "wf12_comparison_ttest_se": "1318.8532493546556",
+      "wf12_comparison_ttest_contrast": "Test 3 - Test Shampoo 2",
+      "wf12_comparison_ttest_df": "12",
+      "wf12_comparison_ttest_endpoint": "[Si] / ppm",
+      "wf12_comparison_ttest_estimate": "-203.7999999999996",
+      "wf12_comparison_ttest_pvalue": "False",
+      "wf12_comparison_ttest_timepoint": "0Second(s)",
+      "wf12_comparison_ttest_tratio": "False",
+      "wf12_comparison_ttest_cell_group": "Group 1"
+    }
+  ],
+  "g_analysis_comparison_tukey": [
+    {
+      "wf12_comparison_tukey_index": "3",
+      "wf12_comparison_tukey_se": "1318.8532493546556",
+      "wf12_comparison_tukey_contrast": "Test 3 - Test Shampoo 2",
+      "wf12_comparison_tukey_df": "12",
+      "wf12_comparison_tukey_endpoint": "[Si] / ppm",
+      "wf12_comparison_tukey_estimate": "-203.7999999999996",
+      "wf12_comparison_tukey_pvalue": "False",
+      "wf12_comparison_tukey_timepoint": "0Second(s)",
+      "wf12_comparison_tukey_tratio": "False",
+      "wf12_comparison_tukey_cell_group": "Group 1"
+    }
+  ],
+  "g_analysis_dunnets": [
+    {
+      "wf12_dunnets_index": "1",
+      "wf12_dunnetts_se": "1318.853249354656",
+      "wf12_dunnetts_contrast": "Test Shampoo 1 - Test 3",
+      "wf12_dunnets_df": "12",
+      "wf12_dunnets_endpoint": "[Si] / ppm",
+      "wf12_dunnets_estimate": "3028.0000000000005",
+      "wf12_dunnets_lowercl": "-298.6951444278384",
+      "wf12_dunnets_pvalue": "0.07477887286388563",
+      "wf12_dunnets_timepoint": "0Second(s)",
+      "wf12_dunnets_tratio": "2.2959339877136955",
+      "wf12_dunnets_uppercl": "6354.695144427839",
+      "wf12_dunnets_confidence_level": "0.95",
+      "wf12_dunnets_cell_group": "Group 1"
+    },
+    {
+      "wf12_dunnets_index": "2",
+      "wf12_dunnetts_se": "1318.8532493546556",
+      "wf12_dunnetts_contrast": "Test Shampoo 2 - Test 3",
+      "wf12_dunnets_df": "12",
+      "wf12_dunnets_endpoint": "[Si] / ppm",
+      "wf12_dunnets_estimate": "203.7999999999996",
+      "wf12_dunnets_lowercl": "-3122.895144427838",
+      "wf12_dunnets_pvalue": "0.9753994765095808",
+      "wf12_dunnets_timepoint": "0Second(s)",
+      "wf12_dunnets_tratio": "0.1545281858309281",
+      "wf12_dunnets_uppercl": "3530.4951444278377",
+      "wf12_dunnets_confidence_level": "0.95",
+      "wf12_dunnets_cell_group": "Group 1"
+    }
+  ],
+  "g_files": [
+    {
+      "wf12_experiment_file": "EXP-24-AB2207 2024-3-12 15-35-45 ResultsInput.xlsx"
+    }
+  ],
+  "g_measurement": [
+    {
+      "wf12_measurement_index": "1",
+      "wf12_measurement_cell_name": "Test Shampoo 1",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-001",
+      "wf12_measurement_switch_number": "1",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "1000",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "2",
+      "wf12_measurement_cell_name": "Test Shampoo 1",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-002",
+      "wf12_measurement_switch_number": "2",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "9348",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "3",
+      "wf12_measurement_cell_name": "Test Shampoo 1",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-003",
+      "wf12_measurement_switch_number": "3",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "2436",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "4",
+      "wf12_measurement_cell_name": "Test Shampoo 1",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-004",
+      "wf12_measurement_switch_number": "4",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "436",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "5",
+      "wf12_measurement_cell_name": "Test Shampoo 1",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-005",
+      "wf12_measurement_switch_number": "5",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "2154",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "6",
+      "wf12_measurement_cell_name": "Test Shampoo 2",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-006",
+      "wf12_measurement_switch_number": "1",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "623",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "7",
+      "wf12_measurement_cell_name": "Test Shampoo 2",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-007",
+      "wf12_measurement_switch_number": "2",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "462",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "8",
+      "wf12_measurement_cell_name": "Test Shampoo 2",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-008",
+      "wf12_measurement_switch_number": "3",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "64",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "9",
+      "wf12_measurement_cell_name": "Test Shampoo 2",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-009",
+      "wf12_measurement_switch_number": "4",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "57",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    },
+    {
+      "wf12_measurement_index": "10",
+      "wf12_measurement_cell_name": "Test Shampoo 2",
+      "wf12_measurement_date_recorded": "12March2024",
+      "wf12_measurement_repeat_measure": "1",
+      "wf12_measurement_switch_bar_code": "SC-010",
+      "wf12_measurement_switch_number": "5",
+      "g_measurement_test": [
+        {
+          "wf12_measurement_test_name": "[Si] / ppm",
+          "wf12_measurement_test_value": "47",
+          "wf12_measurement_test_timepoint": "0Second(s)"
+        }
+      ]
+    }
+  ]
+}

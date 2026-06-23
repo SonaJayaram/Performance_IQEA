@@ -1,0 +1,34 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Key_tab on "user-name"
+Enter "standard_user" in the "user-name" field
+Enter "secret_sacue" in the "password" field
+Click on "login-button"
+Click on "Password for all users:
+secret_sauce"
+Copy on "Password for all users:
+secret_sauce"
+Click on "Epic sadface: Username and password do not match any user in this service"
+Shortcut_paste on "password"
+Paste on "password"
+Enter "secret_sauce" in the "password" field
+Click on "login-button"
+Click on "add-to-cart-sauce-labs-backpack" (URL: https://www.saucedemo.com/inventory.html)
+Click on "add-to-cart-sauce-labs-bike-light"
+Click on "2"
+Click on "2" (URL: https://www.saucedemo.com/cart.html)
+Click on "remove-sauce-labs-bike-light"
+Click on "checkout"
+Click on "firstName" (URL: https://www.saucedemo.com/checkout-step-one.html)
+Key_tab on "firstName"
+Enter "test" in the "firstName" field
+Key_tab on "lastName"
+Enter "test" in the "lastName" field
+Enter "87687" in the "postalCode" field
+Click on "continue"
+Click on "finish" (URL: https://www.saucedemo.com/checkout-step-two.html)
+Click on "back-to-products" (URL: https://www.saucedemo.com/checkout-complete.html)
+Click on "react-burger-menu-btn" (URL: https://www.saucedemo.com/inventory.html)
+Change the value to "All Items" in "inventory_sidebar_link"
+Click on "logout_sidebar_link"
+Change the value to "Logout" in "logout_sidebar_link" (URL: https://www.saucedemo.com/)

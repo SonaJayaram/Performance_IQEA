@@ -1,0 +1,97 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h2 {
+            color: #2C3E50;
+            border-bottom: 2px solid #3498DB;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498DB;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <h2>API Summary</h2>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Status Code</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>https://reqres.in/api/users/2</td>
+            <td>200</td>
+            <td>PASS</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>https://reqres.in/api/users</td>
+            <td>201</td>
+            <td>PASS</td>
+        </tr>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Pass - Expected 200, received 200.</li>
+        <li><strong>Field/Value Validation:</strong> Response contains the expected field with a matching value: <code>first_name: "Janet"</code>.</li>
+    </ul>
+
+    <h3>POST https://reqres.in/api/users</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Pass - Expected 201, received 201.</li>
+        <li><strong>Field/Value Validation:</strong> Unable to verify since the response does not echo the request payload fields (e.g., <code>first_name: "John"</code>). The "id" and "createdAt" fields were returned instead.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li><strong>POST API:</strong> The response did not include the expected <code>first_name</code> field, making it impossible to verify if the request payload was properly reflected in the response. This indicates an API contract mismatch or an incomplete feature implementation.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk Level:</strong> Low</p>
+    <p><strong>Justification:</strong> The GET API is implemented correctly and returned the expected response. The missing payload echo in the POST API indicates a potential enhancement opportunity but does not pose significant functional risk. However, this may hinder client-side validation of data integrity.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>For the POST API, ensure the API response echoes back key fields from the request payload (e.g., <code>first_name</code>, <code>last_name</code>, etc.) to confirm correct operations.</li>
+        <li>Define and enforce a clear API contract for all API calls to ensure consistency in expected responses and documented behavior.</li>
+        <li>Expand the response payload for POST requests to include all user-provided data alongside system-generated fields like <code>id</code> and <code>createdAt</code>.</li>
+        <li>Perform additional automated regression testing to confirm all future endpoints adhere to the expected behavior and response contracts.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>FINAL RESULT:</strong> PASS</p>
+    <p><strong>Reasoning:</strong> While the GET API performs as expected, the POST API shows a minor contract issue due to lack of payload echoing in the response. This issue does not critically impact functionality but should be addressed to ensure better API consistency and reliability.</p>
+</body>
+</html>
+```

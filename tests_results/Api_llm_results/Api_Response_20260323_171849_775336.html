@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>API Quality Analysis Report</title>
+</head>
+<body>
+  <h1>API Quality Analysis Report</h1>
+
+  <!-- Report for API 1 -->
+  <h2>API Summary</h2>
+  <ul>
+    <li><strong>Method:</strong> GET</li>
+    <li><strong>Endpoint:</strong> https://reqres.in/api/users/2</li>
+    <li><strong>Status Code:</strong> 200</li>
+    <li><strong>Result:</strong> PASS</li>
+  </ul>
+
+  <h2>Validation Results</h2>
+  <ul>
+    <li><strong>Status code validation:</strong> 200 is appropriate and expected for a successful GET by id. Status code matches expected behavior.</li>
+    <li><strong>Field/value validation details:</strong>
+      <ul>
+        <li>Response contains data.first_name = "Janet" which matches the expected value (expected: first_name:Janet).</li>
+        <li>Other fields present inside data: id, email, last_name, avatar. These are consistent with typical user GET response structure.</li>
+        <li>Response includes ancillary objects "support" and "_meta". Presence of these is informational and not in conflict with the expectation provided.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>Issues Identified</h2>
+  <ul>
+    <li>No defects identified relative to the provided expectation (first_name:Janet).</li>
+    <li>Note: No explicit API contract/schema was provided in the input; evaluation is limited to the single expected field.</li>
+  </ul>
+
+  <h2>Risk Assessment</h2>
+  <ul>
+    <li><strong>Level:</strong> Low</li>
+    <li><strong>Justification:</strong> The GET returned the expected status and the expected field/value. Response shape appears stable and contains standard user fields; no inconsistencies detected for this request.</li>
+  </ul>
+
+  <h2>Recommendations</h2>
+  <ul>
+    <li>Maintain documented schema for GET /api/users/{id} and include examples in API docs to make expectations explicit for consumers.</li>
+    <li>Add automated contract checks in CI to assert presence and types of core fields (id, first_name, last_name, email, avatar) for GET responses.</li>
+  </ul>
+
+  <h2>Overall Verdict</h2>
+  <p>PASS — The GET /api/users/2 response met the provided expectation (first_name:Janet) and returned a correct 200 status.</p>
+
+  <hr/>
+
+  <!-- Report for API 2 -->
+  <h2>API Summary</h2>
+  <ul>
+    <li><strong>Method:</strong> POST</li>
+    <li><strong>Endpoint:</strong> https://reqres.in/api/users</li>
+    <li><strong>Status Code:</strong> 201</li>
+    <li><strong>Result:</strong> FAIL</li>
+  </ul>
+
+  <h2>Validation Results</h2>
+  <ul>
+    <li><strong>Status code validation:</strong> 201 Created is appropriate for a successful resource creation. Status code matches expected behavior for POST creating a user.</li>
+    <li><strong>Field/value validation details:</strong>
+      <ul>
+        <li>Actual response contains fields: "name": "John Doe", "job": "Developer", "id": "157", "createdAt": "2026-03-23T11:48:00.929Z", plus "_meta".</li>
+        <li>Expected response (as provided) requested "first_name:John". The response does not contain a "first_name" field; it contains a "name" field with the full name "John Doe". This is a contract mismatch (different field name and structure).</li>
+        <li>Request payload for the POST was not provided in the input. Without the request payload, it's not possible to definitively assert whether the response correctly reflects the sent values. We can only compare the response to the stated expected field.</li>
+        <li>Type note: "id" is returned as a string ("157"). If API consumers expect numeric ids (as in GET where id appears numeric), this could be an inconsistency.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>Issues Identified</h2>
+  <ul>
+    <li>Contract mismatch: expected field "first_name" is absent; response uses "name" (full name) instead of separate "first_name"/"last_name" fields.</li>
+    <li>Missing test input: request payload was not provided, preventing verification that response reflects request values.</li>
+    <li>Type inconsistency: "id" returned as string rather than number (potential mismatch with other endpoints that return numeric ids).</li>
+    <li>Potential ambiguity for clients: using "name" vs "first_name"/"last_name" may cause integration issues if clients rely on the GET user shape (which uses first_name/last_name).</li>
+  </ul>
+
+  <h2>Risk Assessment</h2>
+  <ul>
+    <li><strong>Level:</strong> Medium</li>
+    <li><strong>Justification:</strong> The HTTP semantics are correct (201 returned), but the response schema differs from the expected field(s). Field-name and type inconsistencies risk breaking clients that assume the GET and POST resource representations are compatible. Lack of request payload in test data obstructs full verification.</li>
+  </ul>
+
+  <h2>Recommendations</h2>
+  <ul>
+    <li>Provide and include the exact request payload in test artifacts so automated checks can validate that POST echoes or returns expected fields.</li>
+    <li>Standardize resource representation across endpoints:
+      <ul>
+        <li>Decide whether user creation returns separate "first_name" and "last_name" or a single "name" field, and document this in the API contract.</li>
+        <li>If GET returns "first_name"/"last_name", then POST should either return the same fields or clearly document differences and provide mapping rules.</li>
+      </ul>
+    </li>
+    <li>Return consistent id types across endpoints (prefer numeric id if other endpoints use numbers), or clearly document the type if string is intentional.</li>
+    <li>Include a Location header in 201 responses pointing to the newly created resource (e.g., Location: /api/users/{id}) to improve RESTfulness and client discoverability.</li>
+    <li>Add schema validation tests in CI (e.g., JSON Schema) for POST responses to assert required fields, types, and naming conventions.</li>
+    <li>Consider breaking out metadata ("_meta") into a standard envelope documented in the contract so clients can ignore or consume it consistently.</li>
+  </ul>
+
+  <h2>Overall Verdict</h2>
+  <p>FAIL — Although the POST returned 201 (correct status), it did not meet the provided expectation (expected field "first_name:John" is missing). The mismatch in field naming and lack of the request payload in the test data prevents a full positive validation. Combined result: one PASS (GET) and one FAIL (POST) => overall FAIL for this execution set.</p>
+
+</body>
+</html>

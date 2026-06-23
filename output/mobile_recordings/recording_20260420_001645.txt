@@ -1,0 +1,96 @@
+================================================================================
+IQEA MOBILE AUTOMATION — RECORDED SESSION
+================================================================================
+Generated  : 2026-04-20 00:18:02
+Device     : Google sdk_gphone64_x86_64 (Android)
+OS         : Android Android 15
+Session ID : SES-O7FOD5HQ
+Total Steps: 10
+
+================================================================================
+RECORDED ACTIONS
+================================================================================
+
+[STEP #01]  TAP
+  Time      : 00:15:00.608
+  Label     : Settings
+  XPath     : //android.widget.Button[@resource-id="com.android.chrome:id/settings_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #02]  TAP
+  Time      : 00:15:13.685
+  Label     : More about ads in Chrome. Collapsed - click to expand..
+  XPath     : //android.widget.LinearLayout[@resource-id="com.android.chrome:id/dropdown_element"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #03]  TAP
+  Time      : 00:15:20.434
+  Label     : Start voice search
+  XPath     : //android.widget.ImageView[@resource-id="com.android.chrome:id/voice_search_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #04]  INPUT
+  Time      : 00:15:28.981
+  Label     : am
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : am
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #05]  TAP
+  Time      : 00:15:35.573
+  Label     : FrameLayout
+  XPath     : //android.widget.FrameLayout[@index="0"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #06]  INPUT
+  Time      : 00:15:50.183
+  Label     : amazon
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : amazon
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #07]  TAP
+  Time      : 00:15:58.584
+  Label     : Open the home page
+  XPath     : //android.widget.ImageButton[@resource-id="com.android.chrome:id/home_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #08]  TAP
+  Time      : 00:16:08.186
+  Label     : Amazon.in https://www.amazon.in › home Shop online at Amazon
+  XPath     : //android.view.View[@content-desc="Amazon.in https://www.amazon.in › home Shop online at Amazon India"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #09]  INPUT
+  Time      : 00:16:14.759
+  Label     : https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_7lvdl
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_7lvdlypdab_e&adgrpid=159067175452&hvpone=&hvptwo=&hvadid=674834481520&hvpos=&hvnetw=g&hvrand=77246961676028094
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #10]  INPUT
+  Time      : 00:16:21.501
+  Label     : google.com/search?gs_ssp=eJzj4tDP1TfITc9OV2A0YHRg8GJLzE2sys8
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : google.com/search?gs_ssp=eJzj4tDP1TfITc9OV2A0YHRg8GJLzE2sys8DAELoBhw&q=amazon&oq=amazon&gs_lcrp=EgZjaHJvbWUqEAgBEC4YxwEYsQMY0QMYgAQyBwgAEAAYjwIyEAgBEC4YxwEYsQMY0QMYg
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------

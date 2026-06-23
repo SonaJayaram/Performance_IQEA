@@ -1,0 +1,1 @@
+[{"name":"Jenkins","type":"jenkins","url":"http://localhost:8080/","buildOrder":50,"buildName":"IQEA_Script_Executor #50","buildUrl":"http://localhost:8080/job/IQEA_Script_Executor/50/","reportName":"AllureReport","reportUrl":"http://localhost:8080/job/IQEA_Script_Executor/50/allure"}]

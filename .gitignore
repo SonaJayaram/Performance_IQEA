@@ -1,0 +1,18 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.env*
+.idea
+logfile
+.pytest_cache
+allure-results
+
+# Virtual environments
+.venv
+
+*\graphify-out
+graphify-out

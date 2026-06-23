@@ -1,0 +1,231 @@
+# ============================================================
+# Consolidated requirements — Python 3.13 compatible
+# Merged from: requirements.txt, requirements_desktop.txt,
+#              Self_healing_web_application/requirements.txt
+# ============================================================
+
+# ── Testing & QA ──────────────────────────────────────────────
+pytest==8.3.5
+allure-pytest==2.13.5
+pytest-xdist==3.6.1
+pytest-rerunfailures==15.0
+pytest-order==1.3.0
+pytest-html==4.1.1
+pytest-metadata==3.1.1
+gherkin-official==37.0.1
+jsonpath-ng
+iniconfig
+
+# ── Web Automation ─────────────────────────────────────────────
+playwright==1.57.0
+selenium==4.39.0
+webdriver-manager
+Appium-Python-Client>=3.1.0
+
+# ── AI / LLM ──────────────────────────────────────────────────
+openai==2.15.0
+langchain==1.2.3
+langchain-core==1.2.7
+langchain-openai==1.1.7
+langchainhub==0.1.21
+langgraph==1.0.5
+langgraph-checkpoint==3.0.1
+langgraph-prebuilt==1.0.5
+langgraph-sdk==0.3.2
+langsmith==0.6.2
+tiktoken==0.12.0
+mcp==1.25.0
+mcp-use==1.5.2
+
+# ── Data & ML ─────────────────────────────────────────────────
+numpy==2.4.1
+pandas==2.3.3
+pyarrow==22.0.0
+pillow==11.3.0
+pytesseract==0.3.13
+fastembed==0.7.4
+onnxruntime==1.23.2
+tokenizers==0.22.2
+huggingface_hub==1.3.1
+hf-xet==1.2.0
+sympy==1.14.0
+mpmath==1.3.0
+fsspec==2026.1.0
+
+# ── Streamlit & Visualization ──────────────────────────────────
+streamlit==1.52.2
+altair==6.0.0
+pydeck==0.9.1
+narwhals==2.15.0
+watchdog==6.0.0
+
+# ── Web Frameworks ─────────────────────────────────────────────
+starlette==0.51.0
+uvicorn==0.40.0
+sse-starlette==3.1.2
+python-multipart==0.0.21
+
+# ── HTTP & Networking ──────────────────────────────────────────
+requests==2.32.5
+requests-toolbelt==1.0.0
+requests-file==3.0.1
+httpx==0.28.1
+httpx-sse==0.4.3
+httpcore==1.0.9
+h11==0.16.0
+certifi==2026.1.4
+charset-normalizer==3.4.4
+idna==3.11
+urllib3==2.6.3
+PySocks==1.7.1
+websocket-client==1.9.0
+websockets==16.0
+trio==0.32.0
+trio-websocket==0.12.2
+wsproto==1.3.2
+outcome==1.3.0.post0
+
+# ── Async ─────────────────────────────────────────────────────
+anyio==4.12.1
+sniffio==1.3.1
+nest-asyncio
+greenlet==3.3.0
+
+# ── Pydantic & Type System ─────────────────────────────────────
+pydantic==2.12.5
+pydantic-core==2.41.5
+pydantic-settings==2.12.0
+annotated-types==0.7.0
+typing_extensions==4.15.0
+typing-inspection==0.4.2
+types-requests==2.32.4.20260107
+
+# ── Cryptography & Security ────────────────────────────────────
+cryptography==46.0.3
+cffi==2.0.0
+pycparser==2.23
+pycryptodomex==3.21.0
+pyopenssl
+Authlib==1.6.6
+PyJWT==2.10.1
+pyasn1_modules
+asn1crypto
+
+# ── Serialization & Data Formats ───────────────────────────────
+PyYAML==6.0.3
+toml==0.10.2
+tomlkit
+orjson==3.11.5
+ormsgpack==1.12.1
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+jsonschema_pydantic==0.6
+jsonpatch==1.33
+jsonpointer==3.0.0
+referencing==0.37.0
+rpds-py==0.30.0
+openpyxl==3.1.5
+et_xmlfile==2.0.0
+PyPDF2==3.0.1
+docx2txt==0.9
+tabulate
+flatbuffers==25.12.19
+mmh3==5.2.0
+xxhash==3.6.0
+zstandard==0.25.0
+
+# ── Database ──────────────────────────────────────────────────
+pyodbc
+psycopg2
+sqlalchemy
+snowflake-connector-python
+
+# ── Git & Version Control ──────────────────────────────────────
+GitPython==3.1.46
+gitdb==4.0.12
+smmap==5.0.2
+PyGithub
+python-gitlab==7.1.0
+
+# ── Windows & Desktop Automation ───────────────────────────────
+pywin32==311
+pywinauto==0.6.8
+comtypes==1.4.16
+pygetwindow==0.0.9
+pyautogui==0.9.54
+keyboard==0.13.5
+mouse==0.7.1
+mss
+clipboard
+pyperclip==1.8.2
+win32_setctime==1.2.0
+
+# ── Templating ────────────────────────────────────────────────
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+
+# ── Jupyter & IPython ─────────────────────────────────────────
+ipython
+ipython-pygments-lexers
+jedi
+parso
+comm
+debugpy
+matplotlib-inline
+prompt-toolkit
+pure-eval
+stack-data
+traitlets
+wcwidth
+asttokens
+executing
+pyzmq
+tornado==6.5.4
+decorator
+
+# ── CLI & Terminal ────────────────────────────────────────────
+typer-slim==0.21.1
+shellingham==1.5.4
+markdown-it-py==4.0.0
+mdurl==0.1.2
+rich==14.2.0
+Pygments==2.19.2
+colorama==0.4.6
+coloredlogs==15.0.1
+humanfriendly==10.0
+pyreadline3==3.5.4
+click==8.3.1
+
+# ── Utilities ─────────────────────────────────────────────────
+python-dotenv==1.2.1
+python-dateutil==2.9.0.post0
+pytz==2025.2
+tzdata==2025.3
+six==1.17.0
+packaging==24.2
+filelock==3.20.3
+platformdirs
+tqdm==4.67.1
+regex==2025.11.3
+tenacity==9.1.2
+distro==1.9.0
+psutil==5.9.8
+backoff==2.2.1
+loguru==0.7.3
+attrs==25.4.0
+cachetools==6.2.4
+pluggy
+sortedcontainers==2.4.0
+tldextract==5.3.1
+bs4
+protobuf==6.33.3
+jiter==0.12.0
+blinker==1.9.0
+posthog==7.5.1
+scarf-sdk==0.2.1
+uuid_utils==0.13.0
+pyee==13.0.0
+py_rust_stemmers==0.1.5
+getpass4
+azure-identity
+azure-mgmt-monitor

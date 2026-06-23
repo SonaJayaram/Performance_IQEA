@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>Performance Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #004f9e;
+        }
+        p {
+            margin: 5px 0;
+        }
+        ul {
+            margin: 5px 0 15px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Performance Analysis Report</h1>
+    
+    <h2>Test Overview</h2>
+    <p><strong>API Method & Endpoint:</strong></p>
+    <ul>
+        <li>GET /api/users</li>
+        <li>POST /api/users</li>
+    </ul>
+    <p><strong>Load Configuration Summary:</strong></p>
+    <ul>
+        <li>Ramp-up Users: 20</li>
+        <li>Spawn Rate: 0.5 users/second</li>
+        <li>Run Time: 10 seconds</li>
+        <li>Stop Time: 100 seconds</li>
+    </ul>
+    
+    <h2>Key Metrics Summary</h2>
+    <p><strong>Average Response Time:</strong> Not Available</p>
+    <p><strong>P95 / P99 Response Time:</strong> Not Available</p>
+    <p><strong>Throughput:</strong> Not Available</p>
+    <p><strong>Error Rate:</strong> Not Available</p>
+    
+    <h2>Performance Findings</h2>
+    <p><strong>Observed Behavior Under Load:</strong></p>
+    <ul>
+        <li>No concrete data available to determine behavior under the specified load configuration.</li>
+    </ul>
+    <p><strong>Bottlenecks or Anomalies:</strong></p>
+    <ul>
+        <li>Insufficient data provided for meaningful analysis.</li>
+        <li>Key metrics such as throughput, error rates, and response times (median, P95, P99) are missing.</li>
+    </ul>
+    
+    <h2>Risk Level</h2>
+    <p><strong>Risk Level:</strong> High</p>
+    <p><strong>Reasoning:</strong></p>
+    <ul>
+        <li>Absence of critical performance metrics makes it impossible to assess system stability and scalability.</li>
+        <li>Without throughput, latency, and error rate data, SLAs/SLOs cannot be evaluated effectively.</li>
+    </ul>
+    
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure future Locust test reports include the following metrics:
+            <ul>
+                <li>Throughput (requests per second)</li>
+                <li>Latency (median, P95, P99)</li>
+                <li>Failure count and error types</li>
+                <li>Detailed stability and reliability assessments</li>
+            </ul>
+        </li>
+        <li>Refine test configurations to cover longer durations and higher peaks to simulate realistic production loads.</li>
+        <li>Enable detailed logging in Locust to capture granular performance details.</li>
+        <li>Consider introducing separate tests for scalability analysis by progressively increasing load until system saturation.</li>
+    </ul>
+    
+    <h2>Production Readiness Verdict</h2>
+    <p><strong>Verdict:</strong> Not Ready</p>
+    <p><strong>Explanation:</strong></p>
+    <ul>
+        <li>The performance reports lack sufficient data to evaluate production readiness of the system.</li>
+        <li>Key performance indices such as latency, throughput, and stability are missing, making it impossible to assess the system's behavior under load.</li>
+    </ul>
+</body>
+</html>

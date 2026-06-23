@@ -1,0 +1,99 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        table th {
+            background-color: #f4f4f4;
+        }
+        .pass {
+            color: green;
+        }
+        .fail {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <h2>API Summary</h2>
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Endpoint</th>
+            <th>Status Code</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>https://reqres.in/api/users/2</td>
+            <td>200</td>
+            <td class="pass">PASS</td>
+        </tr>
+        <tr>
+            <td>POST</td>
+            <td>https://reqres.in/api/users</td>
+            <td>201</td>
+            <td class="pass">PASS</td>
+        </tr>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET Request: https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Expected status code 200, actual status code 200. Validation <span class="pass">passed</span>.</li>
+        <li><strong>Field/Value Validation:</strong> Verified "first_name" in response. Expected value: "Janet", actual value: "Janet". Validation <span class="pass">passed</span>.</li>
+    </ul>
+
+    <h3>POST Request: https://reqres.in/api/users</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Expected status code 201, actual status code 201. Validation <span class="pass">passed</span>.</li>
+        <li><strong>Field/Value Validation:</strong> Validation of returned fields shows partial mismatch:
+            <ul>
+                <li>Expected "first_name": "John", but this field is missing in the response.</li>
+                <li>Response correctly echoed fields like "name" and "job".</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li><strong>POST API:</strong> The "first_name" field is expected in the response but is missing.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk Level:</strong> Medium</p>
+    <p><strong>Justification:</strong> While the GET API works perfectly, the POST API shows an inconsistency in the response structure, which could lead to integration issues or client-side failures relying on the response format.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that the response for POST APIs includes all expected fields like "first_name" to match the API contract.</li>
+        <li>Conduct thorough contract validations for all API endpoints.</li>
+        <li>Implement stricter automated tests for field presence and matching values between request payloads and responses.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>Result:</strong> FAIL</p>
+    <p><strong>Reasoning:</strong> While the GET API successfully validated all requirements, the POST API did not include an expected field ("first_name"). This indicates a potential contract mismatch for POST responses.</p>
+</body>
+</html>
+```

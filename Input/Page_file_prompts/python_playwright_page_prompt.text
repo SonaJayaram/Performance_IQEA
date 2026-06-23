@@ -1,0 +1,56 @@
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+YOUR TASK:
+Generate a production-ready Python-Playwright Page Object Model class.
+
+INPUTS:
+elements: {xpaths}
+recorded_actions: {Action_data}
+page_name: {page_name}
+
+RULE 1 — RAW CODE ONLY
+Return only the Python class.
+
+RULE 2 — IMPORTS (MANDATORY)
+The class MUST include ONLY these imports at the top:
+from playwright.sync_api import Page, Locator
+
+RULE 3 — LOCATORS
+Inside __init__, for each locator:
+self.<key> = page.locator("xpath=<xpath>")
+
+RULE 4 — CLASS NAME
+Class must be named exactly {page_name} (no renaming, no extra words).
+
+RULE 5 — CONSTRUCTOR
+def __init__(self, page: Page):
+    self.page = page
+
+RULE 6 — HELPER METHODS (GENERATE ONLY IF USED IN ACTIONS)
+- If click occurs → include wait_for_element() and click_element()
+- If text input occurs → include enter_text()
+- If any window opens → include window helpers
+Do NOT generate unused helpers.
+
+RULE 7 — SIMPLE NEW WINDOW HANDLING (ONLY IF REQUIRED)
+def switch_to_new_window(self):
+    pages = self.page.context.pages
+    if len(pages) > 1:
+        return pages[-1]
+    return self.page
+
+RULE 8 — ACTION METHODS
+✔ snake_case
+✔ must call helper methods
+✔ use Playwright APIs: locator.wait_for(), click(), fill()
+✔ raise RuntimeError if locator key missing
+
+RULE 9 — NAMING
+Use pythonic snake_case for all methods and locator keys.
+
+RULE 10 — OUTPUT FORMAT (ABSOLUTE)
+Return only the class code.RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+No comments.
+No extra text.
+No markdown.
+Do NOT wrap output in triple backticks.
+

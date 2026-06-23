@@ -1,0 +1,4279 @@
+import os
+import base64
+import uuid
+import threading
+import requests
+from io import BytesIO
+from typing import Union, IO
+import openai
+import re
+import time
+import pyperclip
+from datetime import datetime
+import docx2txt
+import gitlab
+from github import Github, GithubException
+from gitlab import Gitlab,GitlabGetError
+from collections import defaultdict
+from urllib.parse import urlparse
+import yaml
+import PyPDF2
+import random
+import utilities.utils_action as action_utils
+import time
+import string
+import json
+import ast
+import re
+import pandas
+from io import StringIO
+from langchain_core.messages import HumanMessage
+
+from selenium import webdriver
+from selenium.common import StaleElementReferenceException, NoSuchElementException
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+import streamlit as st
+from langchain_openai import AzureChatOpenAI
+from selenium.webdriver.common.by import By
+import pandas as pd
+from selenium.webdriver.support.wait import WebDriverWait
+import hashlib
+from webdriver_manager.chrome import ChromeDriverManager
+from uuid import uuid4
+from dotenv import load_dotenv
+import os
+import utilities.db_utils.handler as db_handler
+
+#setting details - source
+from config.settings_reader import get_source,get_model,get_api_key
+
+source = get_source()
+model_type=get_model()
+# api_key=get_api_key()
+
+load_dotenv()
+current_path = os.getcwd()
+output_folder = os.path.join(current_path, "output")
+xpath_generator_folder = os.path.join(output_folder, "xpath_generator")
+Page_file_generator = os.path.join(output_folder, "page_file_generator")
+Test_file_generator = os.path.join(output_folder, "test_file_generator")
+xpath_file = os.path.join(xpath_generator_folder, "xpath_details.xlsx")
+os.makedirs(xpath_generator_folder, exist_ok=True)
+os.makedirs(Page_file_generator, exist_ok=True)
+os.makedirs(Test_file_generator, exist_ok=True)
+
+os.environ["OPENAI_API_KEY"] = os.getenv("AZURE_OPENAI_API_KEY")
+os.environ["OPENAI_API_BASE"] = os.getenv("AZURE_OPENAI_ENDPOINT")
+client = openai.OpenAI(api_key =  os.environ["OPENAI_API_KEY"],
+                       base_url = os.environ["OPENAI_API_BASE"])
+
+# # Access the variables
+# api_key = os.getenv("AZURE_OPENAI_API_KEY")
+# endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+#
+# # Set the environment variables explicitly if needed
+# os.environ["AZURE_OPENAI_API_KEY"] = api_key
+# os.environ["AZURE_OPENAI_ENDPOINT"] = endpoint
+# Check if the Excel file exists
+if not os.path.exists(xpath_file):
+    # Just create an empty Excel file (without headers)
+    with pd.ExcelWriter(xpath_file) as writer:
+        pd.DataFrame().to_excel(writer, index=False)
+    print(f"Excel file created: {xpath_file}")
+
+def load_prompt_from_file(prompt_type):
+    print("********************source**********")
+    print(source)
+    if source == "file":
+        config_folder = os.path.join(os.getcwd(), "Input")
+        page_file_prompt=os.path.join(config_folder,"Page_file_prompts")
+        test_file_prompt = os.path.join(config_folder, "Test_file_prompts")
+        test_file_validator_prompt = os.path.join(config_folder, "Script_validation")
+        test_cases_prompt = os.path.join(config_folder, "Test_cases_prompts")
+
+        prompt_file = ""
+
+        if prompt_type == "Web":
+            prompt_file = os.path.join(config_folder, "web_prompt.txt")
+        #####Page_file_prompt based on the language - library ( Selenium/Playwright)
+        elif prompt_type== "Java-Selenium":
+            prompt_file = os.path.join(page_file_prompt, "java_selenium_page_prompt.txt")
+        elif prompt_type== "Java-Playwright":
+            prompt_file = os.path.join(page_file_prompt, "java_playwright_page_prompt.txt")
+        elif prompt_type== "Python-Selenium":
+            prompt_file = os.path.join(page_file_prompt, "python_selenium_page_prompt.txt")
+        elif prompt_type== "Python-Playwright":
+            prompt_file = os.path.join(page_file_prompt, "python_playwright_page_prompt.text")
+            #####Test_file_prompt based on the language - library ( Selenium/Playwright)
+        elif prompt_type == "Test-Java-Selenium":
+            prompt_file = os.path.join(test_file_prompt, "java_selenium_test_prompt.txt")
+        elif prompt_type == "Test-Java-Playwright":
+            prompt_file = os.path.join(test_file_prompt, "java_playwright_test_prompt.txt")
+        elif prompt_type == "Test-Python-Selenium":
+            prompt_file = os.path.join(test_file_prompt, "python_selenium_test_prompt.txt")
+        elif prompt_type == "Test-Python-Playwright":
+            prompt_file = os.path.join(test_file_prompt, "python_playwright_test_prompt.txt")
+        elif prompt_type == "Test-Desktop & Web[python-Selenium]":
+            prompt_file = os.path.join(test_file_prompt, "Desktop_Web_python_Selenium.txt")
+        elif prompt_type == "Test-UTAM-JavaScript":
+            prompt_file = os.path.join(test_file_prompt, "UTAM-JavaScript.txt")
+
+        #####Test_file_validator_prompt based on the language - library ( Selenium/Playwright)
+        elif prompt_type == "Test-validate-Java-Selenium":
+            prompt_file = os.path.join(test_file_validator_prompt, "java_selenium_validation.txt")
+        elif prompt_type == "Test-validate-Java-Playwright":
+            prompt_file = os.path.join(test_file_validator_prompt, "java_playwright_validation.txt")
+        elif prompt_type == "Test-validate-Python-Selenium":
+            prompt_file = os.path.join(test_file_validator_prompt, "python_selenium_validation.txt")
+        elif prompt_type == "Test-validate-Python-Playwright":
+            prompt_file = os.path.join(test_file_validator_prompt, "python_playwright_validation.txt")
+        elif prompt_type == "Script_validation_common":
+            prompt_file = os.path.join(test_file_validator_prompt, "Script_validation_common.txt")
+        #####test_data
+        elif prompt_type== "test_data":
+            prompt_file = os.path.join(config_folder, "test_data_generator_promt.txt")
+        elif prompt_type== "PowerBi":
+            prompt_file = os.path.join(config_folder, "powerBi_prompt.txt")
+        elif prompt_type== "Page_File":
+            prompt_file = os.path.join(config_folder, "Page_file_prompt.txt")
+        elif prompt_type== "Page_File_Action":
+            prompt_file = os.path.join(config_folder, "Page_file_prompt_with_action_v2.txt")
+        elif prompt_type== "Test_File_Action":
+            prompt_file = os.path.join(config_folder, "test_script_prompt_v2.txt")
+        elif prompt_type== "Test_case_generation":
+            prompt_file = os.path.join(config_folder, "testcase_generation_final_prompt.txt")
+        elif prompt_type== "Test_case_generation_gemini":
+            prompt_file = os.path.join(config_folder, "testcase_generation_final_prompt_gemini.txt")
+        elif prompt_type== "Test_case_generation_document":
+            prompt_file = os.path.join(config_folder, "Testcase_generate_prompt_with_document.txt")
+        elif prompt_type== "Test_case_generation_document_gemini":
+            prompt_file = os.path.join(config_folder, "Testcase_generate_prompt_with_document_gemini.txt")
+        elif prompt_type== "Test_case_generation_withaction":
+            prompt_file = os.path.join(config_folder, "Testcase_generate_prompt_with_action.txt")
+        elif prompt_type == "featureaction":
+            prompt_file = os.path.join(config_folder, "featureaction_prompt.txt")
+        elif prompt_type == "Feature_file":
+            prompt_file = os.path.join(config_folder, "featurefile_prompt.txt")
+        elif prompt_type== "Test_case_accuracy":
+            prompt_file = os.path.join(config_folder, "Testcase_Accuracy_matrix1.txt")
+        elif prompt_type == "Test_case_regeneration_accuracy":
+            prompt_file = os.path.join(config_folder, "Testcase_regeneration_accuracy.txt")
+        elif prompt_type == "Test_case_regeneration_accuracy_doc":
+            prompt_file = os.path.join(config_folder, "Testcase_regeneration_accuracy_doc.txt")
+        elif prompt_type == "Test_case_regeneration_requirement_split":
+            prompt_file = os.path.join(config_folder, "testcase_requirement_split_prompt.txt")
+        elif prompt_type == "Testcase_coverage_plan_recorded_details_flow":
+            prompt_file = os.path.join(config_folder, "testcase_coverage_plan_recorded_details_flow.txt")
+        elif prompt_type == "Testcase_coverage_plan_document_flow":
+            prompt_file = os.path.join(config_folder, "testcase_coverage_plan_document_flow.txt")
+        elif prompt_type == "Test_scenarios_finder":
+            prompt_file = os.path.join(config_folder, "Test_scenarios_finder.txt")
+        # Script updated with new logic by May 14 2026
+        elif prompt_type == "testcase_workflow_segmenter":
+            prompt_file = os.path.join(test_cases_prompt, "testcase_workflow_segmenter.txt")
+        else:
+            raise ValueError(f"Invalid prompt type: {prompt_type}")
+
+        if not os.path.exists(prompt_file):
+            raise FileNotFoundError(f"Prompt file not found at: {prompt_file}")
+
+        with open(prompt_file, "r", encoding="utf-8") as file:
+            prompt_template = file.read()
+        print("-------------file- prompttemplate--------------")
+        return prompt_template
+    elif source == "database":
+        prompt_template = db_handler.get_prompt_by_name(prompt_type)
+        print("-------------Database- prompttemplate--------------")
+        print(prompt_template)
+        return prompt_template
+    return None
+
+def create_java_file(file_name: str, file_extension: str,response):
+    # Ensure the file extension is .java
+    if file_extension in ["Java-Selenium", "Java-Playwright"]:
+        file_extension = "java"
+    elif file_extension in ["Python-Selenium", "Python-Playwright"]:
+        file_extension = "python"
+    if not file_extension.startswith("."):
+        if file_extension =="java":
+            file_extension = f".{file_extension}"
+        elif file_extension =="python":
+            file_extension = f".py"
+        else:
+            file_extension = f".{file_extension}"
+
+    # Full file path with specified directory
+    full_file_path = os.path.join(Page_file_generator, f"{file_name}{file_extension}")
+
+    with open(full_file_path, "w") as file:
+        file.write(response)
+
+    st.write(f"✅ script generated: {full_file_path}")
+
+def create_test_file(Test_file_location,file_name: str, file_extension: str,response):
+    # Ensure the file extension is .java
+    if file_extension in ["Java-Selenium", "Java-Playwright"]:
+        file_extension = "java"
+    elif file_extension in ["Python-Selenium", "Python-Playwright","Desktop & Web[python-Selenium]"]:
+        file_extension = "python"
+    if not file_extension.startswith("."):
+        if file_extension =="java":
+            file_extension = f".{file_extension}"
+        elif file_extension =="python":
+            file_extension = f".py"
+        else:
+            file_extension = f".{file_extension}"
+
+    # Full file path with specified directory
+    full_file_path = os.path.join(Test_file_location, f"{file_name}{file_extension}")
+
+    with open(full_file_path, "w") as file:
+        file.write(response)
+
+    st.write(f"✅ Test file script generated: {full_file_path}")
+
+
+def get_queries_from_ai(prompt, formatted_summary):
+    print("going inside get_queries_from_ai_updated")
+    model = "gpt-5-mini"
+    prompt_template = load_prompt_from_file(prompt)
+    print(prompt_template)
+
+    if prompt == "PowerBi":
+        # print("formatted_summary:", {formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+        print("Final prompt:", {final_prompt})
+        json_list = formatted_summary if isinstance(formatted_summary, list) else json.loads(formatted_summary)
+        chunk_size = 15
+        json_chunks = [json_list[i:i + chunk_size] for i in range(0, len(json_list), chunk_size)]
+        # Collecting responses for all JSON chunks
+        all_responses = []
+        for i, chunk in enumerate(json_chunks):
+            print(f"Processing JSON chunk {i + 1}/{len(json_chunks)}")
+            formatted_summary_json = json.dumps(chunk, indent=2)
+            final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+            try:
+                response = client.chat.completions.create(model=model,
+                                                          messages=[{"role": "user",
+                                                                     "content": final_prompt
+                                                                     }
+                                                                    ])
+                print(response)
+
+                output_value = response.choices[0].message.content
+                print(f"Response for chunk {i + 1}: {output_value}")
+                all_responses.append(output_value)
+            except Exception as e:
+                print(f"[ERROR] LLM call failed for chunk {i + 1}: {e}")
+                all_responses.append(f"Error processing chunk {i + 1}: {e}")
+
+                # Combine all responses into one
+        combined_response = "\n".join(all_responses)
+        return combined_response
+    elif prompt == "Web":
+        # print("formatted_summary:", {formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+        print("Final prompt:", {final_prompt})
+        json_list = formatted_summary if isinstance(formatted_summary, list) else json.loads(formatted_summary)
+        chunk_size = 15
+        json_chunks = [json_list[i:i + chunk_size] for i in range(0, len(json_list), chunk_size)]
+        # Collecting responses for all JSON chunks
+        all_responses = []
+        for i, chunk in enumerate(json_chunks):
+            print(f"Processing JSON chunk {i + 1}/{len(json_chunks)}")
+            formatted_summary_json = json.dumps(chunk, indent=2)
+            final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+            try:
+                response = client.chat.completions.create(model=model,
+                                                          messages=[{"role": "user",
+                                                                     "content": final_prompt
+                                                                     }
+                                                                    ])
+                print(response)
+
+                output_value = response.choices[0].message.content
+                print(f"Response for chunk {i + 1}: {output_value}")
+                all_responses.append(output_value)
+                print(f"Response for chunk {i + 1}: {output_value.content}")
+            except Exception as e:
+                print(f"[ERROR] LLM call failed for chunk {i + 1}: {e}")
+                all_responses.append(f"Error processing chunk {i + 1}: {e}")
+
+                # Combine all responses into one
+        combined_response = "\n".join(all_responses)
+        return combined_response
+    elif prompt == "Web1":
+        print(formatted_summary)
+        # final_prompt = prompt_template.format(formatted_summary=formatted_summary)
+        prompt = f"""
+From the given list of elements, generate all possible XPath expressions for each element using its tag and attributes only. 
+Return only valid XPath strings as output. Do not include any explanation or description. 
+
+Input: {formatted_summary}
+Strict Instruction:no ``` or any other wrapper 
+"""
+        try:
+            response = client.chat.completions.create(model=model,
+                                                      messages=[{"role": "user",
+                                                                 "content": prompt
+                                                                 }
+                                                                ])
+            print(response)
+
+            output_value = response.choices[0].message.content
+            return output_value
+        except Exception as e:
+            print(f"exception: {e}")
+
+    elif prompt == "Page_File":
+        print(formatted_summary)
+        try:
+            response = client.chat.completions.create(model=model,
+                                                      messages=[{"role": "user",
+                                                                 "content": formatted_summary
+                                                                 }
+                                                                ])
+            print(response)
+
+            output_value = response.choices[0].message.content
+            return output_value
+        except Exception as e:
+            print(f"exception: {e}")
+
+def get_queries_from_ai_oldllm(prompt, formatted_summary):
+    # Access the variables
+    api_key = os.getenv("AZURE_OPENAI_API_KEY")
+    endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+
+    # Set the environment variables explicitly if needed
+    os.environ["AZURE_OPENAI_API_KEY"] = api_key
+    os.environ["AZURE_OPENAI_ENDPOINT"] = endpoint
+
+
+
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+    )
+    prompt_template = load_prompt_from_file(prompt)
+    print(prompt_template)
+
+    if prompt == "PowerBi":
+        #print("formatted_summary:", {formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+        print("Final prompt:", {final_prompt})
+        json_list = formatted_summary if isinstance(formatted_summary, list) else json.loads(formatted_summary)
+        chunk_size = 15
+        json_chunks = [json_list[i:i + chunk_size] for i in range(0, len(json_list), chunk_size)]
+        # Collecting responses for all JSON chunks
+        all_responses = []
+        for i, chunk in enumerate(json_chunks):
+            print(f"Processing JSON chunk {i + 1}/{len(json_chunks)}")
+            formatted_summary_json = json.dumps(chunk, indent=2)
+            final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+
+            message = HumanMessage(content=final_prompt)
+            output_value = model([message])
+            print(f"Response for chunk {i + 1}: {output_value.content}")
+            all_responses.append(output_value.content)
+
+        # Combine all responses into one
+        combined_response = "\n".join(all_responses)
+        return combined_response
+    elif prompt =="Web":
+        # print("formatted_summary:", {formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+        print("Final prompt:", {final_prompt})
+        json_list = formatted_summary if isinstance(formatted_summary, list) else json.loads(formatted_summary)
+        chunk_size = 15
+        json_chunks = [json_list[i:i + chunk_size] for i in range(0, len(json_list), chunk_size)]
+        # Collecting responses for all JSON chunks
+        all_responses = []
+        for i, chunk in enumerate(json_chunks):
+            print(f"Processing JSON chunk {i + 1}/{len(json_chunks)}")
+            formatted_summary_json = json.dumps(chunk, indent=2)
+            final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+
+            message = HumanMessage(content=final_prompt)
+            output_value = model([message])
+            print(f"Response for chunk {i + 1}: {output_value.content}")
+            all_responses.append(output_value.content)
+
+        # Combine all responses into one
+        combined_response = "\n".join(all_responses)
+        return combined_response
+    elif prompt == "Web1":
+        print(formatted_summary)
+        #final_prompt = prompt_template.format(formatted_summary=formatted_summary)
+        prompt = f"""
+From the given list of elements, generate all possible XPath expressions for each element using its tag and attributes only. 
+Return only valid XPath strings as output. Do not include any explanation or description. 
+
+Input: {formatted_summary}
+Strict Instruction:no ``` or any other wrapper 
+"""
+        message = HumanMessage(content=prompt)
+        output_value = model([message])
+        print(output_value)
+        return output_value.content
+    elif prompt == "Page_File":
+        print(formatted_summary)
+        message = HumanMessage(content=formatted_summary)
+        output_value = model([message])
+        print(output_value)
+        return output_value.content
+    # Split the JSON list if its length exceeds 15
+def get_queries_from_ai_pepgenx(prompt, formatted_summary):
+    prompt_template = load_prompt_from_file(prompt)
+    print(prompt_template)
+
+    if prompt == "PowerBi":
+        #print("formatted_summary:", {formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+        print("Final prompt:", {final_prompt})
+        json_list = formatted_summary if isinstance(formatted_summary, list) else json.loads(formatted_summary)
+        chunk_size = 15
+        json_chunks = [json_list[i:i + chunk_size] for i in range(0, len(json_list), chunk_size)]
+        # Collecting responses for all JSON chunks
+        all_responses = []
+        for i, chunk in enumerate(json_chunks):
+            print(f"Processing JSON chunk {i + 1}/{len(json_chunks)}")
+            formatted_summary_json = json.dumps(chunk, indent=2)
+            final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+
+            llm_pepgenx(final_prompt)
+
+            print(f"Response for chunk {i + 1}: {llm_pepgenx(final_prompt)}")
+            all_responses.append(llm_pepgenx(final_prompt))
+
+        # Combine all responses into one
+        combined_response = "\n".join(all_responses)
+        return combined_response
+    elif prompt =="Web":
+        # print("formatted_summary:", {formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+        print("Final prompt:", {final_prompt})
+        json_list = formatted_summary if isinstance(formatted_summary, list) else json.loads(formatted_summary)
+        chunk_size = 15
+        json_chunks = [json_list[i:i + chunk_size] for i in range(0, len(json_list), chunk_size)]
+        # Collecting responses for all JSON chunks
+        all_responses = []
+        for i, chunk in enumerate(json_chunks):
+            print(f"Processing JSON chunk {i + 1}/{len(json_chunks)}")
+            formatted_summary_json = json.dumps(chunk, indent=2)
+            final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+            print(f"Response for chunk {i + 1}: {llm_pepgenx(final_prompt)}")
+            all_responses.append(llm_pepgenx(llm_pepgenx(final_prompt)))
+
+        # Combine all responses into one
+        combined_response = "\n".join(all_responses)
+        return combined_response
+    elif prompt == "Web1":
+        print(formatted_summary)
+        #final_prompt = prompt_template.format(formatted_summary=formatted_summary)
+        prompt = f"""
+From the given list of elements, generate all possible XPath expressions for each element using its tag and attributes only. 
+Return only valid XPath strings as output. Do not include any explanation or description. 
+
+Input: {formatted_summary}
+Strict Instruction:no ``` or any other wrapper 
+"""
+        print(llm_pepgenx(prompt))
+        return llm_pepgenx(prompt)
+    elif prompt == "Page_File":
+        print(formatted_summary)
+        print(llm_pepgenx(formatted_summary))
+        return llm_pepgenx(formatted_summary)
+    # Split the JSON list if its length exceeds 15
+def get_queries_from_ai_duplicate(prompt,formatted_summary):
+    prompt_template = load_prompt_from_file(prompt)
+    print(prompt_template)
+    if prompt=="PowerBI":
+        print("formatted_summary:",{formatted_summary})
+        formatted_summary_json = json.dumps(formatted_summary, indent=2)
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+    elif prompt=="Web":
+        print("formatted_summary:", {formatted_summary})
+        final_prompt = prompt_template.format(formatted_summary=formatted_summary)
+    # Convert formatted_summary to a JSON-formatted string
+    formatted_summary_json = json.dumps(formatted_summary, indent=2)
+
+    final_prompt = prompt_template.format(formatted_summary=formatted_summary_json)
+    # Collect visible elements
+    # os.environ["AZURE_OPENAI_API_KEY"] = "4fed2bedb59744a99b0424622f6d9d1b"
+    # os.environ["AZURE_OPENAI_ENDPOINT"] = "https://qepracticekey.openai.azure.com/"
+
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+    )
+    message = HumanMessage(content=final_prompt)
+    output_value = model([message])
+    print(output_value)
+    return output_value.content
+
+def is_page_loaded(driver):
+    return driver.execute_script("return document.readyState")
+
+def loading_newpage(driver):
+    new_page_url = driver.current_url
+    print(new_page_url)
+    driver.get(new_page_url)
+    driver.refresh()
+    WebDriverWait(driver, 30).until(is_page_loaded)
+
+def generate_random_prefix(length=8):
+    """Generate a random alphanumeric prefix."""
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
+
+def generate_unique_key(element, page_identifier):
+    """
+    Generate a truly unique key for each visible element.
+    The key is based on page identifier, tag name, ID, class, and text content (trimmed).
+    """
+    tag_name = element.tag_name
+    element_id = element.get_attribute("id")
+    element_class = element.get_attribute("class")
+    element_text = element.text.strip()[:30]  # Limiting text length for clarity
+
+    # Using unique attributes with a fallback to text if ID/Class are absent
+    key_parts = [
+        page_identifier,
+        tag_name,
+        f"id={element_id}" if element_id else "no_id",
+        f"class={element_class}" if element_class else "no_class",
+        f"text={element_text}" if element_text else "no_text"
+    ]
+
+    # Generate the base key
+    base_key = "|".join(key_parts)
+
+    # Ensuring uniqueness with a counter (auto-increment)
+    unique_key = base_key
+    counter = 1
+    while unique_key in st.session_state:
+        unique_key = f"{base_key}|{counter}"
+        counter += 1
+
+    return unique_key
+
+def generate_unique_key_duplicate(element,page_identifier='page', prefix='element'):
+    """Generate a unique key based on the element's properties."""
+    element_str = f"{element.get_attribute('id')}-{element.tag_name}-{element.text.strip()}"
+    unique_hash = hashlib.md5(element_str.encode()).hexdigest()
+    # Generate the next number from the counter and format it as a 3-digit number
+    # Combine prefix, unique hash, and formatted number
+    #unique_uuid = uuid.uuid4().hex
+    random_prefix = generate_random_prefix()
+    return f"{prefix}_{page_identifier}_{unique_hash}_{random_prefix}"
+
+def details_visible_elements(collected_elements,visible_elements,selected_tags,page_identifier):
+    for idx, element in enumerate(collected_elements):
+        try:
+         if element.is_displayed() and element.is_enabled():
+            tag_name = element.tag_name
+
+            # If specific tags are selected or all are allowed
+            if "All" in selected_tags or tag_name in selected_tags:
+                print(f"[DEBUG] Processing element {idx + 1} with tag: {tag_name}")
+                details = {
+                    "tag": tag_name,
+                    "id": element.get_attribute("id"),
+                    "aria-label":element.get_attribute("aria-label"),
+                    "class": element.get_attribute("class"),
+                    "name": element.get_attribute("name"),
+                    "type":element.get_attribute("type"),
+                    "text": element.text.strip()
+                }
+
+                # Filter out empty values
+                compact_details = {k: v for k, v in details.items() if v}
+                print(f"[DEBUG] Element details: {json.dumps(compact_details, indent=2)}")
+
+                if compact_details:  # Only add if there is meaningful data
+                    visible_elements.append(compact_details)
+
+                    # Store for XPath mapping via OpenAI
+                    unique_key = generate_unique_key(element, page_identifier)
+                    if unique_key not in st.session_state:
+                        st.session_state[unique_key] = compact_details
+                        print(f"[DEBUG] Unique key stored: {unique_key}")
+
+        except (StaleElementReferenceException, NoSuchElementException) as e:
+            print(f"[WARN] Element {idx + 1} skipped due to: {str(e)}")
+
+        except Exception as e:
+            print(f"[ERROR] Unexpected error with element {idx + 1}: {str(e)}")
+
+    print(f"[INFO] Total visible elements found inside method: {len(visible_elements)}")
+    return visible_elements
+
+def load_config(config_path=None):
+
+    if not config_path:
+        config_path = os.path.join(os.getcwd(), "Input", "config.yaml")
+
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Config file not found at: {config_path}. Please ensure the config file exists.")
+
+    with open(config_path, "r") as file:
+        config = yaml.safe_load(file)
+
+    if not isinstance(config, dict) or "xpaths" not in config:
+        raise ValueError("Invalid config file format. Ensure 'xpaths' section is properly defined.")
+
+    xpaths = config.get("xpaths", {})
+    if not xpaths:
+        raise ValueError("XPath values are missing in the 'xpaths' section.")
+
+    return xpaths
+
+def get_visible_element_powerBi(driver,page_identifier):
+    # Collect visible elements
+    xpaths = load_config()
+    print("Loaded XPaths:", xpaths)
+    # Attempt 1: Fetch svg > text nodes
+    elements_svg_text = driver.find_elements(By.XPATH, xpaths["elements_svg_text"])
+
+    # Collect elements from both visual-container and SVG text elements
+    elements_visual_container = driver.find_elements(By.XPATH, xpaths["elements_visual_container"])
+    # Graph specific elements
+    graph_label_elements = driver.find_elements(By.XPATH,xpaths["graph_label_elements"])
+    graph_tick_elements = driver.find_elements(By.XPATH,xpaths["graph_tick_elements"])
+    graph_title_elements = driver.find_elements(By.XPATH,xpaths["graph_title_elements"])
+    print(f"SVG text found: {len(elements_svg_text)}")
+    print(f"Visual containers found: {len(elements_visual_container)}")
+    print(f"Graph labels found: {len(graph_label_elements)}")
+    print(f"Graph ticks found: {len(graph_tick_elements)}")
+    print(f"Graph titles found: {len(graph_title_elements)}")
+    # Merge the lists while avoiding duplicates
+    # all_elements = list(set(elements_visual_container + elements_svg_text+graph_label_elements +
+    #                         graph_tick_elements +
+    #                         graph_title_elements))
+    all_elements = (elements_visual_container +
+                    elements_svg_text +
+                    graph_label_elements +
+                    graph_tick_elements +
+                    graph_title_elements)
+    #print(all_elements)
+    visible_elements = []
+    unique_elements={}
+
+
+    for idx, element in enumerate(all_elements):
+        try:
+            if element.is_displayed() and element.is_enabled():
+                tag_name = element.tag_name
+                text_content = element.text.strip()
+                class_name = element.get_attribute("class")
+                # Generate a unique key for deduplication
+                unique_key =generate_unique_key(element,"powerBi")
+                # If specific tags are selected or all are allowed
+                #if "All" in selected_tags or tag_name in selected_tags or tag_name in ["text", "div", "span", "a", "button"]:
+                if unique_key not in unique_elements:
+                    details = {
+                        "tag": tag_name,
+                        "id": element.get_attribute("id"),
+                        "class": element.get_attribute("class"),
+                        "name": element.get_attribute("name"),
+                        "aria-label": element.get_attribute("aria-label"),
+                        "text": element.text.strip()
+                    }
+
+                    # Include only non-empty values
+                    compact_details = {k: v for k, v in details.items() if v}
+
+                    if compact_details:
+                        visible_elements.append(compact_details)
+                        unique_elements[unique_key] = compact_details
+                        # Store for XPath mapping via OpenAI
+                        session_key = generate_unique_key(element, page_identifier)
+                        if unique_key not in st.session_state:
+                            st.session_state[session_key] = compact_details
+
+        except (StaleElementReferenceException, NoSuchElementException):
+            continue
+
+    print(json.dumps(visible_elements, indent=2))
+    print(f"[INFO] Total visible elements found: {len(visible_elements)}")
+    return visible_elements
+
+def get_visible_element_iframe(driver, page_identifier, selected_tags):
+    visible_elements = []  # To store visible and relevant elements
+
+    print("[INFO] Collecting all elements from the main page...")
+    all_elements = driver.find_elements(By.XPATH, "//*")
+    print("**********collected elements:",all_elements)
+    for idx, element in enumerate(all_elements, start=1):
+        attrs = driver.execute_script(
+            "var items = {}; for (var i = 0; i < arguments[0].attributes.length; i++) { "
+            "items[arguments[0].attributes[i].name] = arguments[0].attributes[i].value; } "
+            "return items;", element
+        )
+
+        print(f"\n[{idx}] <{element.tag_name}>")
+        for k, v in attrs.items():
+            print(f"individual_jan   {k} = {v}")
+    print(f"[DEBUG] Total elements on main page: {len(all_elements)}")
+    #total_elements.extend(all_elements)
+
+    # Collect elements from each iframe
+    iframe_elements = driver.find_elements(By.TAG_NAME, "iframe")
+    print(f"[INFO] Total iframes found: {len(iframe_elements)}")
+    if len(iframe_elements) > 0:
+        for iframe_index, iframe_element in enumerate(iframe_elements):
+            print(f"[INFO] Switching to iframe {iframe_index + 1}...")
+            try:
+                driver.switch_to.frame(iframe_element)
+                iframe_subelements = driver.find_elements(By.XPATH, "//*")
+                details_visible_elements(iframe_subelements,visible_elements,selected_tags,page_identifier)
+                print(f"[DEBUG] Total elements in iframe {iframe_index + 1}: {len(iframe_subelements)}")
+            except Exception as e:
+                print(f"[WARN] Failed to switch to iframe {iframe_index + 1}: {str(e)}")
+            finally:
+                try:
+                    driver.switch_to.default_content()  # Return to the main page
+                except Exception as e:
+                    print(f"[ERROR] Failed to switch back to main content: {str(e)}")
+    else:
+        print("[INFO] No iframes found, directly collecting main page elements...")
+
+    visible_elements=details_visible_elements(all_elements,visible_elements,selected_tags,page_identifier)
+    # Return the list of visible, relevant elements
+    print(f"[INFO] Total visible elements found: {len(visible_elements)}")
+    print(json.dumps(visible_elements, indent=2))
+    return visible_elements
+
+
+def get_visible_element(driver,page_identifier,selected_tags):
+    all_elements = driver.find_elements(By.XPATH, "//*")
+    visible_elements = []
+
+
+    # Loop through elements and capture only relevant ones
+    for idx, element in enumerate(all_elements):
+        try:
+            # Ensure the element is visible and not disabled
+            if element.is_displayed() and element.is_enabled():
+
+                # Check if the element is a relevant type (text box, checkbox, button, link)
+                if element.tag_name in selected_tags:
+                    #, 'textarea', 'button', 'select'
+                    details = {
+                        "tag": element.tag_name,
+                        "id": element.get_attribute("id"),
+                        "class": element.get_attribute("class"),
+                        "name": element.get_attribute("name"),
+                        "text": element.text.strip()
+                    }
+
+                    # Exclude empty or redundant text (only keep the most relevant ones)
+                    compact_details = {k: v for k, v in details.items() if v}
+
+                    # Add to the list of visible elements
+                    visible_elements.append(compact_details)
+                    # Generate a unique key for each element
+                    unique_key = generate_unique_key(element, page_identifier)
+                    if unique_key not in st.session_state:
+                        st.session_state[unique_key] = unique_key
+
+        except (StaleElementReferenceException, NoSuchElementException) as e:
+            # Handle exceptions
+            #print(f"Element skipped due to: {e}")
+            continue
+
+    # Return the list of visible, relevant elements
+    print(visible_elements)
+    return visible_elements
+
+
+
+key=None
+def selecting_xpath(details):
+
+    sections = details.strip().split('\n\n')
+    print("sections is displayed as:")
+    print(sections)
+    xpath_dict = {}
+    for section in sections:
+        print("section is displayed " +section)
+        xpaths=[]
+        global key
+        #key = None
+        if '\n' in section:
+            lines = section.split('\n')
+            print("Lines are displaed as")
+            print(lines)
+            if lines:
+                #key = lines[0].replace(" Variations:", "")
+                #print("key is displayed as"+key)
+                if "//" in lines[0]:
+                    xpaths = lines
+                else:
+                    xpaths = lines[1:]
+                print("xpatha are displayed as")
+                print(xpaths)
+        else:
+            key=section
+            print("key is displayed as" + key)
+        if xpaths:
+            if key:
+                print("key available:",key)
+                xpath_dict[key] = xpaths
+                key = None
+            elif key is None:
+                print("key not available", key)
+                key = lines[0].replace(" Variations:", "")
+                print("key from lines", key)
+                xpath_dict[key] = xpaths
+                key=None
+    print("xpath_dict:",xpath_dict)
+    return xpath_dict
+
+# Filter out duplicate xpaths before passing to UI
+def filter_duplicate_xpaths(xpath_dict):
+    unique_entries = set()
+    filtered_xpath_dict = {}
+
+    for element, xpaths in xpath_dict.items():
+        filtered = []
+        for xpath in xpaths:
+            key = f"{element}_{xpath}"
+            if key not in unique_entries:
+                unique_entries.add(key)
+                filtered.append(xpath)
+        if filtered:
+            filtered_xpath_dict[element] = filtered
+    return filtered_xpath_dict
+def adding_xpath_user_view(xpath_dict):
+
+    st.markdown("**XPath bulk selection & download**")
+
+    # ---- SELECT ALL TOGGLE ----
+    st.session_state.select_all = st.checkbox(
+        "Select All XPaths",
+        value=st.session_state.select_all,
+        key="select_all_toggle"
+    )
+
+    all_items = []
+
+    for element, xpaths in xpath_dict.items():
+        for xpath in xpaths:
+            if xpath.strip():
+                all_items.append({"Element": element, "XPath": xpath})
+
+    # ---- Auto select all ----
+    if st.session_state.select_all:
+        st.session_state.selected_xpaths = all_items.copy()
+        # ---- EXPORT TO EXCEL ----
+        if st.session_state.selected_xpaths:
+            df = pd.DataFrame(st.session_state.selected_xpaths)
+
+            buffer = BytesIO()
+            df.to_excel(buffer, index=False, engine="openpyxl")
+            buffer.seek(0)
+
+            st.download_button(
+                "⬇️ Export to Excel",
+                data=buffer,
+                file_name="bulk_xpaths.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+
+    # ---- DISPLAY ----
+    for element, xpaths in xpath_dict.items():
+        st.subheader(element)
+
+        for xpath in xpaths:
+            if not xpath.strip():
+                continue
+
+            checkbox_key = hashlib.md5(f"{element}_{xpath}".encode()).hexdigest()
+
+            col1, col2 = st.columns([0.85, 0.15])
+
+            with col1:
+                checked = st.checkbox(
+                    xpath,
+                    key=checkbox_key,
+                    value=any(x["XPath"] == xpath for x in st.session_state.selected_xpaths)
+                )
+
+            with col2:
+                st.button(
+                    "📋",
+                    key=f"copy_{checkbox_key}",
+                    on_click=copy_to_clipboard,
+                    args=(xpath,)
+                )
+
+            # ---- Update selection ----
+            record = {"Element": element, "XPath": xpath}
+
+            if checked:
+                if record not in st.session_state.selected_xpaths:
+                    st.session_state.selected_xpaths.append(record)
+            else:
+                st.session_state.selected_xpaths = [
+                    x for x in st.session_state.selected_xpaths if x["XPath"] != xpath
+                ]
+
+
+    return st.session_state.selected_xpaths
+
+def adding_xapth_user_view_v1(xpath_dict):
+    print("goind to add element")
+    try:
+        for element, xpaths in xpath_dict.items():
+            st.subheader(f"{element}")
+            for xpath in xpaths:
+                if xpath.strip():
+                    # unique_id = uuid.uuid4().hex[:8]
+                    # checkbox_key = f"{element}_{xpath}_{unique_id}"
+                    checkbox_key = hashlib.md5(f"{element}_{xpath}".encode()).hexdigest()
+                    # Display checkbox and maintain state
+                    print("st.session_state.selected_xpaths", st.session_state.selected_xpaths)
+                    try:
+                        if st.checkbox(xpath, key=checkbox_key):
+                            print("st.session_state.selected_xpaths", st.session_state.selected_xpaths)
+                            if {"Element": element, "XPath": xpath} not in st.session_state.selected_xpaths:
+                                st.session_state.selected_xpaths.append({"Element": element, "XPath": xpath})
+                        else:
+                            print("st.session_state.selected_xpaths", st.session_state.selected_xpaths)
+                            st.session_state.selected_xpaths = [
+                                x for x in st.session_state.selected_xpaths if x["XPath"] != xpath
+                            ]
+                    except Exception as e:
+                        print("st.session_state.selected_xpaths", st.session_state.selected_xpaths)
+                        #print(e)
+                    except (Exception) as e:
+                        print("st.session_state.selected_xpaths", st.session_state.selected_xpaths)
+        print("st.session_state.selected_xpaths_final", st.session_state.selected_xpaths)
+        return st.session_state.selected_xpaths
+    except (Exception) as e:
+        return st.session_state.selected_xpaths
+        print(e)
+
+def adding_selected_xapth_excel(new_page_name,):
+    for item in st.session_state.selected_xpaths:
+        item['Page Name'] = new_page_name
+
+    excel_file = xpath_file
+    if os.path.exists(excel_file):
+        # Read existing file
+        existing_df = pd.read_excel(excel_file, engine='openpyxl')
+    else:
+        existing_df = pd.DataFrame()
+    new_df = pd.DataFrame(st.session_state.selected_xpaths)
+    combined_df = pd.concat([existing_df, new_df], ignore_index=True)
+    combined_df = combined_df.drop_duplicates(subset=['XPath', 'Page Name'], keep='last')
+
+    # Save the combined DataFrame back to the Excel file
+    combined_df.to_excel(excel_file, index=False, engine='openpyxl')
+    st.success(f"XPaths successfully added to Excel! Download the file [here](sandbox:{excel_file})")
+
+def clean_xpath(xpath):
+    """Extracts only the actual XPath from a given string."""
+    match = re.search(r'(//[^\]]+\])', xpath)  # Find everything starting with // until the first ]
+    return match.group(1) if match else xpath  # Return extracted XPath or original if not found
+
+def generate_excel_testcases_with_document(prompt_type,extracted_data,Document_image_data_processed=None,navigation=None):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    final_prompt = prompt_template.format(requirements=extracted_data,image_data=Document_image_data_processed,navigation=navigation)
+    print(final_prompt)
+    return final_prompt
+
+def generate_script_validation_prompt(prompt_type,page_file_content,test_file_content,language_lib):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    final_prompt = prompt_template.format(page_file_content=page_file_content,test_file_content=test_file_content,language_lib=language_lib)
+    print(final_prompt)
+    return final_prompt
+
+def generate_testcase_accuracy_matrix(prompt_type,requirements,testcase):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    final_prompt = prompt_template.format(requirement_text=requirements,test_case_text=testcase)
+    print(final_prompt)
+    return final_prompt
+def generate_promot_test_data_generator(prompt_type,action_data,test_case_data,sample_data=None):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    if sample_data:
+        sample_data_section =  sample_data
+    else:
+        sample_data_section = ""
+    final_prompt = prompt_template.format(action_file=action_data,test_cases=test_case_data,user_test_data=sample_data_section)
+    print(final_prompt)
+    return final_prompt
+def generate_pom_from_excel_testcases(prompt_type,navigation,image_data,action_data=None,requirements=""):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    if action_data:
+        action_section = f"- User Interaction Elements (Action Data): {action_data}"
+    else:
+        action_section = ""
+    final_prompt = prompt_template.format(navigation=navigation,image_data_processed=image_data,action_data_processed=action_section,requirements=requirements)
+    print(final_prompt)
+    return final_prompt
+
+def generate_testcases_regeneration(prompt_type,navigation,image_data,action_data=None,requirements="",existing_prompt_response=None,accuracy_matrix=None):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    if action_data:
+        action_section = f"- User Interaction Elements (Action Data): {action_data}"
+    else:
+        action_section = ""
+    final_prompt = prompt_template.format(navigation=navigation,image_data_processed=image_data,action_data_processed=action_section,requirements=requirements,accuracy_Details=accuracy_matrix,existing_prompt_response=existing_prompt_response)
+    print(final_prompt)
+    return final_prompt
+
+def generate_testcases_regeneration_doc(prompt_type,requirements="",existing_prompt_response=None,accuracy_matrix=None,):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    final_prompt = prompt_template.format(requirements=requirements,accuracy_Details=accuracy_matrix,existing_prompt_response=existing_prompt_response)
+    print(final_prompt)
+    return final_prompt
+
+# Script updated with new logic by May 14 2026
+def generate_testcase_segment_prompt(action_data, image_data, requirements):
+    prompt_template = load_prompt_from_file("testcase_workflow_segmenter")
+    action_str = "\n".join(f"{k}:\n{v}" for k, v in action_data.items()) \
+        if isinstance(action_data, dict) else (action_data or "")
+    final_prompt = prompt_template.format(
+        action_data=action_str,
+        image_data=image_data or "",
+        requirements=requirements or ""
+    )
+    print(final_prompt)
+    return final_prompt
+
+
+def generate_pom_from_excel_feature(prompt_type,Recorded_Action):
+    prompt_template = load_prompt_from_file(prompt_type)
+    final_prompt = prompt_template.format(recorded_action=Recorded_Action)
+    print(final_prompt)
+    return final_prompt
+
+def generate_script_validator(prompt_type,page_file_conetent,test_file_content):
+    prompt_template = load_prompt_from_file(prompt_type)
+
+    final_prompt = prompt_template.format(
+        page_files_content=page_file_conetent,
+        test_files_content=test_file_content,
+    )
+    print(final_prompt)
+    return final_prompt
+def generate_test_script_windows_web(prompt_type,action_data,app_location):
+    prompt_template = load_prompt_from_file(prompt_type)
+
+    final_prompt = prompt_template.format(
+        application_path=app_location,
+        workflow_steps=action_data,
+    )
+    print(final_prompt)
+    return final_prompt
+def generate_test_script(prompt_type,test_file_language,page_file_conetent,test_file_content,action_data=None):
+    prompt_template = load_prompt_from_file(prompt_type)
+    if action_data:
+        final_prompt = prompt_template.format(
+            test_file_language=test_file_language,
+            page_files_content=page_file_conetent,
+            test_files_content=test_file_content,
+            recorded_actions=action_data
+        )
+    else:
+        # Remove the optional section related to recorded_actions
+        prompt_template = prompt_template.replace("3. (Optional) Recorded User Actions:\n{recorded_actions}\n\n", "")
+        final_prompt = prompt_template.format(
+            test_file_language=test_file_language,
+            page_files_content=page_file_conetent,
+            test_files_content=test_file_content,
+            recorded_actions=""
+        )
+
+    print(final_prompt)
+    return final_prompt
+
+def generate_code_review_prompt(test_file_language, page_files_content, test_files_content, action_data, generated_script, review_details):
+    action_section = f"\n4. Recorded Actions:\n{action_data}\n" if action_data else ""
+    review_section = f"\n5. User Review Feedback / Change Requests:\n{review_details}\n" if review_details else ""
+
+    prompt = f"""YOU ARE A SENIOR SDET PERFORMING A COMPREHENSIVE SCRIPT REVIEW AND FIX.
+
+=== LANGUAGE / FRAMEWORK ===
+{test_file_language}
+
+=== INPUTS ===
+1. Page Object Files (POM):
+{page_files_content}
+
+2. Test Case Files:
+{test_files_content}
+
+3. Generated Script (to be reviewed and fixed):
+{generated_script}
+{action_section}{review_section}
+
+=== REVIEW OBJECTIVES ===
+1. COVERAGE: Verify every test case in the test case files has a corresponding test function in the script. Add any missing test functions.
+2. STEPS: For each test case, verify all steps are implemented correctly and in the correct order. No steps should be skipped.
+3. POM ACCURACY: All page object method calls must exactly match the methods defined in the page files — correct class names, method names, and signatures. Fix any mismatches.
+4. EXECUTABILITY: The script must be 100% executable without any modifications. No placeholder values, no TODO comments, no missing imports, no undefined variables.
+5. LANGUAGE STANDARDS: Follow best practices for {test_file_language} — proper imports, fixtures, waits, assertions.
+6. USER FEEDBACK: If review feedback is provided above, address each point specifically and completely.
+7. COMPLETENESS: All test cases must have proper setup, execution steps, meaningful assertions matching expected results, and teardown.
+8. NO REGRESSIONS: Do not break any working test cases while fixing issues.
+
+=== ABSOLUTE OUTPUT RULE ===
+Return ONLY raw code. Zero markdown. Zero backticks. Zero explanation.
+Do NOT wrap output in triple backticks. Return ONLY the complete fixed and reviewed script.
+"""
+    print(prompt)
+    return prompt
+
+def generate_pom_from_excel_with_action(prompt_type,page_name,language,action_data):
+    prompt_template = load_prompt_from_file(prompt_type)
+    print(prompt_template)
+    # Read Excel file
+    excel_file = xpath_file
+    if not os.path.exists(excel_file):
+        print(f"Excel file not found: {excel_file}")
+        return
+
+
+    df = pd.read_excel(excel_file)
+
+    # Check if required columns exist
+    if not {"Element", "XPath", "Page Name"}.issubset(df.columns):
+        print("Excel file is missing required columns: Element, XPath, Page Name")
+        return
+
+    # Filter XPaths based on Page Name
+    filtered_df = df[df["Page Name"] == page_name]
+
+    if filtered_df.empty:
+        print(f"No elements found for page: {page_name}")
+        return
+
+    # Extract XPaths
+    xpaths = "\n".join(filtered_df["XPath"].apply(clean_xpath).tolist())
+    final_prompt = prompt_template.format(language_library=language,xpaths=xpaths,Action_data=action_data,page_name=page_name)
+    print(final_prompt)
+    return final_prompt
+
+def generate_pom_from_excel(prompt_type,page_name,language):
+    prompt_template = load_prompt_from_file(prompt_type)
+    print(prompt_template)
+    # Read Excel file
+    excel_file = xpath_file
+    if not os.path.exists(excel_file):
+        print(f"Excel file not found: {excel_file}")
+        return
+
+
+    df = pd.read_excel(excel_file)
+
+    # Check if required columns exist
+    if not {"Element", "XPath", "Page Name"}.issubset(df.columns):
+        print("Excel file is missing required columns: Element, XPath, Page Name")
+        return
+
+    # Filter XPaths based on Page Name
+    filtered_df = df[df["Page Name"] == page_name]
+
+    if filtered_df.empty:
+        print(f"No elements found for page: {page_name}")
+        return
+
+    # Extract XPaths
+    xpaths = "\n".join(filtered_df["XPath"].apply(clean_xpath).tolist())
+
+    final_prompt = prompt_template.format(language=language,xpaths=xpaths)
+    print(final_prompt)
+    return final_prompt
+
+def scroll_and_focus():
+    st.markdown("""
+        <script>
+        setTimeout(function() {
+            const topElement = document.querySelector("a[name='top-button']");
+            if (topElement) {
+                topElement.scrollIntoView({ behavior: "smooth" });
+            }
+            const buttons = Array.from(document.querySelectorAll('button'));
+            const collectButton = buttons.find(btn => btn.innerText.trim() === 'Collecting Elements');
+            if (collectButton) {
+                collectButton.focus();
+            }
+        }, 500);
+        </script>
+    """, unsafe_allow_html=True)
+
+def select_and_read_text_files(folder_path):
+    # Step 1: List all .txt files in the folder
+    txt_files = [f for f in os.listdir(folder_path) if f.endswith('.txt')]
+
+    if not txt_files:
+        st.warning("No .txt files found in the folder.")
+        return {}
+
+    # Step 2: Let the user select multiple files
+    selected_files = st.multiselect("Select relevant file(s)", txt_files)
+
+    # Step 3: Read contents of selected files
+    file_contents = {}
+    for file_name in selected_files:
+        full_path = os.path.join(folder_path, file_name)
+        with open(full_path, 'r', encoding='utf-8') as f:
+            file_contents[file_name] = f.read()
+
+    # Step 4: Return dictionary of filename: content
+    return file_contents
+def get_window_statuses(driver):
+    try:
+        return driver.execute_script("""
+            const results = {};
+            for (let i=0; i<localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith("recorder_status_")) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data && data.windowId) {
+                            results[data.windowId] = data;  // use clean windowId as key
+                        }
+                    } catch (e) {
+                        console.warn("⚠️ Bad status JSON for", key, e);
+                    }
+                }
+            }
+            return results;
+        """)
+    except Exception:
+            return {}
+# #####updated threas logics mar16
+# def thread_new_window_checker(driver, injected_windows, last_urls, stop_flag,
+#                                screenshot_folder, current_window_ref,
+#                                source="file", db_handler=None, driver_lock=None):
+#     """
+#     Detects newly opened windows/tabs and injects the recorder JS.
+#     """
+#     print("🧵 Thread 1 started: new window checker")
+#     _lock = driver_lock or threading.Lock()
+#
+#     while not stop_flag["stop"]:
+#         try:
+#             with _lock:
+#                 handles = driver.window_handles
+#             for handle in handles:
+#                 if handle not in injected_windows:
+#                     with _lock:
+#                         driver.switch_to.window(handle)
+#                         driver.execute_script(action_utils.injection_script_updated_fixed(handle))
+#                         injected_windows[handle] = True
+#                         last_urls[handle] = driver.current_url
+#                         current_window_ref["handle"] = handle
+#
+#                         if source == "file":
+#                             action_utils.take_screenshot(driver, screenshot_folder)
+#                         elif source == "database" and db_handler:
+#                             db_handler.take_screenshot_db(driver, "iqea")
+#
+#                     print(f"✅ JS injected in new window {handle}")
+#         except Exception as e:
+#             print(f"⚠️ New window checker error: {e}")
+#         time.sleep(2)
+#
+# # ─── Thread: Focus & URL monitor ──────────────────────────────────────────────
+# def thread_focus_and_url_monitor(driver, injected_windows, last_urls, stop_flag,
+#                                   screenshot_folder, current_window_ref,
+#                                   source="file", db_handler=None, driver_lock=None):
+#     """
+#     Watches the active window for URL changes (SPA navigation) and reinjection.
+#     """
+#     print("🧵 Thread 2 started: focus/URL monitor")
+#     _lock = driver_lock or threading.Lock()
+#
+#     while not stop_flag["stop"]:
+#         try:
+#             with _lock:
+#                 handle = driver.current_window_handle
+#                 current_window_ref["handle"] = handle
+#                 current_url = driver.current_url
+#
+#             if last_urls.get(handle) != current_url:
+#                 with _lock:
+#                     driver.execute_script(action_utils.injection_script_updated_fixed(handle))
+#                     last_urls[handle] = current_url
+#                 print(f"🔄 URL changed → reinjected in {handle} ({current_url})")
+#
+#         except Exception as e:
+#             print(f"⚠️ Focus/URL monitor error: {e}")
+#         time.sleep(2)
+#
+#     print("🛑 Thread 2 stopped")
+#
+#
+# # ─── Thread: Screenshot on page change ────────────────────────────────────────
+# def thread_focus_screenshot(driver, stop_flag, screenshot_folder,
+#                              source="file", db_handler=None, driver_lock=None):
+#     """
+#     Takes a screenshot whenever the URL or DOM element count changes.
+#     """
+#     print("📸 Thread 3 started: screenshot monitor")
+#     _lock = driver_lock or threading.Lock()
+#     last_url = None
+#     prev_count = None
+#     first_run = True
+#
+#     while not stop_flag["stop"]:
+#         try:
+#             with _lock:
+#                 current_url = driver.current_url
+#                 current_count = len(driver.find_elements("xpath", "//*"))
+#
+#             page_changed = first_run or current_url != last_url or current_count != prev_count
+#             first_run = False
+#
+#             if page_changed:
+#                 last_url = current_url
+#                 prev_count = current_count
+#
+#                 # Wait for DOM ready
+#                 for _ in range(50):
+#                     with _lock:
+#                         state = driver.execute_script("return document.readyState")
+#                     if state == "complete":
+#                         break
+#                     time.sleep(0.1)
+#
+#                 with _lock:
+#                     if source == "file":
+#                         fp = action_utils.take_screenshot(driver, screenshot_folder)
+#                     elif source == "database" and db_handler:
+#                         fp = db_handler.take_screenshot_db(driver, "iqea")
+#                     else:
+#                         fp = None
+#                 print(f"📸 Screenshot => {fp}")
+#
+#         except Exception as e:
+#             print(f"❌ Screenshot thread error: {e}")
+#         time.sleep(1)
+#
+#     print("🛑 Thread 3 stopped")
+def thread_new_window_checker(driver, injected_windows, last_urls, stop_flag, screenshot_folder, current_window_ref):
+    print("🛑 Thread 1 stopped")
+    """
+    Monitor newly opened windows and inject JS.
+    """
+    print("thread 1 started")
+    while not stop_flag["stop"]:
+        try:
+            handles = driver.window_handles
+            for handle in handles:
+                if handle not in injected_windows:
+                    # New window detected
+                    driver.switch_to.window(handle)
+                    driver.execute_script(action_utils.injection_script_updated_fixed())
+                    # Mark as injected
+                    injected_windows[handle] = True
+                    last_urls[handle] = driver.current_url
+                    current_window_ref["handle"] = handle
+                    # Then take screenshot as before
+                    if source == "file":
+                        filepath = action_utils.take_screenshot(driver, screenshot_folder)
+                    elif source == "database":
+                        filepath = db_handler.take_screenshot_db(driver, "sathanantham")
+                    else:
+                        filepath = None
+                    print(f"📸 Screenshot taken for: {last_urls} => {filepath}")
+                    print("screenshot thread ended")
+
+
+                    print(f"✅ JS injected in new window {handle} ({driver.current_url})")
+                    # Optionally: take screenshot
+                    # _take_screenshot(driver, driver.current_url, screenshot_folder)
+            print("thread 1 ended")
+        except Exception as e:
+            print("New window monitor error:", e)
+
+        # Check every 2-3 seconds
+        time.sleep(3)
+def thread_focus_screenshot_jan29_backup(driver,stop_flag,screenshot_folder,source="file"):
+    """
+    Screenshots
+    """
+    print("screenshot thread started")
+
+    last_url = ""
+    all_elements = driver.find_elements(By.XPATH, "//*")
+    element_count_old=0
+    element_count_new=0
+    while not stop_flag["stop"]:
+        try:
+            current_url = driver.current_url
+            if current_url != last_url or element_count_old != element_count_new:
+                last_url = current_url
+
+                all_elements = driver.find_elements(By.XPATH, "//*")
+                element_count_new = len(all_elements)
+                element_count_old=element_count_new
+                # Wait for page to fully load
+                for _ in range(50):  # up to ~5 seconds
+                    state = driver.execute_script("return document.readyState")
+                    if state == "complete":
+                        break
+                    time.sleep(0.1)
+
+                # Then take screenshot as before
+                if source == "file":
+                    filepath = action_utils.take_screenshot(driver, screenshot_folder)
+                elif source == "database":
+                    filepath = db_handler.take_screenshot_db(driver, "sathanantham")
+                else:
+                    filepath = None
+                print(f"📸 Screenshot taken for: {current_url} => {filepath}")
+                print("screenshot thread ended")
+        except Exception as e:
+            print("Error during URL monitoring:", e)
+        time.sleep(1)  # check every second
+def thread_focus_screenshot(driver, stop_flag, screenshot_folder, source="file"):
+    print("📸 screenshot thread started")
+
+    last_url = None
+    prev_element_count = None
+    first_run = True
+
+    while not stop_flag["stop"]:
+        try:
+            with st.session_state.driver_lock:
+                current_url = driver.current_url
+                all_elements = driver.find_elements(By.XPATH, "//*")
+                current_count = len(all_elements)
+
+            if first_run:
+                page_changed = True
+                first_run = False
+            else:
+                page_changed = (
+                    current_url != last_url
+                    or current_count != prev_element_count
+                )
+
+            if page_changed:
+                last_url = current_url
+                prev_element_count = current_count
+
+                # wait for load
+                for _ in range(50):
+                    with st.session_state.driver_lock:
+                        state = driver.execute_script("return document.readyState")
+                    if state == "complete":
+                        break
+                    time.sleep(0.1)
+
+                with st.session_state.driver_lock:
+                    if source == "file":
+                        filepath = action_utils.take_screenshot(driver, screenshot_folder)
+                    elif source == "database":
+                        filepath = db_handler.take_screenshot_db(driver, "sathanantham")
+                    else:
+                        filepath = None
+
+                print(f"📸 Screenshot taken => {filepath}")
+
+        except Exception as e:
+            print("❌ Screenshot thread error:", e)
+
+        time.sleep(1)
+
+# def thread_focus_screenshot(driver, stop_flag, screenshot_folder, source="file"):
+#     print("📸 screenshot thread started")
+#
+#     last_url = None
+#     prev_element_count = None
+#     first_run = True
+#
+#     while not stop_flag["stop"]:
+#         try:
+#             current_url = driver.current_url
+#             all_elements = driver.find_elements(By.XPATH, "//*")
+#             current_count = len(all_elements)
+#
+#             # First run → always take screenshot
+#             if first_run:
+#                 page_changed = True
+#                 first_run = False
+#             else:
+#                 page_changed = (
+#                     current_url != last_url
+#                     or current_count != prev_element_count
+#                 )
+#
+#             if page_changed:
+#                 print(f"[CHANGE] url={current_url} | elements={current_count}")
+#
+#                 last_url = current_url
+#                 prev_element_count = current_count
+#
+#                 # wait for page ready
+#                 for _ in range(50):
+#                     if driver.execute_script("return document.readyState") == "complete":
+#                         break
+#                     time.sleep(0.1)
+#
+#                 if source == "file":
+#                     filepath = action_utils.take_screenshot(driver, screenshot_folder)
+#                 elif source == "database":
+#                     filepath = db_handler.take_screenshot_db(driver, "sathanantham")
+#                 else:
+#                     filepath = None
+#
+#                 print(f"📸 Screenshot taken => {filepath}")
+#
+#         except Exception as e:
+#             print("❌ Error during monitoring:", e)
+#
+#         time.sleep(1)
+
+
+import time
+import hashlib
+from PIL import Image
+import io
+
+def thread_focus_screenshot_old(driver, stop_flag, screenshot_folder, source="file"):
+    """
+    Takes a screenshot whenever:
+    1. The URL changes, OR
+    2. The visible UI (DOM or visual) changes significantly, even if the URL remains the same.
+    """
+    print("📸 Screenshot thread started")
+    last_url = ""
+    last_dom_hash = ""
+    last_visual_hash = ""
+
+    while not stop_flag["stop"]:
+        try:
+            current_url = driver.current_url
+            ui_changed = False
+
+            # --- Condition 1: URL Changed ---
+            if current_url != last_url:
+                ui_changed = True
+                last_url = current_url
+
+            # --- Condition 2: DOM Changed ---
+            try:
+                # Capture the visible DOM structure (simplified to avoid large payloads)
+                dom_snapshot = driver.execute_script(
+                    "return document.body.innerText.slice(0, 2000);"
+                )
+                current_dom_hash = hashlib.md5(dom_snapshot.encode("utf-8")).hexdigest()
+                if current_dom_hash != last_dom_hash:
+                    ui_changed = True
+                    last_dom_hash = current_dom_hash
+            except Exception:
+                pass
+
+            # --- Optional Condition 3: Visual Change Detection ---
+            # (lightweight pixel hash approach)
+            try:
+                png = driver.get_screenshot_as_png()
+                img_hash = hashlib.md5(png[:50000]).hexdigest()  # hash first part only for performance
+                if img_hash != last_visual_hash:
+                    ui_changed = True
+                    last_visual_hash = img_hash
+            except Exception:
+                pass
+
+            # --- If any change detected, take screenshot ---
+            if ui_changed:
+                for _ in range(50):  # Wait for page load or DOM stability
+                    state = driver.execute_script("return document.readyState")
+                    if state == "complete":
+                        break
+                    time.sleep(0.1)
+
+                if source == "file":
+                    filepath = action_utils.take_screenshot(driver, screenshot_folder)
+                elif source == "database":
+                    filepath = db_handler.take_screenshot_db(driver, "sathanantham")
+                else:
+                    filepath = None
+
+                print(f"✅ Screenshot captured for: {current_url} => {filepath}")
+
+            time.sleep(2)  # recheck every 2 seconds
+
+        except Exception as e:
+            print("⚠️ Error during screenshot monitoring:", e)
+            time.sleep(2)
+
+    print("🛑 Screenshot thread ended")
+
+
+def thread_reinject_action_check(driver, stop_flag,
+                                 last_urls=None, current_window_ref=None,
+                                 injected_windows=None, idle_timeout=5):
+    """
+    Reinjection when no action for > idle_timeout seconds.
+    Handles both epoch-ms and ISO 8601 timestamps.
+    Tracks last reinjection time in localStorage so reinjection
+    only happens if a new action occurred after the last reinject.
+    """
+    print("🧵 thread 3 started (idle reinject checker)")
+
+    while not stop_flag["stop"]:
+        try:
+            # Get last recorded action and last reinjection time from localStorage
+            result = driver.execute_script("""
+                const actions = JSON.parse(localStorage.getItem('recordedActions') || '[]');
+                const lastReinject = localStorage.getItem('lastReinjectTime');
+                let lastActionTs = null;
+
+                if (actions.length > 0) {
+                    lastActionTs = actions[actions.length - 1].timestamp || null;
+                }
+
+                return {
+                    lastAction: lastActionTs,
+                    lastReinject: lastReinject
+                };
+            """)
+
+            last_action = result.get("lastAction")
+            last_reinject = result.get("lastReinject")
+
+            # Convert action timestamp
+            last_action_ts = None
+            if last_action:
+                if isinstance(last_action, (int, float)):  # epoch millis
+                    last_action_ts = float(last_action) / 1000.0
+                elif isinstance(last_action, str):
+                    try:
+                        dt = datetime.fromisoformat(last_action.replace("Z", "+00:00"))
+                        last_action_ts = dt.timestamp()
+                    except Exception as parse_err:
+                        print(f"⚠️ Could not parse ISO timestamp: {last_action} ({parse_err})")
+
+            # Convert reinjection timestamp
+            last_reinject_ts = None
+            if last_reinject:
+                try:
+                    last_reinject_ts = float(last_reinject)
+                except:
+                    pass
+
+            if last_action_ts:
+                now_ts = time.time()
+                print("⏰ Current Time:", datetime.fromtimestamp(now_ts).strftime("%Y-%m-%d %H:%M:%S"))
+                print("📝 Last Action:", datetime.fromtimestamp(last_action_ts).strftime("%Y-%m-%d %H:%M:%S"))
+                if last_reinject_ts:
+                    print("♻️ Last Reinjection:", datetime.fromtimestamp(last_reinject_ts).strftime("%Y-%m-%d %H:%M:%S"))
+
+                # ✅ MAIN CHECK: Only if new action happened after last reinject
+                if not last_reinject_ts or last_action_ts > last_reinject_ts:
+                    diff = now_ts - last_action_ts
+                    print("🔎 Difference (sec):", round(diff, 2))
+
+                    if diff >= idle_timeout:  # ⬅️ MAIN idle timeout check
+                        print(f"⏱️ Idle > {idle_timeout}s detected. Clearing injected_windows…")
+                        if injected_windows is not None:
+                            injected_windows.clear()
+
+                        # Update reinjection time
+                        driver.execute_script("""
+                            localStorage.setItem('lastReinjectTime', Date.now() / 1000);
+                        """)
+                        time.sleep(1)
+
+            else:
+                print("ℹ️ No actions recorded yet.")
+
+        except Exception as e:
+            print("Idle reinject monitor error:", e)
+
+        time.sleep(2)
+
+    print("🛑 thread 3 stopped (idle reinject checker)")
+
+def thread_focus_and_url_monitor(driver, injected_windows, last_urls, stop_flag, screenshot_folder, current_window_ref):
+    """
+    Monitor the current window for focus or URL changes. Reinjection if DOM replaced.
+    """
+    print("thread 2 started")
+
+    while not stop_flag["stop"]:
+        try:
+            # Always read the last focused window
+            last_focused = driver.execute_script("return localStorage.getItem('lastFocusedWindow');")
+            print("last_focused------",last_focused)
+            current_handle = driver.current_window_handle
+            current_window_ref["handle"] = current_handle
+            print("current_window_ref------", current_window_ref["handle"])
+            current_url = driver.current_url
+            print("current_url------", current_url)
+            print("last url-----",last_urls.get(current_handle))
+
+            # Compare last URL for current handle
+            print("last_urls.get(current_handle)",last_urls.get(current_handle))
+            if last_urls.get(current_handle) != current_url:
+                driver.execute_script(action_utils.injection_script_updated_fixed())
+                last_urls[current_handle] = current_url
+                print(f"🔄 URL changed in window {current_handle}, JS reinjected ({current_url})")
+
+            # # Check if another window has focus
+            # if last_focused and last_focused != current_handle:
+            #     if last_focused in injected_windows:
+            #         # Optionally, inject JS without switching focus
+            #         driver.switch_to.window(last_focused)
+            #         focused_url = driver.current_url
+            #         if last_urls.get(last_focused) != focused_url:
+            #             driver.execute_script(action_utils.injection_script_updated_fixed())
+            #             last_urls[last_focused] = focused_url
+            #             print(f"🔄 Focused window changed, JS reinjected in {last_focused} ({focused_url})")
+            #         driver.switch_to.window(current_handle)  # return focus to current window
+
+        except Exception as e:
+            print("Focus/URL monitor error:", e)
+
+        time.sleep(2)
+def select_and_read_text_files_xpath(file_type, folder_path):
+    # Step 1: List all files in the folder
+    files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
+
+    if not files:
+        st.warning("No files found in the folder.")
+        return {}
+
+    selected_files = st.multiselect(f"Select relevant file(s) for {file_type.replace('_', ' ')}", files)
+
+    file_contents = {}
+
+    for file_name in selected_files:
+        full_path = os.path.join(folder_path, file_name)
+
+        try:
+            # Type: For txt-based files
+            if file_type in ["xpath","recorded action","recorded action (Optional)", "page", "feature","test data generation -Recorded actions files"]:
+                with open(full_path, 'r', encoding='utf-8') as f:
+                    file_contents[file_name] = f.read()
+
+            elif file_type in ("page_test", "pom_file","test_file") and file_name.endswith((".py", ".java", ".cs", ".js")):
+                try:
+                    with open(full_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+
+                    # Remove common Markdown wrappers
+                    for lang in ["python", "java", "csharp", "javascript"]:
+                        if content.startswith(f"```{lang}"):
+                            content = content.split(f"```{lang}", 1)[1]
+                            break  # remove only one matching wrapper
+                    if "```" in content:
+                        content = content.split("```", 1)[0]
+
+                    file_extension = os.path.splitext(file_name)[1].lower()
+
+                    # Process based on file type
+                    if file_extension == ".py":
+                        try:
+                            tree = ast.parse(content)
+                            functions = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
+                            file_contents[file_name] = functions
+                        except SyntaxError as syntax_err:
+                            st.error(
+                                f"Syntax error in {file_name}:\nLine {syntax_err.lineno} - {syntax_err.text.strip() if syntax_err.text else ''}")
+                            continue
+
+                    else:
+                        # For Java, C#, JS – just collect method/function-like definitions as lines (basic version)
+                        lines = content.splitlines()
+                        func_like_lines = []
+                        for line in lines:
+                            line_strip = line.strip()
+                            # crude method detection for other languages
+                            if file_extension == ".java" and (" void " in line_strip or line_strip.endswith(");")):
+                                func_like_lines.append(line_strip)
+                            elif file_extension == ".cs" and (
+                                    " void " in line_strip or "public" in line_strip or "private" in line_strip):
+                                func_like_lines.append(line_strip)
+                            elif file_extension == ".js" and ("function " in line_strip or "=>" in line_strip):
+                                func_like_lines.append(line_strip)
+                        file_contents[file_name] = func_like_lines
+
+                except Exception as read_err:
+                    st.error(f"Failed to read {file_name}: {read_err}")
+
+            # Type: For Excel test cases - testcase_test
+            elif file_type in ["testcase_test","test data generation -Test Cases files"] and file_name.endswith((".xlsx", ".xls")):
+                df = pd.read_excel(full_path)
+
+                test_case_name = df['Test Case Name'][0]
+                page_name = df['Page'][0] if 'Page' in df.columns else None
+                actions = df['Action'].dropna().tolist() if 'Action' in df.columns else []
+                expected = df['Expected Result'].dropna().tolist() if 'Expected Result' in df.columns else []
+
+                file_contents[file_name] = {
+                    "test_case_name": test_case_name,
+                    "page_name": page_name,
+                    "actions": actions,
+                    "expected_results": expected
+                }
+
+            else:
+                st.warning(f"Unsupported or mismatched file type for {file_name}")
+
+        except Exception as e:
+            st.error(f"Error processing {file_name}: {e}")
+
+    return file_contents
+
+def parse_testcases_from_markdown(md_text):
+    """
+    Parse a Markdown table into structured test case dicts.
+    Handles rows with or without a trailing pipe.
+    Skips separator rows (|---|---:|...) and all-empty rows.
+    Returns a list of dicts with: name, step_number, description, expected, status, type, category.
+    """
+    import re
+    rows = []
+    md_text = md_text.strip()
+
+    for line in md_text.splitlines():
+        line = line.strip()
+        if not line or not line.startswith("|"):
+            continue
+        # Skip separator rows like |---|---:|---|---|---|---|---|
+        if re.match(r'^\|\s*[-:]+\s*\|', line):
+            continue
+        # Normalise: add trailing pipe if missing so split is consistent
+        if not line.endswith("|"):
+            line = line + "|"
+        parts = re.split(r'\s*\|\s*', line)
+        parts = [p.strip() for p in parts[1:-1]]  # drop empty first/last from split
+        if len(parts) != 7:
+            continue
+        # Skip header row
+        if parts[0].lower() == "test case name":
+            continue
+        # Skip rows where all cells are empty or only dashes
+        if all(not p or re.match(r'^[-:]+$', p) for p in parts):
+            continue
+        rows.append({
+            "name":        parts[0],
+            "step_number": parts[1],
+            "description": parts[2],
+            "expected":    parts[3],
+            "status":      parts[4],
+            "type":        parts[5],
+            "category":    parts[6],
+        })
+
+    # Blank out test case name for every row after the first row of each test case
+    seen_tc_names = set()
+    for row in rows:
+        name = row["name"].strip()
+        if not name:
+            continue
+        if name in seen_tc_names:
+            row["name"] = ""
+        else:
+            seen_tc_names.add(name)
+
+    return rows
+def parse_and_display_testcases_categorywise(md_text):
+    import streamlit as st
+    import re
+    from collections import defaultdict
+
+    # --- Parse Markdown Table ---
+    rows = []
+    md_text = md_text.strip()
+    lines = [line for line in md_text.splitlines() if line.strip() and not re.match(r'^\|\s*-', line)]
+    buffer = ""
+
+    for line in lines:
+        if line.startswith("|"):
+            buffer += line + "\n"
+            if buffer.count("|") >= 8:  # expecting 7 columns
+                parts = re.split(r'\s*\|\s*', buffer.strip())
+                parts = [p.strip() for p in parts[1:-1]]
+                if len(parts) == 7:
+                    name = parts[0].strip().lower()
+                    category = parts[6].strip().lower()
+                    if name == "name" or category == "category" or not parts[0]:
+                        buffer = ""
+                        continue
+                    rows.append({
+                        "name": parts[0],
+                        "step_number": parts[1],
+                        "description": parts[2],
+                        "expected": parts[3],
+                        "status": parts[4],
+                        "category": parts[6],
+                    })
+                buffer = ""
+
+    # --- Group test cases by category ---
+    category_to_cases = defaultdict(list)
+    for row in rows:
+        name = row["name"].strip()
+        category = row["category"].strip().lower() if row["category"].strip() else "others"
+        if name not in category_to_cases[category]:
+            category_to_cases[category].append(name)
+
+    category_counts = {cat: len(names) for cat, names in category_to_cases.items()}
+    total = sum(category_counts.values())
+    category_counts["total"] = total
+
+    # --- Define colors ---
+    color_map = {
+        "positive": "#27ae60",
+        "negative": "#e74c3c",
+        "workflow": "#2980b9",
+        "ui": "#f1c40f",
+        "edge case": "#8e44ad",
+        "others": "#95a5a6",
+        "backend": "#16a085",  # Teal Green (new)
+        "performance": "#d35400",  # Orange (new)
+        "accessibility": "#c0392b",  # Deep Red (new)
+        "total": "#7f8c8d"
+    }
+
+    # --- Define category definitions ---
+    category_meanings = {
+        "positive": "Covers standard and expected user behavior ensuring the application works as intended.",
+        "negative": "Tests invalid inputs or unexpected user actions to confirm the system handles errors gracefully.",
+        "workflow": "Validates complete end-to-end business processes that span multiple functionalities.",
+        "ui": "Ensures the user interface components (labels, buttons, alignment, responsiveness) meet design standards.",
+        "edge case": "Focuses on extreme or boundary conditions that test the robustness and limits of the system.",
+        "backend": "Validates APIs, data transformations, integrations, and server-side logic without UI involvement.",
+        "performance": "Measures response time, scalability, and system stability under different load conditions.",
+        "accessibility": "Ensures the application is usable by all users, including those with disabilities (WCAG compliance).",
+        "others": "Represents miscellaneous or uncategorized test cases not fitting into other specific groups.",
+        "total": "Sum of all test cases across categories."
+    }
+
+    # --- CSS styling ---
+    st.markdown("""
+        <style>
+            .testcase-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            .testcase-box {
+                width: 150px;
+                height: 70px;
+                border-radius: 10px;
+                color: white;
+                padding: 6px;
+                text-align: center;
+                position: relative;
+                box-shadow: 1px 2px 6px rgba(0,0,0,0.15);
+                transition: transform 0.2s ease-in-out;
+                font-family: 'Segoe UI', sans-serif;
+            }
+            .testcase-box:hover { transform: scale(1.05); }
+            .testcase-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+            .testcase-count { font-size: 20px; font-weight: 700; margin: 0; }
+            .tooltip {
+                visibility: hidden;
+                background-color: rgba(0, 0, 0, 0.85);
+                color: #fff;
+                text-align: left;
+                padding: 6px;
+                border-radius: 6px;
+                position: absolute;
+                z-index: 1;
+                bottom: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 220px;
+                font-size: 11px;
+                line-height: 1.3;
+            }
+            .testcase-box:hover .tooltip { visibility: visible; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("### 🧾 Category-wise Test Case Summary")
+
+    # --- Build category summary boxes ---
+    boxes = []
+    for cat, count in category_counts.items():
+        color = color_map.get(cat, "#34495e")
+        meaning = category_meanings.get(cat, "No description available.")
+        box_html = (
+            f"<div class='testcase-box' style='background-color:{color};'>"
+            f"<div class='testcase-title'>{cat.capitalize()}</div>"
+            f"<div class='testcase-count'>{count}</div>"
+            f"<div class='tooltip'>{meaning}</div>"
+            f"</div>"
+        )
+        boxes.append(box_html)
+
+    html = "<div class='testcase-container'>" + "".join(boxes) + "</div>"
+    st.markdown(html, unsafe_allow_html=True)
+    st.write(" ")
+
+    return category_counts
+
+def parse_and_display_testcases_categorywise_old(md_text):
+    import streamlit as st
+    import re
+    from collections import defaultdict
+
+    # --- Parse Markdown Table ---
+    rows = []
+    md_text = md_text.strip()
+    lines = [line for line in md_text.splitlines() if line.strip() and not re.match(r'^\|\s*-', line)]
+    buffer = ""
+
+    for line in lines:
+        if line.startswith("|"):
+            buffer += line + "\n"
+            if buffer.count("|") >= 8:  # expecting 7 columns
+                parts = re.split(r'\s*\|\s*', buffer.strip())
+                parts = [p.strip() for p in parts[1:-1]]
+                if len(parts) == 7:
+                    name = parts[0].strip().lower()
+                    category = parts[6].strip().lower()
+                    # --- ✅ Skip header or invalid row early ---
+                    if name == "name" or category == "category" or not parts[0]:
+                        buffer = ""
+                        continue
+                    # ✅ Parse only "category", ignore "type"
+                    rows.append({
+                        "name": parts[0],
+                        "step_number": parts[1],
+                        "description": parts[2],
+                        "expected": parts[3],
+                        "status": parts[4],
+                        "category": parts[6],  # <-- use only category column
+                    })
+                buffer = ""
+
+    # --- Group test cases by category (ignore 'type') ---
+    category_to_cases = defaultdict(list)
+    for row in rows:
+        name = row["name"].strip()
+        category = row["category"].strip().lower() if row["category"].strip() else "others"
+        # if category.lower() != "category" and name.lower() != "category":
+        #     if name not in category_to_cases[category]:
+        #         category_to_cases[category].append(name)
+        # else:
+        #     print("Skipped header row or invalid category")
+        if name not in category_to_cases[category]:
+            category_to_cases[category].append(name)
+
+    category_counts = {cat: len(names) for cat, names in category_to_cases.items()}
+    total = sum(category_counts.values())
+    category_counts["total"] = total
+
+    # --- Define colors ---
+    color_map = {
+        "positive": "#27ae60",
+        "negative": "#e74c3c",
+        "workflow": "#2980b9",
+        "ui": "#f1c40f",
+        "edge case": "#8e44ad",
+        "others": "#95a5a6",
+        "total": "#7f8c8d"
+    }
+
+    # --- CSS for uniform boxes ---
+    st.markdown("""
+        <style>
+            .testcase-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            .testcase-box {
+                width: 150px;
+                height: 70px;
+                border-radius: 10px;
+                color: white;
+                padding: 6px;
+                text-align: center;
+                position: relative;
+                box-shadow: 1px 2px 6px rgba(0,0,0,0.15);
+                transition: transform 0.2s ease-in-out;
+                font-family: 'Segoe UI', sans-serif;
+            }
+            .testcase-box:hover { transform: scale(1.05); }
+            .testcase-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+            .testcase-count { font-size: 20px; font-weight: 700; margin: 0; }
+            .tooltip {
+                visibility: hidden;
+                background-color: rgba(0, 0, 0, 0.85);
+                color: #fff;
+                text-align: left;
+                padding: 6px;
+                border-radius: 6px;
+                position: absolute;
+                z-index: 1;
+                bottom: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 220px;
+                font-size: 11px;
+                line-height: 1.3;
+            }
+            .testcase-box:hover .tooltip { visibility: visible; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("### 🧾 Category-wise Test Case Summary")
+
+    # --- Build boxes (no HTML spacing) ---
+    boxes = []
+    for cat, count in category_counts.items():
+        color = color_map.get(cat, "#34495e")
+        sample_cases = category_to_cases.get(cat, [])
+        sample_text = "<br>".join(sample_cases[:3]) if sample_cases else "No sample cases"
+        if len(sample_cases) > 3:
+            sample_text += f"<br><span style='color:#ccc;'>...and {len(sample_cases)-3} more</span>"
+
+        box_html = (
+            f"<div class='testcase-box' style='background-color:{color};'>"
+            f"<div class='testcase-title'>{cat.capitalize()}</div>"
+            f"<div class='testcase-count'>{count}</div>"
+            f"<div class='tooltip'>{sample_text}</div>"
+            f"</div>"
+        )
+        boxes.append(box_html)
+
+    html = "<div class='testcase-container'>" + "".join(boxes) + "</div>"
+    st.markdown(html, unsafe_allow_html=True)
+    # 🔹 Add one line space after the result
+    st.write(" ")
+
+    return category_counts
+
+def build_markdown_table(testcases):
+    """
+    Build a Markdown table from a list of test case dicts.
+    Groups by test case name automatically.
+    """
+    header = "| Test Case Name | Step Number | Test Step Description | Test Step Expected Result | Status | Type |\n"
+    header += "|----------------|-------------|-----------------------|---------------------------|--------|------|\n"
+
+    body = ""
+    for case in testcases:
+        body += f"| {case['name']} | {case['step_number']} | {case['description']} | {case['expected']} | {case['status']} | {case['type']} |\n"
+
+    return header + body
+def generate_testcases_with_retries(constructed_prompt, retries=5,target_count=20 ):
+    all_testcase_output = []
+    all_testcases = []
+    seen_steps = set()
+    all_raw_responses = ""
+
+    attempt = 0
+    while attempt < retries:
+        print(f"***********Iteration {attempt + 1}*****************")
+
+        # Build exclusion text for already generated cases
+        if all_testcases:
+            existing_names = set(c["name"] for c in all_testcases)
+            exclusion_text = (
+                "Already generated test cases:\n" + "\n".join(existing_names) +
+                "\nNow generate NEW test cases not in the above list. Continue numbering."
+            )
+            prompt = constructed_prompt + "\n\n" + exclusion_text
+        else:
+            prompt = constructed_prompt
+
+        # Call LLM
+        if model_type == "azureopenai":
+            print("Model Type is AzureOpenAi - tc generation")
+            response = get_queries_from_ai_updated(prompt)
+        else:
+            print("Model Type is gemini - tc generation")
+            response = get_queries_from_ai_updated_gemini(prompt)
+
+        all_raw_responses += "\n" + response
+        all_testcase_output.append(response)
+
+        # Parse Markdown rows robustly
+        new_cases = parse_testcases_from_markdown(response)
+        for case in new_cases:
+            step_key = (case["name"], case["step_number"])
+            if step_key not in seen_steps:
+                seen_steps.add(step_key)
+                all_testcases.append(case)
+
+        # Check if enough test cases are generated
+        if len(set(c["name"] for c in all_testcases)) >= target_count:
+            print(f"✅ Target count {target_count} reached.")
+            break
+        else:
+            attempt += 1
+            if attempt == retries:
+                # Extend retries dynamically
+                print("⚠️ Not enough test cases yet — extending retries by 1.")
+                retries += 1
+
+    return all_testcase_output
+
+
+def generate_testcases_dynamically(constructed_prompt, initial_retries=5, max_no_new_iterations=3):
+    """
+    Generate test cases dynamically using LLM until no new unique test cases are produced.
+
+    Args:
+        constructed_prompt (str): The base prompt for test case generation.
+        initial_retries (int): Initial number of retries if LLM does not produce enough cases.
+        max_no_new_iterations (int): Stop if no new test cases are generated after these many iterations.
+
+    Returns:
+        list: All unique test cases generated.
+        str: Concatenated raw responses from LLM.
+    """
+    all_testcases = []
+    seen_steps = set()
+    all_raw_responses = ""
+
+    attempt = 0
+    no_new_count = 0
+    retries = initial_retries
+
+    while True:
+        print(f"***********Iteration {attempt + 1}*****************")
+
+        # Build exclusion text for already generated cases
+        if all_testcases:
+            existing_names = set(c["name"] for c in all_testcases)
+            exclusion_text = (
+                    "Already generated test cases:\n" + "\n".join(existing_names) +
+                    "\nNow generate NEW test cases not in the above list. Continue numbering."
+            )
+            prompt = constructed_prompt + "\n\n" + exclusion_text
+        else:
+            prompt = constructed_prompt
+
+        # Call LLM
+        if model_type == "azureopenai":
+            response = get_queries_from_ai_updated(prompt)
+        else:
+            response = get_queries_from_ai_updated_gemini(prompt)
+
+        all_raw_responses += "\n" + response
+
+        # Parse Markdown rows robustly
+        new_cases = parse_testcases_from_markdown(response)
+
+        # Track how many new cases are added
+        new_added = 0
+        for case in new_cases:
+            step_key = (case["name"], case["step_number"])
+            if step_key not in seen_steps:
+                seen_steps.add(step_key)
+                all_testcases.append(case)
+                new_added += 1
+
+        print(f"New unique test cases added: {new_added}")
+
+        # Stop if no new cases generated for consecutive iterations
+        if new_added == 0:
+            no_new_count += 1
+            print(f"No new test cases this iteration ({no_new_count}/{max_no_new_iterations}).")
+            if no_new_count >= max_no_new_iterations:
+                print("✅ No new test cases generated in consecutive iterations — stopping.")
+                break
+        else:
+            no_new_count = 0
+
+        # Adaptive retry mechanism
+        attempt += 1
+        if attempt >= retries:
+            print("⚠️ Maximum attempts reached — extending retries by 1.")
+            retries += 1
+
+    return all_testcases
+
+
+def generate_testcases_with_dynamic_stop(constructed_prompt, max_testcases,
+                                         min_new_threshold,max_attempts=50):
+    """
+    Generate test cases dynamically, stopping when new unique test cases are too few.
+
+    Args:
+        constructed_prompt (str): Base prompt.
+        max_testcases (int): Safety cap to avoid infinite generation.
+        max_attempts (int): Maximum AI calls allowed.
+        min_new_threshold (int): Minimum new test cases required to continue generation.
+
+    Returns:
+        list: All unique test cases.
+        str: Concatenated raw responses.
+    """
+    all_testcases = []
+    seen_steps = set()
+    all_raw_responses = ""
+    llm_coverage_summary = ""  # LLM-generated coverage summary from previous iteration
+    attempt = 0
+
+    while attempt < max_attempts:
+        print(f"***********Iteration {attempt + 1}*****************")
+
+        # Build exclusion prompt using LLM-generated coverage summary from previous iteration
+        if llm_coverage_summary:
+            exclusion_text = (
+                f"Previously covered scenarios:\n{llm_coverage_summary}\n\n"
+                f"Generate ONLY test cases for NEW scenarios NOT already covered above. "
+                f"Continue numbering from TC{len(all_testcases) + 1:02d}."
+            )
+            prompt = constructed_prompt + "\n\n" + exclusion_text
+        else:
+            prompt = constructed_prompt
+
+        try:
+            response = get_queries_from_ai_updated(prompt) if model_type == "azureopenai" \
+                else llm_pepgenx(prompt)
+                #else get_queries_from_ai_updated_geminiget_queries_from_ai_updated_gemini(prompt)
+            if not response:
+                print("⚠️ Empty or None response from LLM. Skipping this iteration.")
+                attempt += 1
+                continue
+            all_raw_responses += "\n" + response
+
+            # Extract LLM-generated coverage summary for next iteration
+            if "## Coverage Summary" in response:
+                summary_parts = response.split("## Coverage Summary", 1)
+                llm_coverage_summary = summary_parts[1].strip()
+                print(f"Coverage Summary extracted ({len(llm_coverage_summary)} chars)")
+                # Use only the markdown table part for parsing
+                table_response = summary_parts[0]
+            else:
+                print("⚠️ No '## Coverage Summary' found in response — will use full response for parsing.")
+                table_response = response
+
+            # Parse test cases from table only (exclude coverage summary section)
+            try:
+                new_cases = parse_testcases_from_markdown(table_response)
+            except Exception as parse_err:
+                print(f"⚠️ Parsing error: {parse_err}. Skipping this response.")
+                attempt += 1
+                continue
+            new_added = 0
+            for case in new_cases:
+                # key = (case["name"], case["step_number"])
+                key = case["name"].strip().lower()
+                if key not in seen_steps:
+                    seen_steps.add(key)
+                    all_testcases.append(case)
+                    new_added += 1
+
+            print(f"New unique test cases added: {new_added} | Total: {len(all_testcases)}")
+
+            # Stop conditions
+            if new_added < min_new_threshold:
+                print(f"✅ Stopping: less than {min_new_threshold} new test cases generated.")
+                break
+            if len(all_testcases) >= max_testcases:
+                print(f"✅ Stopping: reached max_testcases limit ({max_testcases}).")
+                break
+        except Exception as e:
+            # Handle any AI or unexpected runtime exception
+            print(f"⚠️ Exception during AI call or processing: {e}. Skipping this iteration.")
+            # Optionally, you could also log it to a file
+            attempt += 1
+            continue
+        attempt += 1
+
+    return all_raw_responses
+
+
+# Script updated with new logic by May 14 2026 — replaced by LLM-based segmentation below
+# def _parse_action_segments(action_data): ...
+# def _parse_image_blocks(image_data_text): ...
+# def _match_images_to_segment(image_blocks, segment_label, segment_url): ...
+# (Python-based URL-parsing helpers — retired because action_data can be dict or string
+#  and blind line-splitting loses workflow context. LLM handles segmentation now.)
+
+
+def generate_testcases_with_chunking(navigation, image_data, action_data, requirements,
+                                     prompt_type="Test_case_generation"):
+    """
+    LLM-based smart chunked test case generation — May 14 2026.
+
+    Step 1 — Segmentation LLM call: sends full action_data + image_data to the
+              testcase_workflow_segmenter prompt → LLM returns JSON workflow segments,
+              each with its own action lines and relevant image keywords.
+    Phase 1 — Per-segment LLM calls: for each segment, filter image_data by keywords,
+              build focused prompt, ask for 3–5 test cases only. Dedup after each call.
+    Phase 2 — Workflow pass: full data, ask for 2–3 complete E2E test cases.
+    """
+    all_testcases     = []
+    seen_names        = set()
+    all_raw_responses = ""
+
+    # Normalise action_data — can arrive as dict {filename: content} or plain string
+    if isinstance(action_data, dict):
+        action_str = "\n".join(f"{k}:\n{v}" for k, v in action_data.items())
+    else:
+        action_str = action_data or ""
+
+    # ── STEP 1: LLM-based segmentation ───────────────────────────────────────
+    print("[Chunking] Step 1: Identifying workflow segments via LLM...")
+    segment_prompt   = generate_testcase_segment_prompt(action_str, image_data, requirements)
+    segment_response = get_queries_from_ai_updated(segment_prompt) if model_type == "azureopenai" \
+        else llm_pepgenx(segment_prompt)
+
+    segments = []
+    if segment_response:
+        try:
+            json_match = re.search(r'\[[\s\S]*\]', segment_response, re.DOTALL)
+            if json_match:
+                segments = json.loads(json_match.group(0))
+                print(f"[Chunking] {len(segments)} segment(s): "
+                      f"{[s.get('segment_name', '') for s in segments]}")
+        except Exception as e:
+            print(f"[Chunking] Segmentation parse error: {e} — using single-segment fallback.")
+
+    if not segments:
+        segments = [{"segment_name": "Full Workflow",
+                     "description":  "Complete recorded workflow",
+                     "actions":      action_str,
+                     "image_keywords": []}]
+
+    # ── PHASE 1: per-segment focused test cases ───────────────────────────────
+    for idx, segment in enumerate(segments):
+        label        = segment.get("segment_name", f"Segment_{idx + 1}")
+        action_chunk = segment.get("actions", "")
+        keywords     = segment.get("image_keywords", [])
+
+        # Filter image_data to only lines relevant to this segment
+        if keywords and image_data:
+            relevant = [l for l in image_data.split('\n')
+                        if any(kw.lower() in l.lower() for kw in keywords)]
+            image_chunk = '\n'.join(relevant) if relevant else image_data
+        else:
+            image_chunk = image_data or ""
+
+        base_prompt = generate_pom_from_excel_testcases(
+            prompt_type, navigation, image_chunk, action_chunk, requirements
+        )
+
+        next_num       = len(all_testcases) + 1
+        count_override = (
+            f"\n\n**SECTION OVERRIDE — Workflow segment: '{label}'**\n"
+            f"Generate exactly 3 to 5 test cases for THIS section only.\n"
+            f"Start numbering from TC{next_num:02d}.\n"
+            f"Focus strictly on the specific actions in this section."
+        )
+
+        exclusion = ""
+        if all_testcases:
+            covered   = "\n".join(f"- {c['name']}" for c in all_testcases)
+            exclusion = (
+                f"\n\nAlready covered (DO NOT duplicate functionality):\n{covered}\n"
+                f"Generate ONLY test cases for NEW functionality not already represented above.\n"
+                f"If this section's functionality is fully covered, return 0 test cases."
+            )
+
+        full_prompt = count_override + exclusion + "\n\n" + base_prompt
+
+        print(f"[Segment {idx + 1}/{len(segments)}] '{label}' — calling LLM...")
+        response = get_queries_from_ai_updated(full_prompt) if model_type == "azureopenai" \
+            else llm_pepgenx(full_prompt)
+
+        if not response:
+            print(f"[Segment {idx + 1}] Empty response — skipping.")
+            continue
+
+        all_raw_responses += "\n" + response
+
+        try:
+            new_cases = parse_testcases_from_markdown(response)
+        except Exception as e:
+            print(f"[Segment {idx + 1}] Parse error: {e}")
+            continue
+
+        added = 0
+        for case in new_cases:
+            key = case["name"].strip().lower()
+            if key not in seen_names:
+                seen_names.add(key)
+                all_testcases.append(case)
+                added += 1
+
+        print(f"[Segment {idx + 1}] +{added} new | Total so far: {len(all_testcases)}")
+
+    # ── PHASE 2: complete E2E workflow test cases ─────────────────────────────
+    print("[Workflow Pass] Generating complete end-to-end workflow test cases...")
+
+    workflow_base = generate_pom_from_excel_testcases(
+        prompt_type, navigation, image_data or "", action_str, requirements
+    )
+
+    next_num = len(all_testcases) + 1
+    covered  = "\n".join(f"- {c['name']}" for c in all_testcases) if all_testcases else "None"
+
+    workflow_override = (
+        f"\n\n**WORKFLOW PASS OVERRIDE**\n"
+        f"Generate 2 to 3 COMPLETE end-to-end workflow test cases that cover the ENTIRE recorded "
+        f"scenario from the very first action to the last, with every detailed step included.\n"
+        f"Start numbering from TC{next_num:02d}.\n"
+        f"These must be full-journey test cases spanning ALL pages — do NOT limit to a single page.\n\n"
+        f"Already generated (DO NOT repeat these functionalities):\n{covered}\n"
+        f"The workflow test cases must represent a DIFFERENT, complete journey not already listed above."
+    )
+
+    wf_response = get_queries_from_ai_testcases(workflow_base + workflow_override) if model_type == "azureopenai" \
+        else llm_pepgenx(workflow_base + workflow_override)
+
+    if wf_response:
+        all_raw_responses += "\n" + wf_response
+        try:
+            wf_cases = parse_testcases_from_markdown(wf_response)
+            added = 0
+            for case in wf_cases:
+                key = case["name"].strip().lower()
+                if key not in seen_names:
+                    seen_names.add(key)
+                    all_testcases.append(case)
+                    added += 1
+            print(f"[Workflow Pass] +{added} E2E cases | Grand total: {len(all_testcases)}")
+        except Exception as e:
+            print(f"[Workflow Pass] Parse error: {e}")
+    else:
+        print("[Workflow Pass] Empty response — skipping.")
+
+    return all_raw_responses
+
+
+def generate_testcases_with_retries_backup(constructed_prompt, retries=3, target_count=20):
+    all_testcase_output=[]
+    all_testcases = []
+    seen_steps = set()
+    all_raw_responses = ""
+
+    for i in range(retries):
+        print(f"***********Iteration {i}*****************")
+
+        # Build exclusion text for already generated cases
+        if all_testcases:
+            existing_names = set(c["name"] for c in all_testcases)
+            exclusion_text = (
+                "Already generated test cases:\n" + "\n".join(existing_names) +
+                "\nNow generate NEW test cases not in the above list. Continue numbering."
+            )
+            prompt = constructed_prompt + "\n\n" + exclusion_text
+        else:
+            prompt = constructed_prompt
+
+        # Call LLM
+        if model_type =="azureopenai":
+            print("Model Type is AzureOpenAi - tc genertaion")
+            response = get_queries_from_ai_updated(prompt)
+        else:
+            print("Model Type is gemini - tc genertaion")
+            response = get_queries_from_ai_updated_gemini(prompt)
+        all_raw_responses += "\n" + response
+        all_testcase_output.append(response)
+        # Parse Markdown rows robustly
+        new_cases = parse_testcases_from_markdown(response)
+        for case in new_cases:
+            step_key = (case["name"], case["step_number"])
+            if step_key not in seen_steps:
+                seen_steps.add(step_key)
+                all_testcases.append(case)
+
+        if len(set(c["name"] for c in all_testcases)) >= target_count:
+            break
+        else:
+            retries += 1
+
+    # Build Markdown table from all collected steps
+    #return build_markdown_table(all_testcases)
+    return all_testcase_output
+
+
+import json
+import re
+
+def categorize_testcases_with_full_requirements(
+    testcases, requirements=None, image_data=None, navigation=None
+):
+    """
+    Categorize test cases into Positive, Negative, Edge, UI, and Workflow using AI.
+    Ensures total_testcases matches input test case count by adding missing TCs to a category.
+    """
+
+    # --- Build requirement context ---
+    req_text = ""
+    if requirements:
+        req_text += "Textual Requirements:\n"
+        for idx, req in enumerate(requirements, 1):
+            truncated_req = req if len(req) < 200 else req[:200] + "..."
+            req_text += f"{idx}. {truncated_req}\n"
+
+    if image_data:
+        req_text += "\nImage Data:\n"
+        for idx, img in enumerate(image_data, 1):
+            truncated_img = img if len(img) < 200 else img[:200] + "..."
+            req_text += f"{idx}. {truncated_img}\n"
+
+    if navigation:
+        req_text += "\nNavigation Details:\n"
+        for idx, nav in enumerate(navigation, 1):
+            truncated_nav = nav if len(nav) < 200 else nav[:200] + "..."
+            req_text += f"{idx}. {truncated_nav}\n"
+
+    # --- Build test case text ---
+    testcase_text = "\n".join([f"- {t['name']}: {t.get('description', '')[:200]}" for t in testcases])
+
+    # --- AI Prompt ---
+    classification_prompt = f"""
+You are a QA test design classifier.
+
+⚠️ IMPORTANT: Respond ONLY with valid JSON.
+Return JSON exactly in this format:
+
+{{
+    "Positive": {{"count": <number>, "testcases": [{{"name": "...", "description": "..."}}]}},
+    "Negative": {{"count": <number>, "testcases": [{{"name": "...", "description": "..."}}]}},
+    "Edge": {{"count": <number>, "testcases": [{{"name": "...", "description": "..."}}]}},
+    "UI": {{"count": <number>, "testcases": [{{"name": "...", "description": "..."}}]}},
+    "Workflow": {{"count": <number>, "testcases": [{{"name": "...", "description": "..."}}]}},
+    "total_testcases": <total count>
+}}
+
+Information for AI:
+
+{req_text}
+
+Test cases:
+{testcase_text}
+"""
+
+    # --- Call LLM ---
+    if model_type == "azureopenai":
+        response = get_queries_from_ai_updated(classification_prompt)
+    else:
+        response = get_queries_from_ai_updated_gemini(classification_prompt)
+
+    # --- Safely extract JSON ---
+    try:
+        json_str = re.search(r'\{.*\}', response, re.DOTALL).group()
+        categories = json.loads(json_str)
+    except Exception:
+        print("⚠️ AI response not valid JSON — fallback to empty structure.")
+        categories = {
+            "Positive": {"count": 0, "testcases": []},
+            "Negative": {"count": 0, "testcases": []},
+            "Edge": {"count": 0, "testcases": []},
+            "UI": {"count": 0, "testcases": []},
+            "Workflow": {"count": 0, "testcases": []},
+            "total_testcases": 0
+        }
+
+    # --- Ensure total matches input test cases ---
+    input_tc_names = set(t["name"] for t in testcases)
+    categorized_tc_names = set()
+    for cat in ["Positive", "Negative", "Edge", "UI", "Workflow"]:
+        categorized_tc_names.update(tc["name"] for tc in categories.get(cat, {}).get("testcases", []))
+
+    missing_tcs = input_tc_names - categorized_tc_names
+    if missing_tcs:
+        # Add missing test cases to Positive category
+        for name in missing_tcs:
+            categories["Positive"]["testcases"].append({"name": name, "description": ""})
+        categories["Positive"]["count"] += len(missing_tcs)
+        print(f"⚠️ Added {len(missing_tcs)} missing test cases to Positive category")
+
+    # Update total_testcases
+    categories["total_testcases"] = sum(categories[cat]["count"] for cat in ["Positive", "Negative", "Edge", "UI", "Workflow"])
+
+    return categories
+
+
+import streamlit as st
+import pandas as pd
+
+
+def format_categories_for_ui(categories, sample_limit=3):
+    """
+    Convert full AI category output to a Streamlit-friendly format.
+    Shows total count but only a few sample test case names per category.
+
+    Args:
+        categories (dict): Output from AI categorization.
+        sample_limit (int): Max number of test case names to display per category.
+    """
+    simple_output = {}
+    total = 0
+
+    # Build simplified output with sample test cases
+    for cat in ["Positive", "Negative", "Edge", "UI", "Workflow"]:
+        cat_data = categories.get(cat, {"count": 0, "testcases": []})
+        count = cat_data.get("count", 0)
+        tcs = [tc["name"] for tc in cat_data.get("testcases", [])] if isinstance(cat_data.get("testcases", []),
+                                                                                 list) else []
+        sample_tcs = tcs[:sample_limit]  # Take only first few for display
+        simple_output[cat] = (count, sample_tcs)
+        total += count
+
+    simple_output["total_testcases"] = total
+
+    # Convert to DataFrame for display
+    rows = []
+    for cat in ["Positive", "Negative", "Edge", "UI", "Workflow"]:
+        count, tcs = simple_output.get(cat, (0, []))
+        rows.append({"Category": cat, "Count": count, "Test Cases": ", ".join(tcs)})
+
+    # Add total row
+    rows.append({"Category": "Total", "Count": simple_output["total_testcases"], "Test Cases": ""})
+
+    df = pd.DataFrame(rows)
+
+    # Streamlit display
+    st.title("Test Case Categories Overview")
+    st.table(df)
+
+
+def get_queries_from_ai_updated_again(formatted_summary, previous_output):
+    # Access the variables
+    api_key = os.getenv("AZURE_OPENAI_API_KEY")
+    endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+
+    # Set the environment variables explicitly if needed
+    os.environ["AZURE_OPENAI_API_KEY"] = api_key
+    os.environ["AZURE_OPENAI_ENDPOINT"] = endpoint
+
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+        max_tokens=4000,  # adjust depending on your model quota
+        temperature=0
+    )
+    prompt=formatted_summary+"please review the below output and don't generate test cases for those scenarios /n"+previous_output
+    message = HumanMessage(content=prompt)
+    output_value = model([message])
+    print(output_value)
+    return output_value.content
+
+def get_queries_from_ai_updated_gemini(formatted_summary):
+    # Access the variables
+    model = "gemini-2.5-pro"
+
+
+
+    response = client.chat.completions.create(model=model,
+                                          messages=[{"role": "user",
+                                                     "content": formatted_summary
+                                                     }
+                                                    ])
+
+    print(response)
+    return response.choices[0].message.content
+
+def get_queries_from_ai_testcases(formatted_summary):
+   print("going inside get_queries_from_ai_testcases")
+   model = "gpt-5"
+   if not formatted_summary or not isinstance(formatted_summary, str):
+        print("[ERROR] formatted_summary is empty or not a string")
+        return None
+   try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": formatted_summary}],
+            max_completion_tokens=25000,
+            timeout=600
+        )
+        print(response)
+        return response.choices[0].message.content
+   except Exception as e:
+        print(f"[ERROR] LLM call failed: {e}")
+        return None
+def get_queries_from_ai_updated(formatted_summary):
+   print("going inside get_queries_from_ai_updated")
+   model = "gpt-5-mini"
+   try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": formatted_summary}],
+            max_completion_tokens=25000,
+            timeout=600
+        )
+        print(response)
+        return response.choices[0].message.content
+   except Exception as e:
+        print(f"[ERROR] LLM call failed: {e}")
+        return None
+# def get_queries_from_ai_updated(formatted_summary):
+#
+#
+#     model = AzureChatOpenAI(
+#         openai_api_version="2023-05-15",
+#         azure_deployment="qepracticekey",
+#         max_tokens=4000,  # adjust depending on your model quota
+#         temperature=0
+#     )
+#     message = HumanMessage(content=formatted_summary)
+#     output_value = model([message])
+#     print(output_value)
+#     return output_value.content
+
+def markdown_to_dataframe(markdown_text):
+    # Extract lines that look like markdown rows
+    lines = markdown_text.strip().splitlines()
+    table_lines = [line for line in lines if "|" in line and not line.strip().startswith("---")]
+
+    if len(table_lines) < 2:
+        print("⚠️ No valid markdown table found.")
+        return pd.DataFrame()
+
+    # Clean up each line
+    cleaned_lines = [re.sub(r"^\s*\|\s*|\s*\|\s*$", "", line).strip() for line in table_lines]
+    cleaned_lines = [re.sub(r"\s*\|\s*", ",", line) for line in cleaned_lines]
+
+    csv_data = "\n".join(cleaned_lines)
+
+    print("🔍 Cleaned CSV-like content:\n", csv_data)
+
+    # Use StringIO to load into DataFrame
+    try:
+        df = pd.read_csv(StringIO(csv_data))
+        return df
+    except Exception as e:
+        print(f"❌ Failed to convert markdown to DataFrame: {e}")
+        return pd.DataFrame()
+# def covert_response_to_testcases(markdown_text,test_collection):
+#     # STEP 1: Strip markdown code fencing (``` or ```markdown)
+#     if markdown_text.startswith("```"):
+#         markdown_text = "\n".join(
+#             line for line in markdown_text.splitlines()
+#             if not line.strip().startswith("```")
+#         )
+#     # STEP 2: Clean and parse markdown table
+#     lines = markdown_text.strip().split('\n')
+#     cleaned_lines = [line for line in lines if not set(line.strip()).issubset(set('|- '))]
+#     cleaned_text = "\n".join(cleaned_lines)
+#
+#     df = pd.read_csv(StringIO(cleaned_text), sep='|', engine='python')
+#     df = df.dropna(axis=1, how='all')
+#     df.columns = [col.strip() for col in df.columns]
+#     # df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+#     for col in df.select_dtypes(include='object').columns:
+#         df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+#
+#     # STEP 3: Fill missing Test Case Names
+#     df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+#
+#
+#     # STEP 5: Write each test case into a separate Excel file
+#     for test_case, group in df.groupby("Test Case Name"):
+#         file_name = f"{test_case.strip()[:50]}.xlsx"  # Truncate for safety
+#         safe_file_name = "".join(c for c in file_name if c.isalnum() or c in "._- ()").rstrip()
+#         path = os.path.join(test_collection, safe_file_name)
+#         group.to_excel(path, index=False)
+#
+#     print(f"✅ Created individual Excel files in folder: {output_folder}")
+
+def clean_table_lines(raw_markdown):
+    cleaned_lines = []
+    for line in raw_markdown.strip().splitlines():
+        line = line.strip()
+        if "|" in line and not set(line).issubset(set("|- ")) and line.count("|") >= 3:
+            cleaned_lines.append(line.strip("|").strip())  # Remove leading/trailing pipes
+    return cleaned_lines
+def covert_response_to_testcases(markdown_text, test_collection, output_file="SauceDemo"+generate_random_prefix()+".xlsx"):
+    print("\n🚀 Starting test case parsing...")
+
+    # normalize input
+    if isinstance(markdown_text, list):
+        markdown_text = "\n".join(str(line) for line in markdown_text)
+    elif not isinstance(markdown_text, str):
+        markdown_text = str(markdown_text)
+
+    # remove triple-backtick wrapper if present
+    if markdown_text.startswith("```"):
+        markdown_text = "\n".join(
+            line for line in markdown_text.splitlines()
+            if not line.strip().startswith("```")
+        )
+
+    # helper: sanitize sheet name to be Excel-compatible (max 31 chars, no forbidden chars)
+    def _sanitize_sheet_name(name: str, fallback_prefix="Sheet"):
+        safe = re.sub(r'[\[\]\*:/\\\?]', '_', str(name).strip())
+        safe = safe[:31] if safe else fallback_prefix
+        if not safe:
+            safe = fallback_prefix
+        return safe
+
+    # Clean AI formatted table lines (user's helper)
+    table_lines = clean_table_lines(markdown_text)
+
+    writer = None
+    excel_path = None
+    parsed_any = False
+
+    # prepare file writer only if saving to file
+    if source == "file":
+        if not os.path.exists(test_collection):
+            os.makedirs(test_collection)
+            print(f"📁 Created output directory: {test_collection}")
+        excel_path = os.path.join(test_collection, output_file)
+        writer = pd.ExcelWriter(excel_path, engine="openpyxl")
+
+    try:
+        # STEP 1: Single table format
+        if len(table_lines) >= 2 and "Test Case Name" in table_lines[0]:
+            table_text = "\n".join(table_lines)
+            try:
+                df = pd.read_csv(StringIO(table_text), sep='|', engine='python', on_bad_lines='skip')
+                df = df.dropna(axis=1, how='all')
+                df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+                for col in df.select_dtypes(include='object').columns:
+                    df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+                if 'Test Case Name' not in df.columns:
+                    raise ValueError("'Test Case Name' column missing.")
+
+                df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+
+                for test_case, group in df.groupby('Test Case Name'):
+                    sheet_name = _sanitize_sheet_name(test_case)
+                    parsed_any = True
+                    if source == "file":
+                        group.to_excel(writer, sheet_name=sheet_name, index=False)
+                        print(f"✅ Added sheet: {sheet_name}")
+                    elif source == "database":
+                        db_handler.save_testcases_to_db(sheet_name, group, "sathanantham")
+                        print(f"✅ Saved to DB: {sheet_name}")
+
+                # If single-table parsed, finalize and return
+                if parsed_any:
+                    if source == "file" and writer:
+                        writer.close()
+                        print(f"\n✅ Successfully saved {df['Test Case Name'].nunique()} test cases in {excel_path}")
+                        #st.write(f"\n✅ Successfully saved {df['Test Case Name'].nunique()} test cases in {excel_path}")
+                    elif source == "database":
+                        print(f"\n✅ Successfully saved {df['Test Case Name'].nunique()} test cases to the database.")
+                        #st.write(f"\n✅ Successfully saved {df['Test Case Name'].nunique()} test cases to the database.")
+                    return
+
+            except Exception as e:
+                print(f"❌ Failed to parse single-table format: {e}")
+                print("🔁 Attempting markdown section fallback...")
+
+        # STEP 2: Fallback to splitting by markdown sections
+        test_cases = re.split(r'####\s+\*\*(.*?)\*\*', markdown_text)
+        if len(test_cases) < 3:
+            print("❌ No valid markdown headings found either. Exiting.")
+            return
+
+        for i in range(1, len(test_cases), 2):
+            test_case_name = test_cases[i].strip()
+            test_case_body = test_cases[i + 1]
+
+            lines = []
+            for line in test_case_body.strip().splitlines():
+                ln = line.strip()
+                if "|" in ln and not set(ln).issubset(set("|- ")):
+                    lines.append(ln)
+
+            if not lines:
+                print(f"⚠️ No valid table in: {test_case_name}")
+                continue
+
+            try:
+                df = pd.read_csv(StringIO("\n".join(lines)), sep='|', engine='python')
+                df = df.dropna(axis=1, how='all')
+                df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+
+                for col in df.select_dtypes(include='object').columns:
+                    df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+                if 'Test Case Name' not in df.columns:
+                    df.insert(0, 'Test Case Name', test_case_name)
+                else:
+                    df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+
+                for test_case, group in df.groupby('Test Case Name'):
+                    sheet_name = _sanitize_sheet_name(test_case)
+                    parsed_any = True
+                    if source == "file":
+                        group.to_excel(writer, sheet_name=sheet_name, index=False)
+                        print(f"✅ Added sheet: {sheet_name}")
+                    elif source == "database":
+                        db_handler.save_testcases_to_db(sheet_name, group, "sathanantham")
+                        print(f"✅ Saved to DB: {sheet_name}")
+
+            except Exception as e:
+                print(f"❌ Failed to parse section: {test_case_name}")
+                print(f"   Error: {e}")
+
+    finally:
+        # finalize based on source
+        if source == "file":
+            if writer:
+                try:
+                    writer.close()
+                except Exception:
+                    pass
+            if excel_path and parsed_any:
+                print(f"\n✅ Completed saving all test cases in one Excel: {excel_path}")
+                st.write(f"\n✅ Completed saving all test cases in one Excel: {excel_path}")
+            else:
+                print("\n⚠️ No test cases were parsed to save as Excel.")
+        elif source == "database":
+            if parsed_any:
+                print(f"\n✅ Completed saving all test cases to the database.")
+                st.write(f"\n✅ Completed saving all test cases to the database.")
+            else:
+                print("\n⚠️ No test cases were parsed to save to the database.")
+
+
+def covert_response_to_testcases_single_sheet(markdown_text, test_collection, output_file="SauceDemo"+generate_random_prefix()+".xlsx"):
+    print("\n🚀 Starting test case parsing (Single Sheet Version)...")
+
+    # Normalize input
+    if isinstance(markdown_text, list):
+        markdown_text = "\n".join(str(line) for line in markdown_text)
+    elif not isinstance(markdown_text, str):
+        markdown_text = str(markdown_text)
+
+    # Remove code block wrapper if present
+    if markdown_text.startswith("```"):
+        markdown_text = "\n".join(
+            line for line in markdown_text.splitlines()
+            if not line.strip().startswith("```")
+        )
+
+    all_dfs = []  # collect all dataframes here
+
+    # Clean AI formatted table lines
+    table_lines = clean_table_lines(markdown_text)
+
+    # STEP 1: Try single-table format
+    if len(table_lines) >= 2 and "Test Case Name" in table_lines[0]:
+        try:
+            df = pd.read_csv(StringIO("\n".join(table_lines)), sep='|', engine='python', on_bad_lines='skip')
+            df = df.dropna(axis=1, how='all')
+            df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+            for col in df.select_dtypes(include='object').columns:
+                df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+            all_dfs.append(df)
+        except Exception as e:
+            print(f"❌ Failed to parse single-table format: {e}")
+            print("🔁 Attempting markdown section fallback...")
+
+    # STEP 2: Fallback - multiple markdown sections
+    if not all_dfs:
+        test_cases = re.split(r'####\s+\*\*(.*?)\*\*', markdown_text)
+        if len(test_cases) < 3:
+            print("❌ No valid markdown headings found. Exiting.")
+            return
+
+        for i in range(1, len(test_cases), 2):
+            test_case_name = test_cases[i].strip()
+            test_case_body = test_cases[i + 1]
+
+            lines = []
+            for line in test_case_body.strip().splitlines():
+                ln = line.strip()
+                if "|" in ln and not set(ln).issubset(set("|- ")):
+                    lines.append(ln)
+
+            if not lines:
+                print(f"⚠️ No valid table in: {test_case_name}")
+                continue
+
+            try:
+                df = pd.read_csv(StringIO("\n".join(lines)), sep='|', engine='python')
+                df = df.dropna(axis=1, how='all')
+                df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+
+                for col in df.select_dtypes(include='object').columns:
+                    df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+                if 'Test Case Name' not in df.columns:
+                    df.insert(0, 'Test Case Name', test_case_name)
+                else:
+                    df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+
+                all_dfs.append(df)
+
+            except Exception as e:
+                print(f"❌ Failed to parse section: {test_case_name}")
+                print(f"   Error: {e}")
+
+    # Merge all dataframes
+    if not all_dfs:
+        print("⚠️ No valid test cases to save.")
+        return
+
+    final_df = pd.concat(all_dfs, ignore_index=True)
+
+    # Save logic
+    if source == "file":
+        if not os.path.exists(test_collection):
+            os.makedirs(test_collection)
+            print(f"📁 Created output directory: {test_collection}")
+
+        excel_path = os.path.join(test_collection, output_file)
+        final_df.to_excel(excel_path, index=False, sheet_name="All_Test_Cases")
+        print(f"✅ Saved all test cases in single sheet: {excel_path}")
+        st.write(f"✅ Saved all test cases in single sheet: {excel_path}")
+
+    elif source == "database":
+        db_handler.save_testcases_to_db("All_Test_Cases", final_df, "sathanantham")
+        print("✅ Saved all test cases in single sheet to DB")
+        st.write("✅ Saved all test cases in single sheet to DB")
+    return excel_path
+def covert_response_to_testcases_single_file(markdown_text, test_collection):
+    print("\n🚀 Starting test case parsing...")
+
+    if source == "file":
+        if not os.path.exists(test_collection):
+            os.makedirs(test_collection)
+            print(f"📁 Created output directory: {test_collection}")
+    if isinstance(markdown_text, list):
+        markdown_text = "\n".join(str(line) for line in markdown_text)
+
+    elif not isinstance(markdown_text, str):
+        markdown_text = str(markdown_text)
+    if markdown_text.startswith("```"):
+        markdown_text = "\n".join(
+            line for line in markdown_text.splitlines()
+            if not line.strip().startswith("```")
+        )
+
+    # Fix 1: Clean up AI-format table lines
+    table_lines = clean_table_lines(markdown_text)
+
+    if len(table_lines) >= 2 and "Test Case Name" in table_lines[0]:
+        table_text = "\n".join(table_lines)
+        try:
+            df = pd.read_csv(StringIO(table_text), sep='|', engine='python', on_bad_lines='skip')
+            df = df.dropna(axis=1, how='all')
+            df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+            for col in df.select_dtypes(include='object').columns:
+                df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+            if 'Test Case Name' not in df.columns:
+                raise ValueError("'Test Case Name' column missing.")
+
+            df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+
+            for test_case, group in df.groupby('Test Case Name'):
+                file_name = f"{test_case.strip()[:50]}.xlsx"
+                safe_file_name = "".join(c for c in file_name if c.isalnum() or c in "._- ()").rstrip()
+
+                if source == "file":
+                    path = os.path.join(test_collection, safe_file_name)
+                    group.to_excel(path, index=False)
+                    print(f"✅ Saved to file: {safe_file_name}")
+                elif source == "database":
+                    #content_str = group.to_csv(index=False)
+                    db_handler.save_testcases_to_db(safe_file_name, group, "sathanantham")
+                    #db_handler.save_testcases_to_db(safe_file_name[:50], content_str, "sathanantham")
+                    print(f"✅ Saved to DB: {safe_file_name}")
+
+            print(f"\n✅ Successfully saved {df['Test Case Name'].nunique()} test case files.")
+            #st.write(f"\n✅ Individual test cases are Successfully saved {df['Test Case Name'].nunique()} test case files.")
+            st.write(f"\n✅ Individual test cases are successfully saved.")
+            return
+
+        except Exception as e:
+            print(f"❌ Failed to parse single-table format: {e}")
+            print("🔁 Attempting markdown section fallback...")
+
+    # STEP 2: Fallback to splitting by markdown sections
+    test_cases = re.split(r'####\s+\*\*(.*?)\*\*', markdown_text)
+    if len(test_cases) < 3:
+        print("❌ No valid markdown headings found either. Exiting.")
+        return
+
+    for i in range(1, len(test_cases), 2):
+        test_case_name = test_cases[i].strip()
+        test_case_body = test_cases[i + 1]
+
+        lines = []
+        for line in test_case_body.strip().splitlines():
+            line = line.strip()
+            if "|" in line and not set(line).issubset(set("|- ")):
+                lines.append(line)
+
+        if not lines:
+            print(f"⚠️ No valid table in: {test_case_name}")
+            continue
+
+        table_text = "\n".join(lines)
+
+        try:
+            df = pd.read_csv(StringIO(table_text), sep='|', engine='python')
+            df = df.dropna(axis=1, how='all')
+            df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+
+            for col in df.select_dtypes(include='object').columns:
+                df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+            if 'Test Case Name' not in df.columns:
+                df.insert(0, 'Test Case Name', test_case_name)
+            else:
+                df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+            for test_case, group in df.groupby('Test Case Name'):
+                safe_file_name = "".join(c for c in test_case[:50] if c.isalnum() or c in "._- ()").rstrip()
+
+                if source == "file":
+                    path = os.path.join(test_collection, safe_file_name + ".xlsx")
+                    group.to_excel(path, index=False)
+                    print(f"✅ Saved to file: {safe_file_name}")
+                elif source == "database":
+                    #content_str = group.to_csv(index=False)
+                    db_handler.save_testcases_to_db(safe_file_name, group, "sathanantham")
+                    #db_handler.save_testcases_to_db(safe_file_name, content_str, "sathanantham")
+                    print(f"✅ Saved to DB: {safe_file_name}")
+
+        except Exception as e:
+            print(f"❌ Failed to parse section: {test_case_name}")
+            print(f"   Error: {e}")
+
+    if source == "file":
+        print(f"\n✅ Completed saving all test cases to folder: {test_collection}")
+        st.write(f"\n✅ Completed saving all individual test cases to folder: {test_collection}")
+    elif source == "database":
+        print(f"\n✅ Completed saving all test cases to the database.")
+        st.write(f"\n✅ Completed saving all individual test cases to the database.")
+
+def covert_response_to_testcases_1(markdown_text, test_collection):
+    print("\n🚀 Starting test case parsing...")
+
+    # Ensure output directory exists
+    if not os.path.exists(test_collection):
+        os.makedirs(test_collection)
+        print(f"📁 Created output directory: {test_collection}")
+
+    # Remove markdown code fences
+    if markdown_text.startswith("```"):
+        markdown_text = "\n".join(
+            line for line in markdown_text.splitlines()
+            if not line.strip().startswith("```")
+        )
+
+    # STEP 1: Try to detect if it's a big single table
+    table_lines = []
+    for line in markdown_text.strip().splitlines():
+        line = line.strip()
+        if "|" in line and not set(line).issubset(set("|- ")):
+            table_lines.append(line)
+
+    if len(table_lines) >= 2 and "Test Case Name" in table_lines[0]:
+        # Likely a single big table
+        table_text = "\n".join(table_lines)
+        try:
+            df = pd.read_csv(StringIO(table_text), sep='|', engine='python')
+            df = df.dropna(axis=1, how='all')
+            # df.columns = [col.strip() for col in df.columns]
+            df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+            for col in df.select_dtypes(include='object').columns:
+                df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+            # Validate 'Test Case Name'
+            if 'Test Case Name' not in df.columns:
+                raise ValueError("'Test Case Name' column missing.")
+
+            df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+
+            # Group by 'Test Case Name'
+            for test_case, group in df.groupby('Test Case Name'):
+                file_name = f"{test_case.strip()[:50]}.xlsx"
+                safe_file_name = "".join(c for c in file_name if c.isalnum() or c in "._- ()").rstrip()
+                # path = os.path.join(test_collection, safe_file_name)
+                # group.to_excel(path, index=False)
+                # print(f"✅ Saved: {safe_file_name}")
+                if source == "file":
+                    path = os.path.join(test_collection, safe_file_name)
+                    df.to_excel(path, index=False)
+                    print(f"✅ Saved to file: {safe_file_name}")
+                elif source == "database":
+                    #content_str = df.to_csv(index=False)
+                    content_str = group.to_csv(index=False)
+                    db_handler.save_testcases_to_db(safe_file_name[:50], content_str, "sathanantham")
+                    print(f"✅ Saved to DB: {safe_file_name}")
+
+            print(f"\n✅ Successfully saved {df['Test Case Name'].nunique()} test case files.")
+            return
+
+        except Exception as e:
+            print(f"❌ Failed to parse single-table format: {e}")
+            print("🔁 Attempting markdown section fallback...")
+
+    # STEP 2: Fallback to splitting by markdown sections (#### **Test Case Name**)
+    test_cases = re.split(r'####\s+\*\*(.*?)\*\*', markdown_text)
+    if len(test_cases) < 3:
+        print("❌ No valid markdown headings found either. Exiting.")
+        return
+
+    for i in range(1, len(test_cases), 2):
+        test_case_name = test_cases[i].strip()
+        test_case_body = test_cases[i + 1]
+
+        lines = []
+        for line in test_case_body.strip().splitlines():
+            line = line.strip()
+            if "|" in line and not set(line).issubset(set("|- ")):
+                lines.append(line)
+
+        if not lines:
+            print(f"⚠️ No valid table in: {test_case_name}")
+            continue
+
+        table_text = "\n".join(lines)
+
+        try:
+            df = pd.read_csv(StringIO(table_text), sep='|', engine='python')
+            df = df.dropna(axis=1, how='all')
+            # df.columns = [col.strip() for col in df.columns]
+            df.columns = [re.sub(r'\*+', '', col.strip()) for col in df.columns]
+
+            for col in df.select_dtypes(include='object').columns:
+                df[col] = df[col].map(lambda x: x.strip() if isinstance(x, str) else x)
+
+            if 'Test Case Name' not in df.columns:
+                df.insert(0, 'Test Case Name', test_case_name)
+            else:
+                df['Test Case Name'] = df['Test Case Name'].replace('', pd.NA).ffill()
+
+            file_name = f"{test_case_name.strip()[:50]}.xlsx"
+            safe_file_name = "".join(c for c in file_name if c.isalnum() or c in "._- ()").rstrip()
+            # path = os.path.join(test_collection, safe_file_name)
+            # df.to_excel(path, index=False)
+            # print(f"✅ Saved: {safe_file_name}")
+            if source == "file":
+                path = os.path.join(test_collection, safe_file_name)
+                df.to_excel(path, index=False)
+                print(f"✅ Saved to file: {safe_file_name}")
+            elif source == "database":
+                #content_str = df.to_csv(index=False)
+                content_str = group.to_csv(index=False)
+                db_handler.save_testcases_to_db(test_case_name[:50], content_str, "sathanantham")
+                print(f"✅ Saved to DB: {test_case_name}")
+
+        except Exception as e:
+            print(f"❌ Failed to parse section: {test_case_name}")
+            print(f"   Error: {e}")
+
+    print(f"\n✅ Completed saving all test cases to: {test_collection}")
+
+def create_testcase_in_Excel(raw_response, test_location):
+    os.makedirs(test_location, exist_ok=True)
+
+    df = markdown_to_dataframe(raw_response)
+
+    if df.empty:
+        print("⚠️ No test cases found in the markdown.")
+        return
+
+    print("✅ Parsed DataFrame:\n", df)
+
+    for name, group in df.groupby("Test Case Name"):
+        safe_name = name.replace(" ", "_").replace("/", "_").strip()
+        file_path = os.path.join(test_location, f"{safe_name}.xlsx")
+        group.to_excel(file_path, index=False)
+
+    print(f"✅ {len(df['Test Case Name'].unique())} test cases saved in: {test_location}")
+
+import io
+def extract_testcase_context_from_excel_file(file_obj):
+    try:
+        # If it's a string (file path), let pandas handle it
+        if isinstance(file_obj, str):
+            df = pd.read_excel(file_obj)
+
+        # If it's a file-like object (e.g., from Streamlit), decode to BytesIO
+        else:
+            file_bytes = file_obj.read()
+            df = pd.read_excel(io.BytesIO(file_bytes))
+
+        test_case_name = df['Test Case Name'][0]
+        page_name = df['Page'][0] if 'Page' in df.columns else None
+        actions = df['Action'].dropna().tolist() if 'Action' in df.columns else []
+        expected = df['Expected Result'].dropna().tolist() if 'Expected Result' in df.columns else []
+
+        return {
+            "test_case_name": test_case_name,
+            "page_name": page_name,
+            "actions": actions,
+            "expected_results": expected
+        }
+
+    except Exception as e:
+        print(f"❌ Error extracting test case context: {e}")
+        return {
+            "test_case_name": "",
+            "page_name": "",
+            "actions": [],
+            "expected_results": []
+        }
+
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+def extract_text_from_pdf(uploaded_pdf):
+    text = ""
+    pdf_reader = PyPDF2.PdfReader(uploaded_pdf)
+    num_pages = len(pdf_reader.pages)
+    for page_number in range(num_pages):
+        page = pdf_reader.pages[page_number]
+        # Extract text and remove non-alphanumeric characters
+        text += re.sub(r'\W+', ' ', page.extract_text())
+    print("text extracted"+text)
+    return text
+
+
+# def extract_text_from_document(uploaded_file, filename):
+#     text = ""
+#
+#     if filename.lower().endswith(".pdf"):
+#         # PDF Extraction
+#         pdf_reader = PyPDF2.PdfReader(uploaded_file)
+#         for page in pdf_reader.pages:
+#             extracted = page.extract_text()
+#             if extracted:
+#                 text += re.sub(r'\W+', ' ', extracted)
+#
+#     elif filename.lower().endswith(".docx"):
+#         # Word Document Extraction
+#         text_content = docx2txt.process(uploaded_file)
+#         text += re.sub(r'\W+', ' ', text_content)
+#
+#     elif filename.lower().endswith(".txt"):
+#         # Plain Text File Extraction
+#         text_content = uploaded_file.read().decode("utf-8", errors="ignore")
+#         text += re.sub(r'\W+', ' ', text_content)
+#
+#     else:
+#         raise ValueError("Unsupported file type. Only PDF, DOCX, and TXT are supported.")
+#
+#     print("✅ Text extracted:", text)
+#     return text
+def extract_text_from_document(uploaded_file, filename):
+    text = ""
+
+    filename_lower = filename.lower()
+
+    try:
+        if filename_lower.endswith(".pdf"):
+            # PDF Extraction
+            pdf_reader = PyPDF2.PdfReader(uploaded_file)
+            for page in pdf_reader.pages:
+                extracted = page.extract_text()
+                if extracted:
+                    text += re.sub(r'\W+', ' ', extracted)
+
+        elif filename_lower.endswith(".docx"):
+            # Word Document Extraction
+            text_content = docx2txt.process(uploaded_file)
+            text += re.sub(r'\W+', ' ', text_content)
+
+        elif filename_lower.endswith(".txt"):
+            # Plain Text File Extraction
+            text_content = uploaded_file.read().decode("utf-8", errors="ignore")
+            text += re.sub(r'\W+', ' ', text_content)
+
+        elif filename_lower.endswith((".xlsx", ".xls")):
+            # Excel Extraction (all sheets, all cells)
+            df_dict = pd.read_excel(uploaded_file, sheet_name=None)
+            for sheet_name, df in df_dict.items():
+                for col in df.columns:
+                    for cell in df[col]:
+                        if pd.notna(cell):
+                            text += re.sub(r'\W+', ' ', str(cell)) + " "
+        else:
+            # Unsupported file type
+            return ""
+
+    except Exception as e:
+        print(f"❌ Error extracting text from {filename}: {e}")
+
+    print("✅ Text extracted:", text[:200], "...")  # Show only first 200 chars
+    return text
+
+
+def get_queries_from_ai_file_extract(uploaded_pdf):
+    os.environ["AZURE_OPENAI_API_KEY"] = "4fed2bedb59744a99b0424622f6d9d1b"
+    os.environ["AZURE_OPENAI_ENDPOINT"] = "https://qepracticekey.openai.azure.com/"
+    extracted_text = extract_text_from_pdf(uploaded_pdf)
+
+    val2 = """
+Act as Functional Test Case Generator. Based on a given Requirement, create detailed and comprehensive test cases using the Orthogonal Array technique. Each test case should have multiple steps, covering a sequence of actions to verify functionality. Use the following columns in the output Excel sheet: 
+- Test Case Name
+- Step Number
+- Test Step Description
+- Test Step Expected Result
+- Status (set as 'New')
+- Type (set as 'Manual') 
+
+Ensure that each test case contains:
+- Multiple detailed steps with clear descriptions of actions to perform.
+- Expected results for each step, specifying the criteria for a successful outcome.
+- Coverage of both Positive and Negative scenarios, highlighting edge cases and valid/invalid inputs.
+- Sequential numbering of steps, ensuring clarity in the flow of operations.
+- The final test cases should verify all combinations of parameters from the Orthogonal Array, ensuring exhaustive coverage of pairwise interactions.
+
+Format:
+-Table
+
+Include examples where applicable.
+Create the test cases in the similar format with the following requirement:
+""" + extracted_text[:8000]
+
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+    )
+    message = HumanMessage(
+        content=val2
+    )
+    output_value = model([message])
+    return (output_value.content)
+
+
+def extract_page_file_info_from_file(file_obj):
+    try:
+        # Read actual content of the file
+        content = file_obj.read().decode('utf-8')  # decode if it's a file-like object from Streamlit
+
+        # Parse the code content, not the file name
+        tree = ast.parse(content)
+
+        methods = []
+        xpaths = []
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef):
+                methods.append(node.name)
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and isinstance(node.value, ast.Call):
+                        val_str = ast.unparse(node.value)
+                        if "xpath" in val_str.lower():
+                            xpaths.append((target.id, val_str))
+
+        return {
+            "methods": methods,
+            "xpaths": xpaths
+        }
+
+    except Exception as e:
+        print(f"Error parsing file: {e}")
+        return {
+            "methods": [],
+            "xpaths": []
+        }
+
+
+def push_file_to_github(file_path, file_content, repo, branch):
+    try:
+        existing = repo.get_contents(file_path, ref=branch)
+        repo.update_file(
+            path=file_path,
+            message=f"Update {file_path}",
+            content=str(file_content),
+            sha=existing.sha,
+            branch=branch
+        )
+        st.success(f"✅ Updated: `{file_path}`")
+    # except GithubException as e:
+    #     if e.status == 404:
+    except gitlab.GitlabGetError as e:
+        if e.response_code == 404:
+            # File doesn't exist – create it
+            repo.create_file(
+                path=file_path,
+                message=f"Upload {file_path}",
+                content=str(file_content),
+                branch=branch
+            )
+            st.success(f"🆕 Created: `{file_path}`")
+        else:
+            st.error(f"❌ Error for `{file_path}`: {e.data['message']}")
+
+
+def push_file_to_gitlab(file_path, file_content, repo, branch):
+    try:
+        # Check if file already exists in GitLab
+        file = repo.files.get(file_path=file_path, ref=branch)
+
+        # File exists — update it
+        file.content = str(file_content)
+        file.save(branch=branch, commit_message=f"Update {file_path}")
+        st.success(f"✅ Updated: `{file_path}`")
+
+    except gitlab.exceptions.GitlabGetError as e:
+        if e.response_code == 404:
+            # File doesn't exist — create it
+            repo.files.create({
+                'file_path': file_path,
+                'branch': branch,
+                'content': str(file_content),
+                'commit_message': f"Upload {file_path}"
+            })
+            st.success(f"🆕 Created: `{file_path}`")
+        else:
+            st.error(f"❌ GitLab error for `{file_path}`: {e.error_message}")
+
+
+def deduplicate_element_records(elements):
+    seen = set()
+    deduped = []
+    for el in elements:
+        # Pick a unique identifier
+        unique_key = el.get("id") or el.get("name") or el.get("attributes", {}).get("data-test") or el.get("attributes", {}).get("placeholder")
+        if unique_key and unique_key not in seen:
+            deduped.append(el)
+            seen.add(unique_key)
+    return deduped
+
+
+def generate_hoverable_image_buttons(image_folder, image_list, preview_width=300, preview_height=225):
+    html_buttons = ""
+
+    for image_name in image_list:
+        image_path = os.path.join(image_folder, image_name).replace("\\", "/")
+        with open(image_path, "rb") as img_file:
+            encoded_image = base64.b64encode(img_file.read()).decode()
+
+        html_buttons += f"""
+        <div class="hover-img-button" style="display:inline-block; margin:20px; text-align:center;">
+            <button 
+                class="img-btn"
+                data-img="data:image/png;base64,{encoded_image}"
+                data-name="{image_name}"
+                style="margin-bottom:5px; cursor:pointer;"
+            >{image_name}</button>
+        </div>
+        """
+
+    hover_css_and_script = f"""
+    <style>
+    #img-preview {{
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: none;
+        z-index: 9999;
+        border: 2px solid #ccc;
+        background: white;
+        padding: 6px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
+        text-align: center;
+    }}
+    </style>
+
+    <div id="img-preview">
+        <img id="preview-img" src="" width="{preview_width}" height="{preview_height}" />
+        <div id="preview-label" style="font-size:14px; margin-top:4px;"></div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {{
+        const buttons = document.querySelectorAll('.img-btn');
+        const preview = document.getElementById('img-preview');
+        const previewImg = document.getElementById('preview-img');
+        const previewLabel = document.getElementById('preview-label');
+
+        buttons.forEach(btn => {{
+            btn.addEventListener('mouseover', () => {{
+                previewImg.src = btn.dataset.img;
+                previewLabel.innerText = btn.dataset.name;
+                preview.style.display = 'block';
+            }});
+            btn.addEventListener('mouseout', () => {{
+                preview.style.display = 'none';
+            }});
+            btn.addEventListener('click', () => {{
+                const imgName = btn.dataset.name;
+                const url = new URL(window.location.href);
+                url.searchParams.set("selected", imgName);
+                window.location.href = url.toString();
+            }});
+        }});
+    }});
+    </script>
+    """
+
+    return hover_css_and_script + html_buttons
+
+def accuracy_collect(response_text: str) -> float:
+    # More flexible regex: find "Overall Accuracy" followed by any non-digits, then a number%
+    match = re.search(r"Overall\s*Accuracy[^0-9]*(\d+\.?\d*)\s*%", response_text, re.IGNORECASE)
+
+    if match:
+        overall_accuracy = float(match.group(1))
+    else:
+        # Fallback: try computing from "Score" columns in tables
+        scores = re.findall(r"\|\s*\d+\s*\|\s*[^\|]+\|\s*[A-Z/]+\s*\|\s*[^\|]+\|\s*(\d+)", response_text)
+        if scores:
+            scores = [float(s) for s in scores]
+            overall_accuracy = sum(scores) / len(scores)
+        else:
+            overall_accuracy = 0.0
+
+    return overall_accuracy
+
+
+import re
+import pandas as pd
+
+def parse_ai_testcase_output(ai_response: str):
+    """
+    Parses AI Markdown table response into structured DataFrames:
+    - Technique-level table with emoji scores
+    - Scenario summary table
+    - Overall accuracy visual
+    """
+    # Step 1: Flexible regex to capture table rows
+    row_pattern = re.compile(
+        r'^\|\s*(\d+)\s*\|\s*(.*?)\s*\|\s*(\w+)\s*\|\s*(.*?)\s*\|\s*(\d+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|',
+        re.MULTILINE | re.DOTALL
+    )
+    matches = row_pattern.findall(ai_response)
+
+    if not matches:
+        # fallback: detect tables even if extra spaces/newlines
+        row_pattern_fallback = re.compile(r'^\|\s*(\d+)\s*\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|(.+?)\|', re.MULTILINE | re.DOTALL)
+        matches = row_pattern_fallback.findall(ai_response)
+        if not matches:
+            raise ValueError("No table rows detected in AI response. Ensure AI output is a Markdown table with pipes '|'.")
+
+    data = []
+    for m in matches:
+        scenario_id, description, technique, parameters, score, gaps, suggestions = m
+        data.append({
+            "Scenario ID": int(scenario_id.strip()),
+            "Scenario Description": description.strip(),
+            "Technique": technique.strip(),
+            "Parameters / Factors": parameters.strip(),
+            "Score": int(score.strip()),
+            "Gaps": gaps.strip(),
+            "Suggestions": suggestions.strip()
+        })
+
+    df = pd.DataFrame(data)
+
+    # Step 2: Per-scenario summary
+    scenario_summary = df.groupby(["Scenario ID", "Scenario Description"]).agg({
+        "Score": "mean",
+        "Gaps": lambda x: "; ".join([g for g in x if g and g.lower() != "none"]),
+        "Suggestions": lambda x: "; ".join([s for s in x if s and s.lower() != "none"])
+    }).reset_index()
+
+    scenario_summary.rename(columns={
+        "Score": "Overall Coverage (%)",
+        "Gaps": "Key Gaps",
+        "Suggestions": "Key Suggestions"
+    }, inplace=True)
+
+    # Step 3: Add emoji to technique-level scores
+    def score_emoji(score):
+        if score >= 90:
+            return f"✅{score}"
+        elif score >= 75:
+            return f"⚠️{score}"
+        else:
+            return f"❌{score}"
+
+    df["Score"] = df["Score"].apply(score_emoji)
+
+    # Step 4: Overall Accuracy
+    overall_accuracy = scenario_summary["Overall Coverage (%)"].mean()
+    def progress_bar(percentage, length=20):
+        filled = int(length * percentage / 100)
+        empty = length - filled
+        return f"[{'█'*filled}{' ' * empty}] {percentage:.2f}%"
+
+    overall_accuracy_visual = progress_bar(overall_accuracy)
+
+    return df, scenario_summary, overall_accuracy, overall_accuracy_visual
+
+import re
+import pandas as pd
+
+def clean_ai_testcase_output(ai_response: str):
+    """
+    Parse AI response with test case tables into:
+    - df_techniques: technique-level table without duplicates
+    - df_summary: clean scenario summary
+    - overall_accuracy: float
+    - overall_visual: progress bar string
+    """
+    # 1. Split by scenarios
+    scenario_blocks = re.split(r'#+\s*Scenario \d+:', ai_response, flags=re.IGNORECASE)
+
+    tech_rows = []
+    summary_rows = []
+
+    for block in scenario_blocks[1:]:
+        # Scenario ID and Description
+        header_match = re.match(r'\s*(\d+)?[:\s-]*(.+)', block)
+        scenario_id = header_match.group(1) if header_match else "Unknown"
+        description = header_match.group(2).split('\n')[0].strip() if header_match else "Unknown"
+
+        # Extract table rows (avoid header separators)
+        table_lines = [line for line in block.split('\n') if re.match(r'^\|', line)]
+        for line in table_lines:
+            cols = [c.strip() for c in line.strip('|').split('|')]
+            if len(cols) >= 7:  # Technique-level
+                technique, params, score, gaps, suggestions = cols[2], cols[3], cols[4], cols[5], cols[6]
+                # Clean score to int
+                try:
+                    score_num = int(re.sub(r'\D', '', score))
+                except:
+                    score_num = 0
+                # Emoji indicator
+                if score_num >= 90: score_display = f"✅{score_num}"
+                elif score_num >= 75: score_display = f"⚠️{score_num}"
+                else: score_display = f"❌{score_num}"
+
+                tech_rows.append({
+                    "Scenario ID": scenario_id,
+                    "Scenario Description": description,
+                    "Technique": technique,
+                    "Parameters / Factors": params,
+                    "Score": score_display,
+                    "Gaps": gaps if gaps != "None" else "",
+                    "Suggestions": suggestions if suggestions != "None" else ""
+                })
+
+        # Compute Overall Coverage per scenario (average of technique scores)
+        scores = []
+        for line in table_lines:
+            cols = [c.strip() for c in line.strip('|').split('|')]
+            if len(cols) >= 7:
+                try:
+                    scores.append(int(re.sub(r'\D', '', cols[4])))
+                except: pass
+        overall = round(sum(scores)/len(scores),2) if scores else 0
+
+        # Merge Gaps and Suggestions
+        gaps = ', '.join([r['Gaps'] for r in tech_rows if r['Scenario ID'] == scenario_id and r['Gaps']])
+        suggestions = ', '.join([r['Suggestions'] for r in tech_rows if r['Scenario ID'] == scenario_id and r['Suggestions']])
+
+        summary_rows.append({
+            "Scenario ID": scenario_id,
+            "Scenario Description": description,
+            "Overall Coverage (%)": overall,
+            "Key Gaps": gaps,
+            "Key Suggestions": suggestions
+        })
+
+    df_techniques = pd.DataFrame(tech_rows).drop_duplicates()
+    df_summary = pd.DataFrame(summary_rows)
+
+    # Overall Accuracy
+    overall_accuracy = df_summary["Overall Coverage (%)"].mean() if not df_summary.empty else 0
+    bar_len = 20
+    filled = int(bar_len * overall_accuracy / 100)
+    overall_visual = f"[{'█'*filled}{' '*(bar_len-filled)}] {overall_accuracy:.2f}%"
+
+    return df_techniques, df_summary, overall_accuracy, overall_visual
+#### max test cases
+
+def testcase_requirement_split(prompt_type,image_data,action_data=None):
+    prompt_template = load_prompt_from_file(prompt_type)
+    # Conditionally inject Action Data section or leave it blank
+    if action_data:
+        action_section = f"- User Interaction Elements (Action Data): {action_data}"
+    else:
+        action_section = ""
+    final_prompt = prompt_template.format(ACTION_DATA=action_data,IMAGE_DATA=image_data)
+    print(final_prompt)
+    # Set environment variables (if needed)
+    api_key = os.getenv("AZURE_OPENAI_API_KEY")
+    endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+    os.environ["AZURE_OPENAI_API_KEY"] = api_key
+    os.environ["AZURE_OPENAI_ENDPOINT"] = endpoint
+
+    # Initialize the model
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+    )
+    message = HumanMessage(content=final_prompt)
+    response = model([message])
+    # Extract text from response
+    if hasattr(response, "content"):
+        response_text = response.content
+    elif isinstance(response, dict) and "content" in response:
+        response_text = response["content"]
+    else:
+        response_text = str(response)
+
+    # Parse as JSON
+    try:
+        result_json = json.loads(response_text)
+    except json.JSONDecodeError:
+        raise ValueError("Model did not return valid JSON. Raw output:\n" + response_text)
+
+    return result_json
+
+
+def get_full_testcases(formatted_summary):
+    api_key = os.getenv("AZURE_OPENAI_API_KEY")
+    endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+
+    os.environ["AZURE_OPENAI_API_KEY"] = api_key
+    os.environ["AZURE_OPENAI_ENDPOINT"] = endpoint
+
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+        max_tokens=4000,   # allow long responses
+        temperature=0
+    )
+
+    collected_output = ""
+    while True:
+        # Always provide original instructions + progress so far
+        messages = [
+            HumanMessage(content=formatted_summary),
+            HumanMessage(content="Progress so far:\n" + collected_output),
+            HumanMessage(content="Continue generating test cases from the last step. "
+                                 "Do not repeat previous cases. Do not summarize. "
+                                 "Keep the same Markdown table format.")
+        ]
+
+        response = model(messages)
+        response_text = response.content.strip()
+        collected_output += "\n" + response_text
+
+        # ✅ Stop once we see 20 complete test cases
+        if collected_output.count("| Test Case") >= 20:
+            break
+
+        # ✅ Safety check: stop if model keeps looping
+        if "Continued in next response" not in response_text and len(response_text) < 50:
+            break
+
+    return collected_output
+
+def estimate_testcase_coverage(formatted_summary):
+    """
+    Estimate the number of test cases required for full coverage.
+
+    Args:
+        formatted_summary (str): Pre-built prompt including requirements, images, navigation, and instructions for JSON output.
+
+    Returns:
+        dict: JSON with counts for Positive, Negative, Edge, Workflow, RecommendedTotal
+    """
+    model = AzureChatOpenAI(
+        openai_api_version="2023-05-15",
+        azure_deployment="qepracticekey",
+        max_tokens=4000,
+        temperature=0
+    )
+
+    message = HumanMessage(content=formatted_summary)
+    output_value = model([message])
+
+    # Extract raw text from AIMessage
+    raw_text = output_value.content.strip()  # remove leading/trailing whitespace
+
+    # Clean markdown fences if accidentally returned
+    if raw_text.startswith("```"):
+        raw_text = "\n".join(line for line in raw_text.splitlines() if not line.startswith("```"))
+
+    # Attempt JSON parsing
+    try:
+        coverage_counts = json.loads(raw_text)
+    except Exception as e:
+        print(f"⚠️ Failed to parse JSON from AI output: {e}")
+        coverage_counts = {
+            "Positive": 0,
+            "Negative": 0,
+            "Edge": 0,
+            "Workflow": 0,
+            "RecommendedTotal": 50  # fallback default
+        }
+
+    return coverage_counts
+
+
+#####pepgenx
+
+okta_metadata= os.getenv("okta_metadata")
+okta_secret = os.getenv("okta_secret")
+okta_client = os.getenv("okta_client")
+team_id = os.getenv("team_id")
+project_id  = os.getenv("project_id")
+api_key = os.getenv("api_key")
+pepgenx_url= os.getenv("pepgenx_url")
+
+
+def pepgenx_authendication():
+        bearer_token = requests.get(okta_metadata,verify=False)
+        token_url = bearer_token.json()["token_endpoint"]
+        token_response = requests.post(
+                token_url,
+                auth=requests.auth.HTTPBasicAuth(
+                    okta_client, okta_secret
+                ),  # Basic Auth with client_id and client_secret
+                data={"grant_type": "client_credentials"},
+                headers={"Content-Type": "application/x-www-form-urlencoded"},verify=False
+        )
+
+        bearer_token = token_response.json()["access_token"]
+        print(bearer_token)
+        return bearer_token
+prompt ="""Hi"""
+def llm_pepgenx(prompt,type=None):
+        headers = {
+                'Authorization': f'Bearer {pepgenx_authendication()}',
+                'team_id': team_id,
+                'project_id': project_id,
+                'user_id': 'test-user',
+                'transaction_id': str(uuid.uuid4()),
+                'x-pepgenx-apikey': api_key,
+                "Content-Type": "application/json",
+        }
+        test_data = {
+                "prompt": prompt,
+                "generation_model": "gpt-4o",
+                "temperature": 0.1
+        }
+
+        # response = requests.request("POST", url3, headers=headers,data=json.dumps(data2))
+        response = requests.request("POST", pepgenx_url, headers=headers, data=json.dumps(test_data),verify=False)
+        print(response.text)
+        if type=="page":
+            raw_text = extract_json(response.text)
+        else:
+            raw_text=response_check(response.text)
+        return str(raw_text)
+def response_check(raw_response):
+    """
+        Cleans up LLM JSON-like response by removing unnecessary sections.
+        Handles prompt, metadata, and markdown code fences.
+        """
+
+    # Ensure string
+    if not isinstance(raw_response, str):
+        raw_response = str(raw_response)
+
+    cleaned = raw_response
+
+    # 1️⃣ Remove from "prompt" to the next closing brace
+    cleaned = re.sub(r'","prompt".*?}', '}', cleaned, flags=re.DOTALL)
+
+    # 2️⃣ Remove from '{"response' to the first colon
+    cleaned = re.sub(r'\{"response"\s*:\s*', '', cleaned, flags=re.DOTALL)
+
+    # 3️⃣ Remove from "```" to "markdown" (if exists)
+    cleaned = re.sub(r'```.*?markdown', '', cleaned, flags=re.IGNORECASE | re.DOTALL)
+
+    # 4️⃣ Remove all "```" fences
+    cleaned = cleaned.replace("```", "")
+
+    # 5️⃣ Clean up trailing braces, quotes, and whitespace
+    cleaned = cleaned.strip("} \n\t\"")
+
+    return cleaned.strip()
+def extract_json(raw_response):
+    """
+    Extracts the first valid JSON object from an LLM response.
+    Handles multiline content, nested braces, and extra text.
+    """
+
+    if not isinstance(raw_response, str):
+        raw_response = str(raw_response)
+
+    # Remove markdown fences
+    cleaned = raw_response.replace("```json", "").replace("```", "").strip()
+
+    # Fix non-breaking spaces and weird whitespace
+    cleaned = cleaned.replace("\u00A0", " ")
+    cleaned = re.sub(r"[ ]{2,}", " ", cleaned)
+    cleaned = re.sub(r"\n\s+", "\n", cleaned)
+    keyword="""","prompt":"""
+    index = cleaned.find(keyword)
+    if index != -1:
+        final= cleaned[:index]
+
+    keyword='{"response":"'
+    if final.startswith(keyword):
+        final= final[len(keyword):]  # remove only the keyword
+
+    return final
+
+
+###test_Data_generator_utils
+import os
+import pandas as pd
+from io import StringIO
+
+
+def save_test_data_into_excel(md_table: str, file_name: str, folder_path: str):
+    # Convert markdown table string to DataFrame
+    df = pd.read_csv(StringIO(md_table), sep="|", engine="python")
+
+    # Clean unwanted empty columns created by '|'
+    df = df.dropna(axis=1, how='all')  # remove blank columns
+    df.columns = df.columns.str.strip()  # trim spaces
+
+    # Remove first/last column if created accidentally
+    if df.columns[0] == "":
+        df = df.drop(df.columns[0], axis=1)
+    if df.columns[-1] == "":
+        df = df.drop(df.columns[-1], axis=1)
+
+    # Ensure folder exists
+    os.makedirs(folder_path, exist_ok=True)
+
+    # Ensure .xlsx extension
+    if not file_name.lower().endswith(".xlsx"):
+        file_name += ".xlsx"
+
+    # Final full path
+    file_path = os.path.join(folder_path, file_name)
+
+    # Save to Excel
+    df.to_excel(file_path, index=False)
+    st.success(f"Test data successfully added to Excel! Download the file [here](sandbox:{file_path})")
+    return file_path
+
+
+### Api utils
+
+def excel_to_api_list(df):
+    api_list = []
+    for _, row in df.iterrows():
+        api_list.append({
+            "api_name": row["API Name"],
+            "method": row["Method"],
+            "base_url": row["Base URL"],
+            "endpoint": row["Endpoint"],
+            "headers": row.get("Headers (JSON)", "{}"),
+            "payload": row.get("Payload (JSON)", "{}"),
+            "auth_required": row.get("Auth Required", "No"),
+            "auth_type": row.get("Auth Type", None),
+            "auth_key_name": row.get("Auth Key Name", None),
+            "config_key": row.get("Config Key", None)
+        })
+    return api_list
+
+def call_api(api_details):
+    url = api_details["base_url"].rstrip("/") + api_details["endpoint"]
+
+    headers = json.loads(api_details["headers"]) if api_details["headers"] else {}
+    payload = json.loads(api_details["payload"]) if api_details["payload"] else {}
+
+    # Handle Authentication
+    if str(api_details["auth_required"]).lower() == "yes":
+        token = api_key
+
+        if api_details["auth_type"].lower() == "bearer":
+            headers[api_details["auth_key_name"]] = f"Bearer {token}"
+
+        elif api_details["auth_type"].lower() == "api-key":
+            headers[api_details["auth_key_name"]] = token
+
+    response = requests.request(
+        method=api_details["method"],
+        url=url,
+        headers=headers,
+        json=payload,
+        timeout=30
+    )
+
+    return {
+        "api_name": api_details["api_name"],
+        "url": url,
+        "status_code": response.status_code,
+        "response": response.text
+    }
+def run_all_api_tests(df, config):
+    api_list = excel_to_api_list(df)
+    results = []
+
+    for api in api_list:
+        try:
+            result = call_api(api, config)
+            results.append(result)
+        except Exception as e:
+            results.append({
+                "api_name": api["api_name"],
+                "url": api["base_url"] + api["endpoint"],
+                "status_code": "ERROR",
+                "response": str(e)
+            })
+    return results
+## Script validation
+def extract_test_script_from_json(json_response: str):
+    """
+    Extracts the TEST SCRIPT from the JSON and returns:
+    - test_file_name
+    - test_script
+    Does NOT save anything.
+    """
+    try:
+        data = json.loads(json_response)
+    except Exception as e:
+        print("❌ Invalid JSON:", e)
+        return None, None
+
+    test_files = data.get("test_files", [])
+    if not test_files:
+        print("⚠️ No test_files found in JSON.")
+        return None, None
+
+    entry = test_files[0]  # usually one file per test
+    return entry.get("corrected_script")
+
+def update_page_files_from_json(json_response: str, page_folder):
+    """
+    Updates only the PAGE FILES from the AI JSON response.
+    Test files are ignored.
+    """
+    try:
+        data = json.loads(json_response)
+    except Exception as e:
+        print("❌ Invalid JSON:", e)
+        return
+
+    page_files = data.get("page_files", [])
+    if not page_files:
+        print("⚠️ No page_files found in JSON.")
+        return
+
+    for entry in page_files:
+        file_name = entry.get("file_name")
+        script = entry.get("corrected_script")
+
+        if not file_name or not script:
+            print("⚠️ Skipping due to missing file_name or script")
+            continue
+
+        file_path = os.path.join(page_folder, file_name)
+
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(script)
+
+        print(f"✔ Page file updated → {file_path}")
+
+def copy_to_clipboard(text):
+    pyperclip.copy(text)
+    st.toast("XPath copied!", icon="📋")

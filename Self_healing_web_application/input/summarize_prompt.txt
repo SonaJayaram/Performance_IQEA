@@ -1,0 +1,3 @@
+Summarize the following context into a concise and structured format (under 150 lines), preserving key actions, entities, and sequences. The goal is to retain essential meaning for AI understanding. Avoid repetition, and group related items logically.
+
+- Context: {content_data}

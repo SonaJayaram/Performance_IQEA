@@ -1,0 +1,97 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .summary {
+            font-weight: bold;
+        }
+        .risk-low {
+            color: green;
+        }
+        .risk-medium {
+            color: orange;
+        }
+        .risk-high {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>Test Overview</h2>
+    <p><strong>API Method & Endpoint:</strong> No data provided</p>
+    <p><strong>Load Configuration Summary:</strong> No data provided</p>
+
+    <h2>Key Metrics Summary</h2>
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Average Response Time</td>
+            <td>No data provided</td>
+        </tr>
+        <tr>
+            <td>P95 Response Time</td>
+            <td>No data provided</td>
+        </tr>
+        <tr>
+            <td>P99 Response Time</td>
+            <td>No data provided</td>
+        </tr>
+        <tr>
+            <td>Throughput</td>
+            <td>No data provided</td>
+        </tr>
+        <tr>
+            <td>Error Rate</td>
+            <td>No data provided</td>
+        </tr>
+    </table>
+
+    <h2>Performance Findings</h2>
+    <p>No performance data was provided for analysis. Unable to determine the behavior of the system under load.</p>
+
+    <h2>Risk Level</h2>
+    <p class="risk-high"><strong>High:</strong> Without performance metrics, it is impossible to assess the system's scalability, reliability, or stability under load. This poses a significant risk to the application's performance in production environments.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that proper performance testing configuration and metrics data are captured during load testing.</li>
+        <li>Use tools such as Locust to generate and collect detailed metrics, including response times, throughput, and error rates.</li>
+        <li>Re-run the performance test with accurate configurations and metrics for analysis.</li>
+        <li>Validate load configuration matches expected production scenarios to simulate real-world usage effectively.</li>
+    </ul>
+
+    <h2>Production Readiness Verdict</h2>
+    <p><strong>Verdict:</strong> <span class="risk-high">Not Ready</span></p>
+    <p>Explanation: Without valid performance metrics, it is impossible to determine if the system can handle the desired load or meets required SLAs/SLOs. Further testing and data collection are required.</p>
+</body>
+</html>
+```
