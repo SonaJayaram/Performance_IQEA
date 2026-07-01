@@ -1,0 +1,49 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1782892232428,2011,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,1959,0,502
+1782892234453,500,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,478,0,0
+1782892234956,289,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,266,0,0
+1782892235247,274,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,264,0,0
+1782892235522,283,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,271,0,0
+1782892235806,264,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,252,0,0
+1782892236071,274,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,261,0,0
+1782892236346,264,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,253,0,0
+1782892236612,271,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,261,0,0
+1782892236885,315,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,262,0,0
+1782892237201,312,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,300,0,0
+1782892237515,270,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,254,0,0
+1782892237787,277,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,257,0,0
+1782892238065,391,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,270,0,0
+1782892238457,281,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,266,0,0
+1782892238739,277,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,263,0,0
+1782892239017,289,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,274,0,0
+1782892239308,307,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,289,0,0
+1782892239617,324,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,311,0,0
+1782892239943,291,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,279,0,0
+1782892240235,266,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,255,0,0
+1782892240502,280,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,270,0,0
+1782892240784,499,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,259,0,0
+1782892241285,767,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,437,0,0
+1782892242053,305,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,292,0,0
+1782892242359,283,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,270,0,0
+1782892242643,273,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,260,0,0
+1782892242917,272,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,261,0,0
+1782892243190,326,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,315,0,0
+1782892243517,268,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,251,0,0
+1782892243786,271,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,257,0,0
+1782892244058,344,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,333,0,0
+1782892244403,291,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,275,0,0
+1782892244695,282,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,261,0,0
+1782892244978,282,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,269,0,0
+1782892245261,267,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,251,0,0
+1782892245529,275,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,263,0,0
+1782892245805,279,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,267,0,0
+1782892246085,267,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,258,0,0
+1782892246353,263,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,256,0,0
+1782892246617,279,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,264,0,0
+1782892246896,278,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,268,0,0
+1782892247176,267,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,259,0,0
+1782892247444,266,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,251,0,0
+1782892247711,305,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,296,0,0
+1782892248016,262,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,252,0,0
+1782892248278,268,TC_001_check_first_name,200,OK,Thread Group 1-1,text,true,,115849,451,1,1,https://vsm-tiger.azurewebsites.net/api/auth/login,259,0,0
+1782892248547,263,GET Metrics,200,OK,Thread Group 1-1,text,true,,115849,193,1,1,https://vsm-tiger.azurewebsites.net/api/llm/metrics?track=1&phase=1,254,0,0

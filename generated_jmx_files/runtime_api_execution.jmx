@@ -1,8 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
-      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
           <elementProp name="Email" elementType="Argument">
             <stringProp name="Argument.name">Email</stringProp>
@@ -16,16 +20,17 @@
           </elementProp>
         </collectionProp>
       </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group">
-        <intProp name="ThreadGroup.num_threads">10</intProp>
-        <intProp name="ThreadGroup.ramp_time">5</intProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <intProp name="ThreadGroup.num_threads">1</intProp>
+        <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
-          <stringProp name="LoopController.loops">-1</stringProp>
-          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+          <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
       </ThreadGroup>
       <hashTree>
@@ -35,11 +40,11 @@
           <stringProp name="HTTPSampler.domain">vsm-tiger.azurewebsites.net</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
-            <collectionProp name="Arguments.arguments" />
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.implementation" />
-        <stringProp name="HTTPSampler.connect_timeout">5000</stringProp><stringProp name="HTTPSampler.response_timeout">5000</stringProp></ConfigTestElement>
-        <hashTree />
+          <stringProp name="HTTPSampler.implementation"></stringProp>
+        </ConfigTestElement>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="TC_001_check_first_name" enabled="true">
           <stringProp name="HTTPSampler.path">api/auth/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -64,7 +69,7 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-        <stringProp name="HTTPSampler.connect_timeout">5000</stringProp><stringProp name="HTTPSampler.response_timeout">5000</stringProp></HTTPSamplerProxy>
+        </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
             <collectionProp name="HeaderManager.headers">
@@ -78,7 +83,7 @@
               </elementProp>
             </collectionProp>
           </HeaderManager>
-          <hashTree />
+          <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET Metrics" enabled="true">
           <stringProp name="HTTPSampler.path">/api/llm/metrics?track=1&amp;phase=1</stringProp>
@@ -87,9 +92,9 @@
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
-            <collectionProp name="Arguments.arguments" />
+            <collectionProp name="Arguments.arguments"/>
           </elementProp>
-        <stringProp name="HTTPSampler.connect_timeout">5000</stringProp><stringProp name="HTTPSampler.response_timeout">5000</stringProp></HTTPSamplerProxy>
+        </HTTPSamplerProxy>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
             <collectionProp name="HeaderManager.headers">
@@ -99,7 +104,7 @@
               </elementProp>
             </collectionProp>
           </HeaderManager>
-          <hashTree />
+          <hashTree/>
         </hashTree>
         <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener">
           <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments">
@@ -111,7 +116,7 @@
               </elementProp>
               <elementProp name="influxdbUrl" elementType="Argument">
                 <stringProp name="Argument.name">influxdbUrl</stringProp>
-                <stringProp name="Argument.value">http://10.0.0.4:8086/write?db=jmeter</stringProp>
+                <stringProp name="Argument.value">http://localhost:8086/write?db=jmeter</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
               <elementProp name="application" elementType="Argument">
@@ -146,15 +151,15 @@
               </elementProp>
               <elementProp name="eventTags" elementType="Argument">
                 <stringProp name="Argument.name">eventTags</stringProp>
-                <stringProp name="Argument.value" />
+                <stringProp name="Argument.value"></stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
           </elementProp>
           <stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
         </BackendListener>
-        <hashTree />
+        <hashTree/>
       </hashTree>
     </hashTree>
-  <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="TigerQE_Grafana_InfluxDB_Listener" enabled="true"><elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true"><collectionProp name="Arguments.arguments"><elementProp name="influxdbMetricsSender" elementType="Argument"><stringProp name="Argument.name">influxdbMetricsSender</stringProp><stringProp name="Argument.value">org.apache.jmeter.visualizers.backend.influxdb.HttpMetricsSender</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="influxdbUrl" elementType="Argument"><stringProp name="Argument.name">influxdbUrl</stringProp><stringProp name="Argument.value">http://10.0.0.4:8086/write?db=jmeter</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="application" elementType="Argument"><stringProp name="Argument.name">application</stringProp><stringProp name="Argument.value">TigerQE_Automation_Workflow</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="measurement" elementType="Argument"><stringProp name="Argument.name">measurement</stringProp><stringProp name="Argument.value">jmeter</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="summaryOnly" elementType="Argument"><stringProp name="Argument.name">summaryOnly</stringProp><stringProp name="Argument.value">false</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="samplersRegex" elementType="Argument"><stringProp name="Argument.name">samplersRegex</stringProp><stringProp name="Argument.value">.*</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="percentiles" elementType="Argument"><stringProp name="Argument.name">percentiles</stringProp><stringProp name="Argument.value">90;95;99</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="testTitle" elementType="Argument"><stringProp name="Argument.name">testTitle</stringProp><stringProp name="Argument.value">Execution_Run_20260630_094924</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="user" elementType="Argument"><stringProp name="Argument.name">user</stringProp><stringProp name="Argument.value" /><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="password" elementType="Argument"><stringProp name="Argument.name">password</stringProp><stringProp name="Argument.value" /><stringProp name="Argument.metadata">=</stringProp></elementProp><elementProp name="eventMetrics" elementType="Argument"><stringProp name="Argument.name">eventMetrics</stringProp><stringProp name="Argument.value">all</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp></collectionProp></elementProp><stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp></BackendListener><hashTree /></hashTree>
+  </hashTree>
 </jmeterTestPlan>
