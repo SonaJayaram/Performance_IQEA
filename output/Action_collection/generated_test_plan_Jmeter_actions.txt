@@ -1,0 +1,20 @@
+Switched to new window: [https://vsm-tiger.azurewebsites.net/login]
+Click on "email" (URL: https://vsm-tiger.azurewebsites.net/login)
+Key_tab on "email"
+Enter "agent@tigeranalytics.com" in the "email" field
+Enter "qeagent" in the "password" field
+Click on "Sign In"
+Click on "Intelligent QA assistant" (URL: https://vsm-tiger.azurewebsites.net/assessment)
+Click on "Assessment" (URL: https://vsm-tiger.azurewebsites.net/assessment/iqea)
+Change the value to "Assessment" in "mat-tab-group-0-label-1"
+Click on ""
+Change the value to "" in "mat-select-3"
+Click on "mat-option-1"
+Change the value to "1
+2
+3" in "mat-select-3-panel"
+Scroll on "Phase
+2"
+Change the value to "2" in "mat-select-3"
+Click on "Home"
+Click on "Logout" (URL: https://vsm-tiger.azurewebsites.net/assessment)

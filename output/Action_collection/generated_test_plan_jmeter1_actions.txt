@@ -1,0 +1,9 @@
+Switched to new window: [https://vsm-tiger.azurewebsites.net/login]
+Click on "email" (URL: https://vsm-tiger.azurewebsites.net/login)
+Key_tab on "email"
+Enter "agent@tigeranalytics.com" in the "email" field
+Enter "qeagent" in the "password" field
+Click on "Sign In"
+Click on "Intelligent QA assistant" (URL: https://vsm-tiger.azurewebsites.net/assessment)
+Click on "Home" (URL: https://vsm-tiger.azurewebsites.net/assessment/iqea)
+Click on "Logout" (URL: https://vsm-tiger.azurewebsites.net/assessment)
