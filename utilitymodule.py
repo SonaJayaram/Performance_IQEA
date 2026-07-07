@@ -13,7 +13,6 @@ from azure.identity import ClientSecretCredential
 # ---------------------------------------------------
 # SECURE CREDENTIAL RETRIEVAL FROM STREAMLIT SECRETS
 # ---------------------------------------------------
-# Fetching from .streamlit/secrets.toml dynamically
 api_key = st.secrets["AZURE_OPENAI_API_KEY"]
 azure_endpoint = st.secrets["AZURE_OPENAI_ENDPOINT"]
 
@@ -38,7 +37,6 @@ def get_output_from_ai(final_prompt):
     to prevent infinite generation loops or connection hanging.
     """
     try:
-        # We append aggressive formatting directives directly to the runtime prompt
         optimized_prompt = f"""{final_prompt}
 
         CRITICAL FORMATTING INSTRUCTION:
@@ -58,22 +56,19 @@ def get_output_from_ai(final_prompt):
                     "content": optimized_prompt
                 }
             ],
-            temperature=0.1,  # Lowered temperature makes the AI less prone to hallucination loops
-            max_tokens=3000,  # Puts a hard cap on generation so it cannot hang for 5+ minutes
-            stop=["</jmeterTestPlan>"]  # Forces the model to cut the connection once the JMX closes
+            temperature=0.1,
+            max_tokens=3000,
+            stop=["</jmeterTestPlan>"]
         )
 
-        # Extract content safely
         ai_output = response.choices[0].message.content
         if not ai_output:
             return None
 
-        # Append the stop sequence tag if it was sliced off by the engine intercept
         ai_output = ai_output.strip()
         if "</jmeterTestPlan>" not in ai_output and ai_output.endswith("</hashTree>"):
             ai_output += "\n</jmeterTestPlan>"
 
-        # Clean off rogue markdown delimiters if the model disobeyed system filters
         ai_output = re.sub(r"^```xml\s*", "", ai_output, flags=re.IGNORECASE)
         ai_output = re.sub(r"^```\s*", "", ai_output)
         ai_output = re.sub(r"```$", "", ai_output)
@@ -129,7 +124,6 @@ def extract_ai_test_config(user_prompt, jmx_content):
     ai_response = response.choices[0].message.content.strip()
     ai_response = ai_response.replace("```json", "").replace("```", "").strip()
 
-    # Convert AI JSON string → Python dict
     ai_config = json.loads(ai_response)
     return ai_config
 
@@ -139,24 +133,20 @@ def inject_grafana_backend_listener(root):
     Programmatically injects a perfectly formed InfluxDB v1 BackendListener
     into the primary active hashTree layer of the JMeter XML tree.
     """
-    # Safety bypass to avoid duplicating the node on repeat execution runs
     for listener in root.iter("BackendListener"):
         if listener.attrib.get("testname") == "TigerQE_Grafana_InfluxDB_Listener":
             return
 
-    # Locate the root-level active hashTree directly underneath the main TestPlan element
     target_hash_tree = None
     for child in root:
         if child.tag == "hashTree":
             target_hash_tree = child
             break
 
-    # Fallback layout target check to ensure parsing safety bounds
     if target_hash_tree is None:
         target_hash_tree = root.find(".//hashTree")
 
     if target_hash_tree is not None:
-        # Pull server credentials cleanly out of your Streamlit secrets context
         influx_base = st.secrets.get("INFLUX_URL", "http://localhost:8086")
         influx_db = st.secrets.get("INFLUX_DB", "jmeter")
         influx_user = st.secrets.get("INFLUX_USER", "")
@@ -164,7 +154,6 @@ def inject_grafana_backend_listener(root):
 
         constructed_url = f"{influx_base}/write?db={influx_db}"
 
-        # Build the functional BackendListener element node
         backend_listener = ET.Element(
             "BackendListener",
             guiclass="BackendListenerGui",
@@ -176,7 +165,6 @@ def inject_grafana_backend_listener(root):
                                   guiclass="ArgumentsPanel", testclass="Arguments", enabled="true")
         coll_prop = ET.SubElement(elem_prop, "collectionProp", name="Arguments.arguments")
 
-        # Core schema config parameter matrix for Influx 1.x / Grafana bindings
         configs = [
             ("influxdbMetricsSender", "org.apache.jmeter.visualizers.backend.influxdb.HttpMetricsSender"),
             ("influxdbUrl", constructed_url),
@@ -200,7 +188,6 @@ def inject_grafana_backend_listener(root):
         ET.SubElement(backend_listener, "stringProp", name="classname").text = \
             "org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient"
 
-        # ✅ CRITICAL CORRECTION: Append the listener and its balancing hashTree inside the active tree element scope
         target_hash_tree.append(backend_listener)
         target_hash_tree.append(ET.Element("hashTree"))
 
@@ -213,24 +200,15 @@ def update_jmx_file(jmx_content, config):
     """
     print("#### config", config)
 
-    # ==============================================================================
-    # 🛡️ SAFE-GUARD AGAINST AI RETURNING LIST ARRAYS INSTEAD OF DICTIONARIES
-    # ==============================================================================
     if isinstance(config, list):
         if len(config) > 0:
-            config = config[0]  # Extract the underlying config dictionary safely
+            config = config[0]
         else:
-            config = {}  # Fallback to an empty dictionary if the array is empty
+            config = {}
 
     root = ET.fromstring(jmx_content)
-
-    # ==============================================================================
-    # 🧹 SMART HEADLESS SANITIZATION ENGINE: STRIP COMPONENTS & CORRESPONDING HASHTREES
-    # ==============================================================================
-    # Locates layout-breaking visual nodes and safely targets their adjacent structure placeholders
     elements_to_remove = []
 
-    # We convert the direct children list of the XML into an indexed array so we can peek ahead
     for parent in root.iter():
         children = list(parent)
         for idx, element in enumerate(children):
@@ -243,15 +221,11 @@ def update_jmx_file(jmx_content, config):
                     "TableVisualizer" in guiclass or
                     testclass == "ViewResultsFullVisualizer"
             ):
-                # Queue the troublesome visual element for deletion
                 elements_to_remove.append((parent, element))
 
-                # STRUCTURAL CHECK: If the element is immediately followed by a structural <hashTree>,
-                # we MUST queue that placeholder for deletion too, or JMeter will crash.
                 if idx + 1 < len(children) and children[idx + 1].tag == "hashTree":
                     elements_to_remove.append((parent, children[idx + 1]))
 
-    # Safely delete all queued components from the XML Tree structure
     removed_count = 0
     for parent, elem in elements_to_remove:
         if elem in parent:
@@ -261,18 +235,13 @@ def update_jmx_file(jmx_content, config):
     if removed_count > 0:
         print(f"[SANITIZER] Successfully stripped {removed_count} layout-breaking items and matching structural tags.")
 
-    # ==============================================================================
-    # 📋 CORE PARSING & RUNTIME VALIDATIONS
-    # ==============================================================================
     threads = str(config.get("threads", 1))
     rampup = str(config.get("rampup", 1))
     duration_val = int(config.get("duration", 0))
     loops = str(config.get("loops", 1))
 
-    # 🚨 CRITICAL SANITY CHECK: If duration is 0 but loops are set to infinite (-1),
-    # or if the user asks for a timed execution, force a safe 180-second fallback window.
     if duration_val == 0 and (loops == "-1" or config.get("duration") is not None):
-        duration_val = 180  # Default to 3 minutes fallback instead of crashing 0
+        duration_val = 180
 
     is_scheduled_test = duration_val > 0
     if is_scheduled_test:
@@ -281,36 +250,21 @@ def update_jmx_file(jmx_content, config):
     duration = str(duration_val)
 
     for elem in root.iter():
-        # Number of Threads (Matches stringProp or longProp)
         if elem.attrib.get("name") == "ThreadGroup.num_threads":
             elem.text = threads
-
-        # Ramp-Up Period
         elif elem.attrib.get("name") == "ThreadGroup.ramp_time":
             elem.text = rampup
-
-        # Scheduler Duration (Secs) - Handles both stringProp and longProp variations natively
         elif elem.attrib.get("name") == "ThreadGroup.duration":
             elem.text = duration
-
-        # Enable Scheduler
         elif elem.attrib.get("name") == "ThreadGroup.scheduler":
             elem.text = "true" if is_scheduled_test else "false"
-
-        # Loop Controller Configuration
         elif elem.attrib.get("name") == "LoopController.loops":
             elem.text = loops
-
         elif elem.attrib.get("name") == "LoopController.continue_forever":
             elem.text = "true" if is_scheduled_test else "false"
-
-        # Error handling mode
         elif elem.attrib.get("name") == "ThreadGroup.on_sample_error":
             elem.text = "continue"
 
-    # ==============================================================================
-    # 🛡️ SYSTEM TIMEOUT INJECTION PATTERNS FOR ALL SAMPLERS & DEFAULTS
-    # ==============================================================================
     for sampler in list(root.iter("HTTPSamplerProxy")) + list(root.iter("ConfigTestElement")):
         connect_found = False
         response_found = False
@@ -323,7 +277,6 @@ def update_jmx_file(jmx_content, config):
                 prop.text = "5000"
                 response_found = True
 
-        # Inject programmatic nodes directly if omitted by the AI layer
         if not connect_found:
             c_prop = ET.SubElement(sampler, "stringProp", name="HTTPSampler.connect_timeout")
             c_prop.text = "5000"
@@ -331,16 +284,13 @@ def update_jmx_file(jmx_content, config):
             r_prop = ET.SubElement(sampler, "stringProp", name="HTTPSampler.response_timeout")
             r_prop.text = "5000"
 
-    # Call the listener injection logic here to add the listener node before generating the string output
     inject_grafana_backend_listener(root)
 
     updated_xml = ET.tostring(root, encoding="utf-8")
     return updated_xml.decode("utf-8")
 
+
 def validate_jmx(jmx_content):
-    """
-    Validates generated XML.
-    """
     try:
         ET.fromstring(jmx_content)
         return True, None
@@ -350,16 +300,12 @@ def validate_jmx(jmx_content):
 
 def get_azure_server_metrics(duration_minutes=3):
     try:
-        # Exact subscription and resource group mappings from your active portal screen
         resource_id = (
             "/subscriptions/18bbb40d-2c02-4256-a11a-2aafc355952b"
             "/resourceGroups/quality-engineering-coe"
             "/providers/Microsoft.Web/sites/vsm-api-tiger"
         )
 
-        # ==============================================================================
-        # 🛡️ FIXED: BYPASS THE CONFIG CHAIN AND FORCE RECOGNITION OF qe-demo-rd
-        # ==============================================================================
         credential = ClientSecretCredential(
             tenant_id=st.secrets["AZURE_TENANT_ID"],
             client_id=st.secrets["AZURE_CLIENT_ID"],
@@ -369,39 +315,30 @@ def get_azure_server_metrics(duration_minutes=3):
         sub_id = resource_id.split("/")[2]
         monitor_client = MonitorManagementClient(credential, sub_id)
 
-        # Calculate the metric lookback calculation window
         end_time = datetime.utcnow()
         start_time = end_time - timedelta(minutes=duration_minutes)
         timespan = f"{start_time.isoformat()}Z/{end_time.isoformat()}Z"
 
-        # ==============================================================================
-        # 📊 LINUX COMPATIBLE METRICS DISCOVERY FOR BASIC B1 TIER APP SERVICES
-        # ==============================================================================
         metrics_response = monitor_client.metrics.list(
             resource_id,
             timespan=timespan,
             interval="PT1M",
-            metricnames="CpuTime,AverageMemoryWorkingSet",  # Using precise Azure Linux API endpoints
+            metricnames="CpuTime,AverageMemoryWorkingSet",
             aggregation="Average"
         )
         print("##### metrics response ", metrics_response)
         parsed_metrics = {"cpu_time": 0.0, "memory_mb": 0.0}
 
         for metric in metrics_response.value:
-            # Safely extract values
             points = [p.average for p in metric.timeseries[0].data if p.average is not None]
             avg_val = max(points) if points else 0.0
 
             print("##### metric name value : ", metric.name.value)
             if metric.name.value == "CpuTime":
-                # Convert raw CPU seconds consumed over a 1-minute window into an estimated percentage
-                # 60 seconds of CPU time in a 60-second window = 100% saturation of 1 Core
                 estimated_cpu_pct = (avg_val / 60.0) * 100.0
                 parsed_metrics["cpu_time"] = min(100.0, estimated_cpu_pct)
 
             elif metric.name.value == "AverageMemoryWorkingSet":
-                # B1 Linux Plans have a maximum limit of 1.75 GB (1792 MB) RAM capacity
-                # Convert raw bytes to MB first
                 memory_consumed_mb = avg_val / (1024 * 1024)
                 estimated_mem_pct = (memory_consumed_mb / 1792.0) * 100.0
                 parsed_metrics["memory_mb"] = min(100.0, estimated_mem_pct)
