@@ -33,8 +33,8 @@ def is_page_loaded(driver):
 
 def get_output_from_ai(final_prompt):
     """
-    Queries Azure OpenAI deployment with strict formatting rules and stop sequences
-    to prevent infinite generation loops or connection hanging.
+    Queries Azure OpenAI deployment with strict formatting rules and maximized token windows
+    to prevent incomplete generation cuts or XML corruption.
     """
     try:
         optimized_prompt = f"""{final_prompt}
@@ -57,7 +57,7 @@ def get_output_from_ai(final_prompt):
                 }
             ],
             temperature=0.1,
-            max_tokens=3000,
+            max_tokens=8000,  # 👈 1. INCREASE THIS from 3000 to 8000 to give the JMX script breathing room
             stop=["</jmeterTestPlan>"]
         )
 
@@ -66,19 +66,28 @@ def get_output_from_ai(final_prompt):
             return None
 
         ai_output = ai_output.strip()
-        if "</jmeterTestPlan>" not in ai_output and ai_output.endswith("</hashTree>"):
-            ai_output += "\n</jmeterTestPlan>"
 
+        # 👈 2. REMOVE markdown wrapping securely if present
         ai_output = re.sub(r"^```xml\s*", "", ai_output, flags=re.IGNORECASE)
         ai_output = re.sub(r"^```\s*", "", ai_output)
         ai_output = re.sub(r"```$", "", ai_output)
+        ai_output = ai_output.strip()
+
+        # 👈 3. STRENGTHEN CLOSED TOKEN FALLBACK CHECK
+        if "</jmeterTestPlan>" not in ai_output:
+            if ai_output.endswith("</hashTree>"):
+                ai_output += "\n</jmeterTestPlan>"
+            else:
+                # If cut off deeper, close out open parent layers safely to satisfy the ElementTree parser
+                if not ai_output.endswith(">"):
+                    ai_output = ai_output.rsplit('<', 1)[0]  # strip incomplete open tags
+                ai_output += "\n</hashTree>\n</hashTree>\n</jmeterTestPlan>"
 
         return ai_output.strip()
 
     except Exception as e:
         print(f"[ERROR] Critical LLM call failed or timed out: {e}")
         return None
-
 
 def extract_ai_test_config(user_prompt, jmx_content):
     if not user_prompt.strip():
@@ -147,7 +156,7 @@ def inject_grafana_backend_listener(root):
         target_hash_tree = root.find(".//hashTree")
 
     if target_hash_tree is not None:
-        influx_base = st.secrets.get("INFLUX_URL", "http://localhost:8086")
+        influx_base = st.secrets.get("INFLUX_URL", "[http://10.0.0.4:8086](http://10.0.0.4:8086)")
         influx_db = st.secrets.get("INFLUX_DB", "jmeter")
         influx_user = st.secrets.get("INFLUX_USER", "")
         influx_pass = st.secrets.get("INFLUX_PASSWORD", "")
@@ -348,3 +357,26 @@ def get_azure_server_metrics(duration_minutes=3):
     except Exception as e:
         print(f"[AZURE MONITOR ERROR] Failed to fetch server metrics: {e}")
         return None
+
+
+def patch_influx_endpoint(jmx_content, master_ip, database_name="jmeter"):
+    """
+    Locates the InfluxDB BackendListener URL node and forcefully
+    overwrites it to point to the active master environment network layer.
+    """
+    try:
+        root_xml = ET.fromstring(jmx_content)
+        for element in root_xml.iter("BackendListener"):
+            for prop in element.iter("elementProp"):
+                for argument in prop.iter("elementProp"):
+                    arg_name = argument.find("stringProp[@name='Argument.name']")
+                    arg_val = argument.find("stringProp[@name='Argument.value']")
+
+                    if arg_name is not None and arg_name.text == "influxdbUrl" and arg_val is not None:
+                        # 🎯 FORCE OVERWRITE: Direct parameter assignment
+                        arg_val.text = f"http://{master_ip}:8086/write?db={database_name}"
+
+        return ET.tostring(root_xml, encoding="utf-8").decode("utf-8")
+    except Exception as e:
+        print(f"[ERROR] Failed to patch InfluxDB Endpoint matrix: {e}")
+        return jmx_content

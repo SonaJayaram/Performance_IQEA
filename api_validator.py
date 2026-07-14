@@ -83,11 +83,11 @@ performance_config = {
 
 
 # -------------------------------------------
-# HELPER: GIT NATIVE SPARSE CHECKOUT SYNCHRONIZER
+# HELPER: GIT SHALLOW CLONE SYNCHRONIZER
 # -------------------------------------------
 def sync_git_sparse_files(repo_url, branch, file_names, token=None, clear_workspace=True):
-    """Pulls ONLY specific files from a remote repository using Git Sparse Checkout."""
-    if not repo_url or not file_names:
+    """Clones the latest branch tip using a shallow layout to cleanly access tracking scripts."""
+    if not repo_url:
         return False
 
     def remove_readonly(func, path, excinfo):
@@ -111,32 +111,19 @@ def sync_git_sparse_files(repo_url, branch, file_names, token=None, clear_worksp
 
         os.makedirs(GIT_WORKSPACE, exist_ok=True)
 
-        if not os.path.exists(os.path.join(GIT_WORKSPACE, ".git")):
-            subprocess.run(["git", "init"], cwd=GIT_WORKSPACE, check=True, capture_output=True)
-            subprocess.run(["git", "remote", "add", "origin", authenticated_url], cwd=GIT_WORKSPACE, check=True,
-                           capture_output=True)
-
-        subprocess.run(["git", "config", "core.sparseCheckout", "true"], cwd=GIT_WORKSPACE, check=True,
-                       capture_output=True)
-
-        sparse_file_path = os.path.join(GIT_WORKSPACE, ".git", "info", "sparse-checkout")
-        with open(sparse_file_path, "w", encoding="utf-8") as sf:
-            for name in file_names:
-                sf.write(f"{name}\n")
-
+        # Direct, reliable shallow clone with long-paths explicitly bypassed for nested node layouts
         result = subprocess.run(
-            ["git", "pull", "--depth=1", "origin", branch],
+            ["git", "-c", "core.longpaths=true", "clone", "--depth", "1", "--branch", branch, authenticated_url, "."],
             cwd=GIT_WORKSPACE,
             capture_output=True,
             text=True
         )
 
         if result.returncode != 0:
-            subprocess.run(["git", "fetch", "--depth=1", "origin", branch], cwd=GIT_WORKSPACE, capture_output=True)
-            subprocess.run(["git", "checkout", f"origin/{branch}", "--"] + file_names, cwd=GIT_WORKSPACE,
-                           capture_output=True)
+            st.error(f"Git Clone Core Error: {result.stderr}")
+            return False
 
-        st.success(f"✅ Git Sparse-Sync: Successfully pulled target data items: {', '.join(file_names)}")
+        st.success(f"✅ Git Workspace Sync Complete via branch: '{branch}'")
         return True
     except Exception as e:
         st.error(f"❌ Git tracking synchronization failed: {e}")
@@ -259,395 +246,431 @@ if mode == "Document":
         st.markdown("---")
         st.subheader("🏁 JMeter Test Plan Provisioning Selection")
 
-        st.markdown("### 📜 Step 1: Script Configuration Blueprint (.jmx)")
-        jmx_source_mode = st.radio(
-            "Select JMX Provisioning Strategy",
-            ["Upload JMX Script File Locally", "Download JMX Script File from Git Remote",
-             "Generate JMX with AI Engine Matrix Layout"],
-            index=0, horizontal=True, key="jmx_source_mode_radio"
-        )
-
-        use_git_runtime = False
-        git_target_jmx_name = ""
-        csv_source_selection = "Upload CSV Datasets Locally"
-
-        if jmx_source_mode == "Upload JMX Script File Locally":
-            uploaded_jmx = st.file_uploader("Upload your operational target .jmx file", type=["jmx"],
-                                            key="direct_jmx_uploader")
-            if uploaded_jmx:
-                jmx_string_content = uploaded_jmx.getvalue().decode("utf-8")
-                st.session_state.generated_jmx = jmx_string_content
-                saved_uploaded_path = os.path.join(JMX_FOLDER, "runtime_api_execution.jmx")
-                with open(saved_uploaded_path, "w", encoding="utf-8") as f:
-                    f.write(jmx_string_content)
-                st.session_state.generated_jmx_path = saved_uploaded_path
-                st.success(f"📂 Operational script cached locally.")
-
-        elif jmx_source_mode == "Download JMX Script File from Git Remote":
-            st.markdown("##### 🌐 Provide Git Repository Details for JMX Execution Script")
-            col_jgit1, col_jgit2 = st.columns(2)
-            jmx_git_url = col_jgit1.text_input("JMX Repo Remote URL",
-                                               value="https://github.com/SonaJayaram/Performance_IQEAUIIntegration.git",
-                                               key="jmx_git_url")
-            jmx_git_branch = col_jgit2.text_input("JMX Target Branch / Ref", value="feature/iqea-jmeter-enhancements",
-                                                  key="jmx_git_branch")
-
-            col_jgit3, col_jgit4 = st.columns(2)
-            jmx_git_token = col_jgit3.text_input("JMX Git Token (For Private Repos)", type="password",
-                                                 key="jmx_git_token")
-            git_target_jmx_name = col_jgit4.text_input("Target JMX Filename on Repository",
-                                                       value="runtime_api_execution.jmx", key="git_target_jmx_name")
-
-            if st.button("⚡ Pull JMX Component via Git", key="btn_sync_jmx_git"):
-                if jmx_git_url and git_target_jmx_name:
-                    with st.spinner("Downloading target .jmx artifact via checkout layers..."):
-                        success = sync_git_sparse_files(jmx_git_url, jmx_git_branch, [git_target_jmx_name],
-                                                        jmx_git_token, clear_workspace=False)
-                        if success:
-                            potential_path = os.path.join(GIT_WORKSPACE, git_target_jmx_name)
-                            if os.path.exists(potential_path):
-                                with open(potential_path, "r", encoding="utf-8") as f:
-                                    st.session_state.generated_jmx = f.read()
-                                execution_jmx_target = os.path.join(JMX_FOLDER, "runtime_api_execution.jmx")
-                                with open(execution_jmx_target, "w", encoding="utf-8") as out_f:
-                                    out_f.write(st.session_state.generated_jmx)
-                                st.session_state.generated_jmx_path = execution_jmx_target
-                                st.success("🎯 Synced JMX script from Git successfully.")
-                else:
-                    st.error("❌ Repo URL and Target JMX file name parameters are mandatory.")
-
-        elif jmx_source_mode == "Generate JMX with AI Engine Matrix Layout":
-            if st.button("📦 Build Script Matrix Plan via AI", key="btn_ai_jmx_generation"):
-                if not uploaded_file:
-                    st.error("Please upload the baseline API Excel Document at the top first.")
-                else:
-                    st.info("📦 Compiling performance blueprint specs directly into JMeter structure...")
-                    try:
-                        excel_sheets = pd.read_excel(uploaded_file, sheet_name=None)
-                        compiled_template_data = ""
-                        for sheet, df_sheet in excel_sheets.items():
-                            compiled_template_data += f"\n--- Sheet Data Profile: {sheet} ---\n{df_sheet.to_string(index=False)}\n"
-
-                        ai_generation_instruction = (
-                            "Generate a COMPLETE, VALID, EXECUTABLE JMeter JMX file for version 5.6.3 utilizing this structured matrix:\n"
-                            f"{compiled_template_data}\n"
-                            "CRITICAL INSTRUCTION: Do NOT use 'localhost' inside the Server Name / IP configurations "
-                            "for your HTTP Samplers or HTTP Request Defaults. Instead, use the dynamic property token: ${__P(target_host,10.0.0.4)}"
-                        )
-                        response = utilitymodule.get_output_from_ai(ai_generation_instruction)
-
-                        if response and not str(response).strip().startswith("<!DOCTYPE html>"):
-                            st.session_state.generated_jmx = str(response)
-                            file_path = os.path.join(JMX_FOLDER, "runtime_api_execution.jmx")
-                            with open(file_path, "w", encoding="utf-8") as f:
-                                f.write(str(response))
-                            st.session_state.generated_jmx_path = file_path
-                            st.success("✅ JMeter JMX Performance Blueprint generated and cached via AI layers.")
-                        else:
-                            st.error("❌ Unexpected script parsing error. Check system keys.")
-                    except Exception as e:
-                        st.error(f"❌ Error compiling automated JMX template: {e}")
-
-        # Step 2: CSV Dataset sourcing configuration block (Decoupled layout)
-        st.write("---")
-        st.markdown("### 📊 Step 2: Map Supporting Execution Datasets (.csv)")
-        csv_source_selection = st.radio(
-            "Choose CSV Dataset Sourcing Strategy",
-            ["Upload CSV Datasets Locally", "Download CSV Datasets from Git Remote Repository"],
-            index=0, horizontal=True, key="csv_source_selection_radio"
-        )
-
-        if csv_source_selection == "Upload CSV Datasets Locally":
-            local_csvs = st.file_uploader("Upload dataset files required by your JMX", type=["csv"],
-                                          accept_multiple_files=True, key="local_csv_uploader")
-            if local_csvs:
-                for csv_file in local_csvs:
-                    with open(os.path.join(GIT_WORKSPACE, csv_file.name), "wb") as f:
-                        f.write(csv_file.getbuffer())
-                st.success(f"✅ Cached {len(local_csvs)} local source data tables safely.")
-        else:
-            col_cgit1, col_cgit2 = st.columns(2)
-            csv_git_url = col_cgit1.text_input("CSV Repo Remote URL",
-                                               value="https://github.com/SonaJayaram/Performance_IQEAUIIntegration.git",
-                                               key="csv_git_url")
-            csv_git_branch = col_cgit2.text_input("CSV Target Branch / Ref", value="feature/iqea-jmeter-enhancements",
-                                                  key="csv_git_branch")
-
-            col_cgit3, col_cgit4 = st.columns(2)
-            csv_git_token = col_cgit3.text_input("CSV Git Token (For Private Repos)", type="password",
-                                                 key="csv_git_token")
-            target_csv_files = st.text_input("Dataset Pattern Names to Pull (e.g. data.csv or Input/data.csv)",
-                                             value="Input/data.csv", key="target_csv_files")
-
-            if st.button("⚡ Sync Specified Git Data Components", key="btn_sync_csv_git"):
-                file_list = [f.strip() for f in target_csv_files.split(",") if f.strip()]
-                if csv_git_url and file_list:
-                    with st.spinner("Downloading target data records via native API mappings..."):
-                        os.makedirs(GIT_WORKSPACE, exist_ok=True)
-                        clean_url = csv_git_url.strip().removesuffix(".git").replace("https://github.com/", "")
-
-                        http = urllib3.PoolManager()
-                        headers = {"Authorization": f"token {csv_git_token}"} if csv_git_token else {}
-
-                        for remote_file_path in file_list:
-                            raw_url = f"https://raw.githubusercontent.com/{clean_url}/{csv_git_branch}/{remote_file_path}"
-                            resp = http.request('GET', raw_url, headers=headers)
-
-                            if resp.status == 200:
-                                local_target_filename = os.path.basename(remote_file_path)
-                                with open(os.path.join(GIT_WORKSPACE, local_target_filename), "wb") as f:
-                                    f.write(resp.data)
-                                st.success(f"✅ Downloaded and cached: {local_target_filename}")
-                            else:
-                                st.error(
-                                    f"❌ Failed to grab target element path: {remote_file_path} (Status Code: {resp.status})")
-                else:
-                    st.error("❌ Repo URL and targeting dataset CSV strings are required context paths.")
-
-        if st.session_state.generated_jmx:
-            st.markdown("---")
-            st.subheader("⚙️ Execution Configuration Engine")
-
-            execution_profile = st.selectbox(
-                "Choose Test Execution Profile",
-                ["Local Dry Run / Smoke Test (Your Machine Only)",
-                 "Actual Load Test (Distributed Master-Slave Config)"],
-                index=0
+        # Accordion 1: Script & Dataset Provisioning Configuration
+        with st.expander("📦 Script & Dataset Configuration Blueprint", expanded=True):
+            st.markdown("### 📜 Step 1: Script Configuration Blueprint (.jmx)")
+            jmx_source_mode = st.radio(
+                "Select JMX Provisioning Strategy",
+                ["Upload JMX Script File Locally", "Clone JMX Script File from Git Remote",
+                 "Generate JMX with AI Engine Matrix Layout"],
+                index=0, horizontal=True, key="jmx_source_mode_radio"
             )
 
-            st.markdown("##### ⚙️ Adjust Runtime Thread Group Parameters")
-            col_t1, col_t2, col_t3, col_t4 = st.columns(4)
+            use_git_runtime = False
+            git_target_jmx_name = ""
+            csv_source_selection = "Upload CSV Datasets Locally"
 
-            if "Local Dry Run" in execution_profile:
-                runtime_threads = col_t1.number_input("Number of Users (Threads)", min_value=1, value=1, step=1)
-                runtime_rampup = col_t2.number_input("Ramp-up Period (seconds)", min_value=1, value=1, step=1)
-                runtime_loops = col_t3.number_input("Loop Count (-1 for Infinite)", min_value=-1, value=1, step=1)
-                runtime_duration = col_t4.number_input("Duration (seconds; 0 to disable)", min_value=0, value=5, step=1)
-                master_ip_value = "localhost"
-            else:
-                runtime_threads = col_t1.number_input("Number of Users (Threads)", min_value=1, value=10, step=1)
-                runtime_rampup = col_t2.number_input("Ramp-up Period (seconds)", min_value=1, value=5, step=1)
-                runtime_loops = col_t3.number_input("Loop Count (-1 for Infinite)", min_value=-1, value=-1, step=1)
-                runtime_duration = col_t4.number_input("Duration (seconds)", min_value=1, value=120, step=1)
+            if jmx_source_mode == "Upload JMX Script File Locally":
+                uploaded_jmx = st.file_uploader("Upload your operational target .jmx file", type=["jmx"],
+                                                key="direct_jmx_uploader")
+                if uploaded_jmx:
+                    jmx_string_content = uploaded_jmx.getvalue().decode("utf-8")
+                    st.session_state.generated_jmx = jmx_string_content
+                    saved_uploaded_path = os.path.join(JMX_FOLDER, "runtime_api_execution.jmx")
+                    with open(saved_uploaded_path, "w", encoding="utf-8") as f:
+                        f.write(jmx_string_content)
+                    st.session_state.generated_jmx_path = saved_uploaded_path
+                    st.success(f"📂 Operational script cached locally.")
 
-            jmeter_path = st.text_input("Local JMeter Executable Path",
-                                        value=r"F:\Sona_Performance\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\jmeter.bat",
-                                        key="api_exec_jmeter_path")
+            elif jmx_source_mode == "Clone JMX Script File from Git Remote":
+                st.markdown("##### 🌐 Provide Git Repository Details for JMX Execution Script")
+                col_jgit1, col_jgit2 = st.columns(2)
+                jmx_git_url = col_jgit1.text_input("JMX Repo Remote URL",
+                                                   value="https://github.com/SonaJayaram/Performance_IQEAUIIntegration.git",
+                                                   key="jmx_git_url")
+                jmx_git_branch = col_jgit2.text_input("JMX Target Branch / Ref",
+                                                      value="master",
+                                                      key="jmx_git_branch")
 
-            st.markdown("---")
-            st.subheader("📊 Live Telemetry Metric Redirection")
+                col_jgit3, col_jgit4 = st.columns(2)
+                jmx_git_token = col_jgit3.text_input("JMX Git Token (For Private Repos)", type="password",
+                                                     key="jmx_git_token")
+                git_target_jmx_name = col_jgit4.text_input("Default Target JMX Filename Hint",
+                                                           value="VSM_API_TESTING_IQEA.jmx",
+                                                           key="git_target_jmx_name")
 
-            grafana_url = st.text_input(
-                "Your Grafana Dashboard URL",
-                value="http://localhost:3000/d/adrjwwj/iqeadashboard?orgId=1&refresh=5s&panelId=1"
-            )
-
-            if "http" in grafana_url:
-                st.link_button("📈 Open Live Grafana Monitor Dashboard", grafana_url, type="primary",
-                               use_container_width=True)
-
-            if "Actual Load Test" in execution_profile:
-                local_master_ip = st.text_input("Master VM Infrastructure IP", value="10.0.0.4")
-                remote_slave_ip = st.text_input("Slave VM Target Node IP", value="10.0.0.5", disabled=True)
-                master_ip_value = local_master_ip if local_master_ip else "10.0.0.4"
-
-            if st.button("🚀 Fire Performance Execution Plan", key="btn_run_api_jmeter"):
-                jmx_full_path = st.session_state.generated_jmx_path
-
-                if not jmx_full_path or not os.path.exists(jmx_full_path):
-                    st.error("❌ Execution target configuration missing.")
-                else:
-                    base_name = "api_runtime_run"
-                    report_base_dir = os.path.join(current_path, "jmeter_reports", base_name)
-                    output_jtl = os.path.join(report_base_dir, f"{base_name}_log.jtl")
-                    html_report_dir = os.path.join(report_base_dir, "html_dashboard")
-
-                    if os.path.exists(report_base_dir):
-                        try:
-                            shutil.rmtree(report_base_dir)
-                        except OSError:
-                            pass
-                    os.makedirs(report_base_dir, exist_ok=True)
-
-                    if "Actual Load Test" in execution_profile:
-                        try:
-                            find_port_cmd = 'netstat -ano | findstr :60000'
-                            port_check = subprocess.run(find_port_cmd, shell=True, capture_output=True, text=True)
-                            if port_check.stdout:
-                                for line in port_check.stdout.strip().split('\n'):
-                                    if "LISTENING" in line or "TIME_WAIT" in line:
-                                        zombie_pid = line.split()[-1]
-                                        subprocess.run(f"taskkill /F /PID {zombie_pid}", shell=True,
-                                                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                                time.sleep(2)
-                        except Exception:
-                            pass
-
-                    runtime_config = {
-                        "threads": int(runtime_threads),
-                        "rampup": int(runtime_rampup),
-                        "loops": int(runtime_loops),
-                        "duration": int(runtime_duration)
-                    }
-
-                    # ✅ POSITIONAL CORRECTION APPLIED: Exactly 2 parameters are sent here,
-                    # making it 100% immune to signature cache mismatches.
-                    updated_jmx_str = utilitymodule.update_jmx_file(st.session_state.generated_jmx, runtime_config)
-
-                    # Dynamic host/Grafana parameters string replacement handled safely here inside the app scope
-                    updated_jmx_str = updated_jmx_str.replace("localhost:8086", f"{master_ip_value}:8086")
-                    updated_jmx_str = updated_jmx_str.replace("127.0.0.1:8086", f"{master_ip_value}:8086")
-                    updated_jmx_str = updated_jmx_str.replace("172.173.226.74:8086", f"{master_ip_value}:8086")
-
-                    # Map files relative to our clean workspace folder execution directory
-                    try:
-                        root_xml = ET.fromstring(updated_jmx_str)
-                        for element in root_xml.iter("CSVDataSet"):
-                            for prop in element.iter("stringProp"):
-                                if prop.attrib.get("name") == "filename":
-                                    raw_filename = prop.text if prop.text else ""
-                                    base_filename = os.path.basename(raw_filename)
-
-                                    # 🌟 CHANGE: Drop the os.path.join wrapper!
-                                    # Flatten the reference so JMeter looks for it relative to its own execution context
-                                    prop.text = base_filename
-
-                        updated_jmx_str = ET.tostring(root_xml, encoding="utf-8").decode("utf-8")
-                    except Exception as xml_ex:
-                        pass
-
-                    with open(jmx_full_path, "w", encoding="utf-8") as f:
-                        f.write(updated_jmx_str)
-
-                    jmeter_bin_directory = os.path.dirname(jmeter_path)
-
-                    custom_env = os.environ.copy()
-                    if jmeter_bin_directory:
-                        custom_env["JMETER_HOME"] = os.path.dirname(jmeter_bin_directory)
-
-                    # Dynamic host property assignment to internal JVM options layout
-                    custom_env[
-                        "JVM_ARGS"] = f"-Djava.rmi.server.hostname={master_ip_value} -Dclient.rmi.localport=60000 -Dserver.rmi.ssl.disable=true"
-
-                    # Force context to workspace root so dependencies resolve flawlessly
-                    execution_cwd = GIT_WORKSPACE
-
-                    if "Local Dry Run" in execution_profile:
-                        st.info("🏃‍♂️ Running standalone local smoke iteration...")
-                        cmd_args = [
-                            jmeter_path,
-                            "-Jtarget_host=localhost",
-                            "-n", "-t", jmx_full_path,
-                            "-l", output_jtl,
-                            "-Jsummariser.name=summary"
-                        ]
+                if st.button("⚡ Clone JMX Component via Git", key="btn_sync_jmx_git"):
+                    if jmx_git_url:
+                        with st.spinner("Cloning target repository tip via deployment layers..."):
+                            success = sync_git_sparse_files(jmx_git_url, jmx_git_branch, [],
+                                                            jmx_git_token, clear_workspace=True)
+                            if success:
+                                st.success("🎯 Synced repository tracking components completely.")
                     else:
-                        st.info(
-                            "🌐 Triggering Distributed Infrastructure Load Layout across Private Virtual Machines...")
-                        cmd_args = [
-                            jmeter_path,
-                            "-Jjmeter.reportgenerator.ignore_bad_lines=true",
-                            "-Jjmeter.save.saveservice.output_format=csv",
-                            f"-Jtarget_host={master_ip_value}",
-                            "-n", "-t", jmx_full_path,
-                            "-R", "10.0.0.5:1099",
-                            "-l", output_jtl,
-                            "-Jsummariser.name=summary"
-                        ]
+                        st.error("❌ Repository Remote URL parameter is mandatory.")
 
-                    try:
-                        st.caption(f"Executing Stream Stack: {' '.join(cmd_args)}")
+                # Dynamic File Discovery Dropdown Sequence
+                discovered_jmx_files = []
+                if os.path.exists(GIT_WORKSPACE):
+                    for root, dirs, files in os.walk(GIT_WORKSPACE):
+                        for file in files:
+                            if file.lower().endswith(".jmx"):
+                                relative_path = os.path.relpath(os.path.join(root, file), GIT_WORKSPACE)
+                                discovered_jmx_files.append(relative_path)
 
-                        process = subprocess.Popen(
-                            cmd_args, shell=False, env=custom_env, cwd=execution_cwd,
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
-                        )
+                if discovered_jmx_files:
+                    st.write("---")
+                    st.markdown("##### 🎯 Select Target Script from Cloned Assets")
 
-                        log_stdout_box = st.empty()
-                        accumulated_logs = ""
+                    default_idx = 0
+                    if git_target_jmx_name in discovered_jmx_files:
+                        default_idx = discovered_jmx_files.index(git_target_jmx_name)
 
-                        max_allowed_seconds = int(runtime_duration) + 60 if int(runtime_duration) > 0 else 720
-                        start_time = datetime.now()
+                    selected_jmx_relative = st.selectbox(
+                        "Choose the JMX file you want to execute",
+                        options=discovered_jmx_files,
+                        index=default_idx,
+                        key="selected_cloned_jmx_dropdown"
+                    )
 
-                        while True:
-                            line = process.stdout.readline()
-                            if line:
-                                accumulated_logs += line
-                                log_stdout_box.code(accumulated_logs[-3000:])
+                    if selected_jmx_relative:
+                        target_source_path = os.path.join(GIT_WORKSPACE, selected_jmx_relative)
+                        try:
+                            with open(target_source_path, "r", encoding="utf-8") as f:
+                                st.session_state.generated_jmx = f.read()
 
-                            if process.poll() is not None:
-                                break
+                            execution_jmx_target = os.path.join(JMX_FOLDER, "runtime_api_execution.jmx")
+                            shutil.copy2(target_source_path, execution_jmx_target)
+                            st.session_state.generated_jmx_path = execution_jmx_target
+                            st.info(f"👉 Target Execution Script Set To: `{selected_jmx_relative}`")
+                        except Exception as e:
+                            st.error(f"Failed to read selected JMX file: {e}")
+                else:
+                    if os.path.exists(GIT_WORKSPACE) and len(os.listdir(GIT_WORKSPACE)) > 0:
+                        st.warning("⚠️ No `.jmx` format test files were found inside the cloned workspace.")
 
-                            elapsed_seconds = (datetime.now() - start_time).total_seconds()
-                            if elapsed_seconds > max_allowed_seconds:
-                                st.warning("⚠️ Workload threshold or test duration completed. Finalizing log sync...")
-                                break
+            elif jmx_source_mode == "Generate JMX with AI Engine Matrix Layout":
+                if st.button("📦 Build Script Matrix Plan via AI", key="btn_ai_jmx_generation"):
+                    if not uploaded_file:
+                        st.error("Please upload the baseline API Excel Document at the top first.")
+                    else:
+                        st.info("📦 Compiling performance blueprint specs directly into JMeter structure...")
+                        try:
+                            excel_sheets = pd.read_excel(uploaded_file, sheet_name=None)
+                            compiled_template_data = ""
+                            for sheet, df_sheet in excel_sheets.items():
+                                compiled_template_data += f"\n--- Sheet Data Profile: {sheet} ---\n{df_sheet.to_string(index=False)}\n"
 
-                        if process.poll() is None:
+                            ai_generation_instruction = (
+                                "Generate a COMPLETE, VALID, EXECUTABLE JMeter JMX file for version 5.6.3 utilizing this structured matrix:\n"
+                                f"{compiled_template_data}\n"
+                                "CRITICAL INSTRUCTION: Do NOT use 'localhost' inside the Server Name / IP configurations "
+                                "for your HTTP Samplers or HTTP Request Defaults. Instead, use the dynamic property token: ${__P(target_host,10.0.0.4)}"
+                            )
+                            response = utilitymodule.get_output_from_ai(ai_generation_instruction)
+
+                            if response and not str(response).strip().startswith("<!DOCTYPE html>"):
+                                st.session_state.generated_jmx = str(response)
+                                file_path = os.path.join(JMX_FOLDER, "runtime_api_execution.jmx")
+                                with open(file_path, "w", encoding="utf-8") as f:
+                                    f.write(str(response))
+                                st.session_state.generated_jmx_path = file_path
+                                st.success("✅ JMeter JMX Performance Blueprint generated and cached via AI layers.")
+                            else:
+                                st.error("❌ Unexpected script parsing error. Check system keys.")
+                        except Exception as e:
+                            st.error(f"❌ Error compiling automated JMX template: {e}")
+
+            # Optional Step 2 Toggle Checkbox
+            st.write("---")
+            enable_step_2 = st.checkbox("Include Step 2: Map Supporting Execution Datasets (.csv)", value=False,
+                                        key="enable_step_2_checkbox")
+
+            if enable_step_2:
+                st.markdown("### 📊 Step 2: Map Supporting Execution Datasets (.csv)")
+                csv_source_selection = st.radio(
+                    "Choose CSV Dataset Sourcing Strategy",
+                    ["Upload CSV Datasets Locally", "Clone CSV Datasets from Git Remote Repository"],
+                    index=0, horizontal=True, key="csv_source_selection_radio"
+                )
+
+                if csv_source_selection == "Upload CSV Datasets Locally":
+                    local_csvs = st.file_uploader("Upload dataset files required by your JMX", type=["csv"],
+                                                  accept_multiple_files=True, key="local_csv_uploader")
+                    if local_csvs:
+                        for csv_file in local_csvs:
+                            with open(os.path.join(GIT_WORKSPACE, csv_file.name), "wb") as f:
+                                f.write(csv_file.getbuffer())
+                        st.success(f"✅ Cached {len(local_csvs)} local source data tables safely.")
+                else:
+                    col_cgit1, col_cgit2 = st.columns(2)
+                    csv_git_url = col_cgit1.text_input("CSV Repo Remote URL",
+                                                       value="https://github.com/SonaJayaram/Performance_IQEAUIIntegration.git",
+                                                       key="csv_git_url")
+                    csv_git_branch = col_cgit2.text_input("CSV Target Branch / Ref",
+                                                          value="master",
+                                                          key="csv_git_branch")
+
+                    col_cgit3, col_cgit4 = st.columns(2)
+                    csv_git_token = col_cgit3.text_input("CSV Git Token (For Private Repos)", type="password",
+                                                         key="csv_git_token")
+                    target_csv_files = st.text_input(
+                        "Dataset Pattern Names to Pull (e.g. data.csv or Input/data.csv)",
+                        value="Input/data.csv", key="target_csv_files")
+
+                    if st.button("⚡ Sync Specified Git Data Components", key="btn_sync_csv_git"):
+                        file_list = [f.strip() for f in target_csv_files.split(",") if f.strip()]
+                        if csv_git_url and file_list:
+                            with st.spinner("Downloading target data records via native API mappings..."):
+                                os.makedirs(GIT_WORKSPACE, exist_ok=True)
+                                clean_url = csv_git_url.strip().removesuffix(".git").replace("https://github.com/",
+                                                                                             "")
+
+                                http = urllib3.PoolManager()
+                                headers = {"Authorization": f"token {csv_git_token}"} if csv_git_token else {}
+
+                                for remote_file_path in file_list:
+                                    raw_url = f"https://raw.githubusercontent.com/{clean_url}/{csv_git_branch}/{remote_file_path}"
+                                    resp = http.request('GET', raw_url, headers=headers)
+
+                                    if resp.status == 200:
+                                        local_target_filename = os.path.basename(remote_file_path)
+                                        with open(os.path.join(GIT_WORKSPACE, local_target_filename), "wb") as f:
+                                            f.write(resp.data)
+                                        st.success(f"✅ Downloaded and cached: {local_target_filename}")
+                                    else:
+                                        st.error(
+                                            f"❌ Failed to grab target element path: {remote_file_path} (Status Code: {resp.status})")
+                        else:
+                            st.error("❌ Repo URL and targeting dataset CSV strings are required context paths.")
+
+        # Accordion 2: Runtime Infrastructure and Telemetry Controller Configuration
+        if st.session_state.generated_jmx:
+            with st.expander("⚙️ Execution Cockpit & Live Telemetry", expanded=True):
+                st.subheader("⚙️ Execution Configuration Engine")
+
+                execution_profile = st.selectbox(
+                    "Choose Test Execution Profile",
+                    ["Local Dry Run / Smoke Test (Your Machine Only)",
+                     "Actual Load Test (Distributed Master-Slave Config)"],
+                    index=0
+                )
+
+                st.markdown("##### ⚙️ Adjust Runtime Thread Group Parameters")
+                col_t1, col_t2, col_t3, col_t4 = st.columns(4)
+
+                if "Local Dry Run" in execution_profile:
+                    runtime_threads = col_t1.number_input("Number of Users (Threads)", min_value=1, value=1, step=1)
+                    runtime_rampup = col_t2.number_input("Ramp-up Period (seconds)", min_value=1, value=1, step=1)
+                    runtime_loops = col_t3.number_input("Loop Count (-1 for Infinite)", min_value=-1, value=1, step=1)
+                    runtime_duration = col_t4.number_input("Duration (seconds; 0 to disable)", min_value=0, value=5,
+                                                           step=1)
+                    master_ip_value = "localhost"
+                else:
+                    runtime_threads = col_t1.number_input("Number of Users (Threads)", min_value=1, value=10, step=1)
+                    runtime_rampup = col_t2.number_input("Ramp-up Period (seconds)", min_value=1, value=5, step=1)
+                    runtime_loops = col_t3.number_input("Loop Count (-1 for Infinite)", min_value=-1, value=-1, step=1)
+                    runtime_duration = col_t4.number_input("Duration (seconds)", min_value=1, value=120, step=1)
+
+                st.markdown("---")
+                st.subheader("📊 Live Telemetry Metric Redirection")
+
+                grafana_url = st.text_input(
+                    "Your Grafana Dashboard URL",
+                    value="http://localhost:3000/d/adrjwwj/iqeadashboard?orgId=1&refresh=5s&panelId=1"
+                )
+
+                if "http" in grafana_url:
+                    st.link_button("📈 Open Live Grafana Monitor Dashboard", grafana_url, type="primary",
+                                   use_container_width=True)
+
+                if "Actual Load Test" in execution_profile:
+                    local_master_ip = st.text_input("Master VM Infrastructure IP", value="10.0.0.4")
+                    remote_slave_ip = st.text_input("Slave VM Target Node IP", value="10.0.0.5", disabled=True)
+                    master_ip_value = local_master_ip if local_master_ip else "10.0.0.4"
+
+                if st.button("🚀 Fire Performance Execution Plan", key="btn_run_api_jmeter"):
+                    jmx_full_path = st.session_state.generated_jmx_path
+
+                    if not jmx_full_path or not os.path.exists(jmx_full_path):
+                        st.error("❌ Execution target configuration missing.")
+                    else:
+                        # 🔒 CLEANLY HARDCODED AND OBFUSCATED ENGINE EXECUTION PATH
+                        jmeter_path = r"F:\Sona_Performance\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\jmeter.bat"
+
+                        base_name = "api_runtime_run"
+                        report_base_dir = os.path.join(current_path, "jmeter_reports", base_name)
+                        output_jtl = os.path.join(report_base_dir, f"{base_name}_log.jtl")
+                        html_report_dir = os.path.join(report_base_dir, "html_dashboard")
+
+                        if os.path.exists(report_base_dir):
                             try:
-                                subprocess.run(f"taskkill /F /T /PID {process.pid}", shell=True,
-                                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                shutil.rmtree(report_base_dir)
+                            except OSError:
+                                pass
+                        os.makedirs(report_base_dir, exist_ok=True)
+
+                        if "Actual Load Test" in execution_profile:
+                            try:
+                                find_port_cmd = 'netstat -ano | findstr :60000'
+                                port_check = subprocess.run(find_port_cmd, shell=True, capture_output=True, text=True)
+                                if port_check.stdout:
+                                    for line in port_check.stdout.strip().split('\n'):
+                                        if "LISTENING" in line or "TIME_WAIT" in line:
+                                            zombie_pid = line.split()[-1]
+                                            subprocess.run(f"taskkill /F /PID {zombie_pid}", shell=True,
+                                                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                    time.sleep(2)
                             except Exception:
-                                process.terminate()
+                                pass
 
-                        process.wait()
-                        st.info("⏳ Giving data buffers a brief moment to settle down...")
-                        time.sleep(3)
+                        runtime_config = {
+                            "threads": int(runtime_threads),
+                            "rampup": int(runtime_rampup),
+                            "loops": int(runtime_loops),
+                            "duration": int(runtime_duration)
+                        }
 
-                        if os.path.exists(output_jtl) and os.path.getsize(output_jtl) > 100:
-                            st.success("🎉 Performance test workflow compiled completely!")
+                        updated_jmx_str = utilitymodule.update_jmx_file(st.session_state.generated_jmx, runtime_config)
 
-                            try:
-                                with open(output_jtl, "r", encoding="utf-8", errors="ignore") as f:
-                                    lines = f.readlines()
+                        updated_jmx_str = updated_jmx_str.replace("localhost:8086", f"{master_ip_value}:8086")
+                        updated_jmx_str = updated_jmx_str.replace("127.0.0.1:8086", f"{master_ip_value}:8086")
+                        updated_jmx_str = updated_jmx_str.replace("172.173.226.74:8086", f"{master_ip_value}:8086")
 
-                                if lines:
-                                    expected_columns = len(lines[0].split(','))
-                                    last_line_columns = len(lines[-1].split(','))
+                        try:
+                            root_xml = ET.fromstring(updated_jmx_str)
+                            for element in root_xml.iter("CSVDataSet"):
+                                for prop in element.iter("stringProp"):
+                                    if prop.attrib.get("name") == "filename":
+                                        raw_filename = prop.text if prop.text else ""
+                                        base_filename = os.path.basename(raw_filename)
+                                        prop.text = base_filename
 
-                                    if last_line_columns < expected_columns:
-                                        with open(output_jtl, "w", encoding="utf-8") as f:
-                                            f.writelines(lines[:-1])
-                                        st.caption(
-                                            "🔧 Sanitized incomplete trailing log artifacts from hard-stop sequence.")
-                            except Exception as e:
-                                st.warning(f"⚠️ Log pre-check optimization bypassed: {e}")
+                            updated_jmx_str = ET.tostring(root_xml, encoding="utf-8").decode("utf-8")
+                        except Exception as xml_ex:
+                            pass
 
-                            if os.path.exists(html_report_dir):
-                                try:
-                                    shutil.rmtree(html_report_dir)
-                                except Exception:
-                                    pass
+                        with open(jmx_full_path, "w", encoding="utf-8") as f:
+                            f.write(updated_jmx_str)
 
-                            st.info("📊 Generating JMeter HTML Dashboard...")
-                            report_cmd = [
+                        jmeter_bin_directory = os.path.dirname(jmeter_path)
+
+                        custom_env = os.environ.copy()
+                        if jmeter_bin_directory:
+                            custom_env["JMETER_HOME"] = os.path.dirname(jmeter_bin_directory)
+
+                        custom_env[
+                            "JVM_ARGS"] = f"-Djava.rmi.server.hostname={master_ip_value} -Dclient.rmi.localport=60000 -Dserver.rmi.ssl.disable=true"
+
+                        execution_cwd = GIT_WORKSPACE
+
+                        if "Local Dry Run" in execution_profile:
+                            st.info("🏃‍♂️ Running standalone local smoke iteration...")
+                            cmd_args = [
                                 jmeter_path,
-                                "-g", output_jtl,
-                                "-o", html_report_dir
+                                "-Jtarget_host=localhost",
+                                "-n", "-t", jmx_full_path,
+                                "-l", output_jtl,
+                                "-Jsummariser.name=summary"
+                            ]
+                        else:
+                            st.info(
+                                "🌐 Triggering Distributed Infrastructure Load Layout across Private Virtual Machines...")
+                            cmd_args = [
+                                jmeter_path,
+                                "-Jjmeter.reportgenerator.ignore_bad_lines=true",
+                                "-Jjmeter.save.saveservice.output_format=csv",
+                                f"-Jtarget_host={master_ip_value}",
+                                "-n", "-t", jmx_full_path,
+                                "-R", "10.0.0.5:1099",
+                                "-l", output_jtl,
+                                "-Jsummariser.name=summary"
                             ]
 
-                            report_process = subprocess.run(
-                                report_cmd,
-                                shell=False,
-                                cwd=jmeter_bin_directory,
-                                env=custom_env,
-                                capture_output=True,
-                                text=True
+                        try:
+                            st.caption(f"Executing Stream Stack: {' '.join(cmd_args)}")
+
+                            process = subprocess.Popen(
+                                cmd_args, shell=False, env=custom_env, cwd=execution_cwd,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
                             )
 
-                            if report_process.returncode == 0:
-                                st.success("✅ HTML Report generated successfully.")
-                                st.info(f"📊 Dashboard Location: {html_report_dir}")
-                            else:
-                                st.error("❌ HTML Report generation failed.")
-                                st.code(report_process.stdout)
-                                st.code(report_process.stderr)
-                        else:
-                            st.error(
-                                "❌ Log data was completely empty due to a hard connection block from the slave machine. No metrics were returned.")
+                            log_stdout_box = st.empty()
+                            accumulated_logs = ""
 
-                    except Exception as ex:
-                        st.error(f"❌ Core runtime engine crash: {ex}")
+                            max_allowed_seconds = int(runtime_duration) + 60 if int(runtime_duration) > 0 else 720
+                            start_time = datetime.now()
+
+                            while True:
+                                line = process.stdout.readline()
+                                if line:
+                                    accumulated_logs += line
+                                    log_stdout_box.code(accumulated_logs[-3000:])
+
+                                if process.poll() is not None:
+                                    break
+
+                                elapsed_seconds = (datetime.now() - start_time).total_seconds()
+                                if elapsed_seconds > max_allowed_seconds:
+                                    st.warning(
+                                        "⚠️ Workload threshold or test duration completed. Finalizing log sync...")
+                                    break
+
+                            if process.poll() is None:
+                                try:
+                                    subprocess.run(f"taskkill /F /T /PID {process.pid}", shell=True,
+                                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                                except Exception:
+                                    process.terminate()
+
+                            process.wait()
+                            st.info("⏳ Giving data buffers a brief moment to settle down...")
+                            time.sleep(3)
+
+                            if os.path.exists(output_jtl) and os.path.getsize(output_jtl) > 100:
+                                st.success("🎉 Performance test workflow compiled completely!")
+
+                                try:
+                                    with open(output_jtl, "r", encoding="utf-8", errors="ignore") as f:
+                                        lines = f.readlines()
+
+                                    if lines:
+                                        expected_columns = len(lines[0].split(','))
+                                        last_line_columns = len(lines[-1].split(','))
+
+                                        if last_line_columns < expected_columns:
+                                            with open(output_jtl, "w", encoding="utf-8") as f:
+                                                f.writelines(lines[:-1])
+                                            st.caption(
+                                                "🔧 Sanitized incomplete trailing log artifacts from hard-stop sequence.")
+                                except Exception as e:
+                                    st.warning(f"⚠️ Log pre-check optimization bypassed: {e}")
+
+                                if os.path.exists(html_report_dir):
+                                    try:
+                                        shutil.rmtree(html_report_dir)
+                                    except Exception:
+                                        pass
+
+                                st.info("📊 Generating JMeter HTML Dashboard...")
+                                report_cmd = [
+                                    jmeter_path,
+                                    "-g", output_jtl,
+                                    "-o", html_report_dir
+                                ]
+
+                                report_process = subprocess.run(
+                                    report_cmd,
+                                    shell=False,
+                                    cwd=jmeter_bin_directory,
+                                    env=custom_env,
+                                    capture_output=True,
+                                    text=True
+                                )
+
+                                if report_process.returncode == 0:
+                                    st.success("✅ HTML Report generated successfully.")
+                                    st.info(f"📊 Dashboard Location: {html_report_dir}")
+                                else:
+                                    st.error("❌ HTML Report generation failed.")
+                                    st.code(report_process.stdout)
+                                    st.code(report_process.stderr)
+                            else:
+                                st.error(
+                                    "❌ Log data was completely empty due to a hard connection block from the slave machine. No metrics were returned.")
+
+                        except Exception as ex:
+                            st.error(f"❌ Core runtime engine crash: {ex}")
 
 # ==============================
 # SWAGGER INPUT MODE
