@@ -1,3 +1,4 @@
+import base64
 import configparser
 import os
 from configparser import RawConfigParser
@@ -29,4 +30,7 @@ def get_xpath_key():
     allowed_tags = [x.strip() for x in raw.split(",") if x.strip()]
     print("xpath_allowed_tags",allowed_tags)
     return allowed_tags
+
+def gettoken():
+    return base64.b64decode(config.get('GIT_REPO_DETAILS', 'PAT_TOKEN')).decode("utf-8")
 

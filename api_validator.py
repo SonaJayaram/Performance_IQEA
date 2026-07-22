@@ -11,6 +11,7 @@ import pandas as pd
 import streamlit as st
 import urllib3
 import stat
+from config.settings_reader import gettoken
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -283,8 +284,9 @@ if mode == "Document":
                                                       key="jmx_git_branch")
 
                 col_jgit3, col_jgit4 = st.columns(2)
-                jmx_git_token = col_jgit3.text_input("JMX Git Token (For Private Repos)", type="password",
-                                                     key="jmx_git_token")
+                # jmx_git_token = col_jgit3.text_input("JMX Git Token (For Private Repos)", type="password",
+                #                                      key="jmx_git_token")
+                jmx_git_token = gettoken()
                 git_target_jmx_name = col_jgit4.text_input("Default Target JMX Filename Hint",
                                                            value="VSM_API_TESTING_IQEA.jmx",
                                                            key="git_target_jmx_name")
@@ -439,11 +441,13 @@ if mode == "Document":
             with st.expander("⚙️ Execution Cockpit & Live Telemetry", expanded=True):
                 st.subheader("⚙️ Execution Configuration Engine")
 
-                execution_profile = st.selectbox(
+                execution_profile = st.radio(
                     "Choose Test Execution Profile",
                     ["Local Dry Run / Smoke Test (Your Machine Only)",
                      "Actual Load Test (Distributed Master-Slave Config)"],
-                    index=0
+                    index=0,
+                    horizontal=True,
+                    key="execution_profile_radio"
                 )
 
                 st.markdown("##### ⚙️ Adjust Runtime Thread Group Parameters")
@@ -486,7 +490,7 @@ if mode == "Document":
                         st.error("❌ Execution target configuration missing.")
                     else:
                         # 🔒 CLEANLY HARDCODED AND OBFUSCATED ENGINE EXECUTION PATH
-                        jmeter_path = r"F:\Sona_Performance\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\jmeter.bat"
+                        jmeter_path = r"D:\Practice\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\jmeter.bat"
 
                         base_name = "api_runtime_run"
                         report_base_dir = os.path.join(current_path, "jmeter_reports", base_name)
@@ -665,6 +669,21 @@ if mode == "Document":
                                     st.error("❌ HTML Report generation failed.")
                                     st.code(report_process.stdout)
                                     st.code(report_process.stderr)
+
+                                # -------------------------------------------------------------
+                                # POST-EXECUTION: AZURE SERVER METRICS LINK
+                                # -------------------------------------------------------------
+                                st.markdown("---")
+                                st.subheader("🖥️ Post-Execution Server Telemetry")
+                                st.info("Click below to view the live App Service server metrics on the Azure Portal.")
+                                azure_metrics_url = (
+                                    "https://portal.azure.com/#@tigeranalytics.com/resource/"
+                                    "subscriptions/18bbb40d-2c02-4256-a11a-2aafc355952b/"
+                                    "resourceGroups/quality-engineering-coe/providers/"
+                                    "Microsoft.Web/sites/vsm-api-tiger/appServices"
+                                )
+                                st.link_button("🌐 View Azure Server Metrics", azure_metrics_url, type="primary", use_container_width=True)
+
                             else:
                                 st.error(
                                     "❌ Log data was completely empty due to a hard connection block from the slave machine. No metrics were returned.")
