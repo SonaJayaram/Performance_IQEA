@@ -1,0 +1,47 @@
+You are a workflow analyzer for QA test automation. Analyze the application interaction data below and break it into logical workflow segments.
+
+## Action Data (Recorded User Interactions):
+{action_data}
+
+## Screenshot Context (OCR Extracted Text from UI):
+{image_data}
+
+## Requirements / Additional Context:
+{requirements}
+
+## Your Task:
+Identify distinct workflow segments based on:
+- Page or URL changes in the action data
+- Functional areas (e.g., Login, Product Listing, Shopping Cart, Checkout, Confirmation, Logout)
+- Natural boundaries in the user journey
+
+For each segment provide:
+1. A clear segment name reflecting its purpose (e.g., "Login", "Product Inventory", "Shopping Cart", "Checkout Information", "Order Confirmation")
+2. A brief description of what this segment covers
+3. ALL the action lines that belong to this segment — copy them exactly as-is, no modifications, no omissions
+4. A list of keywords that identify relevant screenshot images for this segment (use words from the page name, URL path, or UI elements on that page)
+
+## Critical Rules:
+- Every action line must appear in exactly ONE segment — no line may be skipped or duplicated
+- Preserve the exact original text of every action line
+- Keep related actions together (same page/URL = same segment)
+- If the entire recording is on a single page, return a single segment containing all lines
+- Do not invent actions that are not in the input
+
+## Output Format:
+Return ONLY a valid JSON array. No markdown fences, no explanations, no extra text before or after the JSON.
+
+[
+  {{
+    "segment_name": "Login",
+    "description": "User authentication and login flow",
+    "actions": "Switched to new window: [https://example.com/]\nClick on login_credentials\nEnter standard_user in the user-name field\nEnter secret_sauce in the password field\nClick on login-button",
+    "image_keywords": ["login", "username", "password", "signin", "credentials"]
+  }},
+  {{
+    "segment_name": "Product Inventory",
+    "description": "Product listing page — browsing and adding items to cart",
+    "actions": "Click on add-to-cart-sauce-labs-backpack (URL: https://example.com/inventory.html)",
+    "image_keywords": ["inventory", "product", "item", "cart", "add", "backpack"]
+  }}
+]

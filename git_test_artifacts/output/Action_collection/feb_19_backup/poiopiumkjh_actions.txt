@@ -1,0 +1,83 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/]
+Click on "AgentFlow
+Design, refine, and deploy intelligent agents with ease.
+Continue with Google
+Continue with Microsoft
+Don’t have access yet?
+Register" (URL: https://agentflow-uat.tigeranalyticstest.in/)
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/agent-store)
+Click on "link-Data Store"
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Click on "Add Data Store"
+Click on "S3"
+Click on "Enter Data Source Name"
+Click on "Add Data Store
+s3
+New Data Source
+Configure all settings in one place - smart defaults are pre-filled
+A
+Data Source Setup
+B
+Processing Settings
+C
+Schedule & Execution
+
+Data Source Name *
+
+
+
+Data Source Description
+
+Connection Details
+
+How would you like to access your data? *
+
+Select Existing Bucket
+
+Choose from connected buckets and folders.
+
+Upload New Files
+
+Upload files and specify destination path.
+
+S3 Bucket/Prefix *
+
+
+s3://
+
+Fetch Files
+Discover Datasets
+Select Entire Bucket
+
+Browse and select individual files
+
+0 items selected
+No files or folders found at the root of the connection.
+Cancel
+Previous
+Next
+Live Preview
+A. Data Source
+
+S3 (Storage)
+
+test_data_source
+
+Unstructured
+B. Connection Details
+
+Not specified
+
+S3 Location
+
+C. Processing Pipeline
+Parser: Auto-Detect
+Chunking Enabled
+LLM Quality Check Disabled
+No Entity Extraction
+D. Execution Schedule
+
+Mode: Manual"
+Click on "Data Source Description"
+Click on "S3 Bucket Path"
+Click on "Next"

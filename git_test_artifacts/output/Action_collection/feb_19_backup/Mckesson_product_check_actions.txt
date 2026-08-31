@@ -1,0 +1,12 @@
+Switched to new window: [https://mms.mckesson.com/shop-products]
+Change the value to "Privacy Statement" in "More information about your privacy, opens in a new tab" (URL: https://mms.mckesson.com/shop-products)
+Click on "onetrust-accept-btn-handler" (URL: https://mms.mckesson.com/shop-products)
+Click on "Gloves" (URL: https://mms.mckesson.com/shop-products)
+Click on "Compression Gloves (99)" (URL: https://mms.mckesson.com/catalog/category?node=36578)
+Click on "Gloves" (URL: https://mms.mckesson.com/catalog?node=2297545)
+Click on "Exam Gloves (828)" (URL: https://mms.mckesson.com/catalog/category?node=36578)
+Click on "Gloves" (URL: https://mms.mckesson.com/catalog?node=29114764)
+Click on "Finger Cots (17)" (URL: https://mms.mckesson.com/catalog/category?node=36578)
+Click on "Gloves" (URL: https://mms.mckesson.com/catalog?node=38628)
+Click on "Glove Liners (57)" (URL: https://mms.mckesson.com/catalog/category?node=36578)
+Click on "Beige (1)" (URL: https://mms.mckesson.com/catalog?node=37472)

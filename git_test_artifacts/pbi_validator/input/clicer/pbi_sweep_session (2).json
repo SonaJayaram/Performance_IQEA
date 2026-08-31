@@ -1,0 +1,601 @@
+{
+  "version": 1,
+  "data": {
+    "pbi_extracted_kpis": [],
+    "pbi_table_results": [],
+    "pbi_slicers": [],
+    "pbi_sweep_data": [
+      {
+        "label": "Default (no filter)",
+        "combo": {},
+        "file": "00_default.xlsx",
+        "tables": [
+          {
+            "has_row_header": true,
+            "headers": [
+              "PRODUCE_NAME",
+              "Total Sales"
+            ],
+            "rows": [
+              [
+                "Apple Smart Phone, Full Size",
+                "$86,935.78"
+              ],
+              [
+                "Cisco Smart Phone, Full Size",
+                "$76,441.53"
+              ],
+              [
+                "Motorola Smart Phone, Full Size",
+                "$73,156.30"
+              ],
+              [
+                "Nokia Smart Phone, Full Size",
+                "$71,904.56"
+              ],
+              [
+                "Canon imageCLASS 2200 Advanced Copier",
+                "$61,599.82"
+              ],
+              [
+                "Hon Executive Leather Armchair, Adjustable",
+                "$58,193.48"
+              ],
+              [
+                "Office Star Executive Leather Armchair, Adjustable",
+                "$50,661.68"
+              ],
+              [
+                "Harbour Creations Executive Leather Armchair, Adjustable",
+                "$50,121.52"
+              ],
+              [
+                "Samsung Smart Phone, Cordless",
+                "$48,653.46"
+              ],
+              [
+                "Nokia Smart Phone, with Caller ID",
+                "$47,877.79"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Top 10 Total Sales by PRODUCE_NAME"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "SUB_CATEGORY",
+              "Return Rate %",
+              "Profit Margin",
+              "Total Sales"
+            ],
+            "rows": [
+              [
+                "Accessories",
+                "6.96 %",
+                "17.30%",
+                "$749,237.02"
+              ],
+              [
+                "Appliances",
+                "7.18 %",
+                "14.01%",
+                "$1,011,064.30"
+              ],
+              [
+                "Art",
+                "4.49 %",
+                "15.58%",
+                "$372,091.97"
+              ],
+              [
+                "Binders",
+                "5.42 %",
+                "15.68%",
+                "$461,911.51"
+              ],
+              [
+                "Bookcases",
+                "5.91 %",
+                "11.04%",
+                "$1,466,572.24"
+              ],
+              [
+                "Chairs",
+                "6.09 %",
+                "9.35%",
+                "$1,501,681.76"
+              ],
+              [
+                "Copiers",
+                "5.94 %",
+                "17.13%",
+                "$1,509,436.27"
+              ],
+              [
+                "Envelopes",
+                "6.02 %",
+                "17.32%",
+                "$170,904.30"
+              ],
+              [
+                "Fasteners",
+                "7.20 %",
+                "13.85%",
+                "$83,242.32"
+              ],
+              [
+                "Furnishings",
+                "6.44 %",
+                "12.18%",
+                "$385,578.26"
+              ],
+              [
+                "Labels",
+                "5.41 %",
+                "20.45%",
+                "$73,404.03"
+              ],
+              [
+                "Machines",
+                "4.85 %",
+                "7.56%",
+                "$779,060.07"
+              ],
+              [
+                "Paper",
+                "6.56 %",
+                "24.24%",
+                "$244,291.72"
+              ],
+              [
+                "Phones",
+                "5.87 %",
+                "12.70%",
+                "$1,706,824.14"
+              ],
+              [
+                "Storage",
+                "4.85 %",
+                "9.62%",
+                "$1,127,085.86"
+              ],
+              [
+                "Supplies",
+                "5.92 %",
+                "9.29%",
+                "$243,074.22"
+              ],
+              [
+                "Tables",
+                "7.54 %",
+                "-8.46%",
+                "$757,041.92"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Untitled Visual"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "REGION",
+              "Total Sales",
+              "Total Orders",
+              "Return Rate %"
+            ],
+            "rows": [
+              [
+                "North Asia",
+                "$848,309.78",
+                "1150",
+                "13.83 %"
+              ],
+              [
+                "West",
+                "$725,457.82",
+                "1611",
+                "11.73 %"
+              ],
+              [
+                "North",
+                "$1,248,165.60",
+                "2356",
+                "10.02 %"
+              ],
+              [
+                "Central",
+                "$2,822,302.52",
+                "5249",
+                "4.80 %"
+              ],
+              [
+                "South",
+                "$1,600,907.04",
+                "3270",
+                "4.10 %"
+              ],
+              [
+                "Southeast Asia",
+                "$884,423.17",
+                "1517",
+                "3.63 %"
+              ],
+              [
+                "Oceania",
+                "$1,100,184.61",
+                "1744",
+                "3.33 %"
+              ],
+              [
+                "East",
+                "$678,781.24",
+                "1401",
+                "3.21 %"
+              ],
+              [
+                "Caribbean",
+                "$324,280.86",
+                "855",
+                "2.92 %"
+              ],
+              [
+                "Central Asia",
+                "$752,826.57",
+                "1026",
+                "2.34 %"
+              ],
+              [
+                "Africa",
+                "$783,773.21",
+                "2232",
+                ""
+              ],
+              [
+                "Canada",
+                "$66,928.17",
+                "201",
+                ""
+              ],
+              [
+                "EMEA",
+                "$806,161.31",
+                "2462",
+                ""
+              ],
+              [
+                "Total",
+                "$12,642,501.91",
+                "25035",
+                "4.68 %"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Untitled Visual"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "Year",
+              "Consumer",
+              "Corporate",
+              "Home Office"
+            ],
+            "rows": [
+              [
+                "2011",
+                "$1,173,671.28",
+                "$691,662.64",
+                "$394,116.98"
+              ],
+              [
+                "2012",
+                "$1,463,760.30",
+                "$774,459.57",
+                "$439,218.82"
+              ],
+              [
+                "2013",
+                "$1,729,255.30",
+                "$1,064,973.42",
+                "$611,517.72"
+              ],
+              [
+                "2014",
+                "$2,141,262.54",
+                "$1,293,601.88",
+                "$865,001.45"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Total Sales by Year and SEGMENT"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "SHIP_MODE",
+              "Total Orders"
+            ],
+            "rows": [
+              [
+                "Standard Class",
+                "15154"
+              ],
+              [
+                "Second Class",
+                "5119"
+              ],
+              [
+                "First Class",
+                "3821"
+              ],
+              [
+                "Same Day",
+                "1347"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Total Orders by SHIP_MODE"
+          }
+        ]
+      },
+      {
+        "label": "REGION=Africa | SEGMENT=Consumer",
+        "combo": {
+          "REGION": "Africa",
+          "SEGMENT": "Consumer"
+        },
+        "file": "01_REGION_Africa__SEGMENT_Consumer.xlsx",
+        "tables": [
+          {
+            "has_row_header": true,
+            "headers": [
+              "PRODUCE_NAME",
+              "Total Sales"
+            ],
+            "rows": [
+              [
+                "Apple Smart Phone, Full Size",
+                "$9,113.28"
+              ],
+              [
+                "Cisco Smart Phone, Full Size",
+                "$6,717.06"
+              ],
+              [
+                "Motorola Smart Phone, Full Size",
+                "$4,691.64"
+              ],
+              [
+                "Harbour Creations Executive Leather Armchair, Adjustable",
+                "$4,380.12"
+              ],
+              [
+                "Cisco Smart Phone, Cordless",
+                "$4,299.77"
+              ],
+              [
+                "Chromcraft Wood Table, Adjustable Height",
+                "$3,877.68"
+              ],
+              [
+                "Samsung Smart Phone, Cordless",
+                "$3,834.00"
+              ],
+              [
+                "Nokia Smart Phone, Full Size",
+                "$3,760.37"
+              ],
+              [
+                "Safco Library with Doors, Metal",
+                "$3,581.10"
+              ],
+              [
+                "Memorex Router, Erganomic",
+                "$3,416.28"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Top 10 Total Sales by PRODUCE_NAME"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "SUB_CATEGORY",
+              "Return Rate %",
+              "Profit Margin",
+              "Total Sales"
+            ],
+            "rows": [
+              [
+                "Accessories",
+                "",
+                "14.60%",
+                "$19,837.24"
+              ],
+              [
+                "Appliances",
+                "",
+                "3.01%",
+                "$38,956.78"
+              ],
+              [
+                "Art",
+                "",
+                "11.04%",
+                "$20,490.88"
+              ],
+              [
+                "Binders",
+                "",
+                "13.09%",
+                "$12,101.44"
+              ],
+              [
+                "Bookcases",
+                "",
+                "9.22%",
+                "$43,422.72"
+              ],
+              [
+                "Chairs",
+                "",
+                "5.28%",
+                "$29,874.20"
+              ],
+              [
+                "Copiers",
+                "",
+                "15.17%",
+                "$47,206.40"
+              ],
+              [
+                "Envelopes",
+                "",
+                "10.26%",
+                "$4,663.44"
+              ],
+              [
+                "Fasteners",
+                "",
+                "14.59%",
+                "$2,916.98"
+              ],
+              [
+                "Furnishings",
+                "",
+                "15.67%",
+                "$13,539.47"
+              ],
+              [
+                "Labels",
+                "",
+                "14.72%",
+                "$2,097.88"
+              ],
+              [
+                "Machines",
+                "",
+                "5.02%",
+                "$35,940.20"
+              ],
+              [
+                "Paper",
+                "",
+                "7.80%",
+                "$6,437.23"
+              ],
+              [
+                "Phones",
+                "",
+                "18.51%",
+                "$71,388.67"
+              ],
+              [
+                "Storage",
+                "",
+                "12.70%",
+                "$47,205.64"
+              ],
+              [
+                "Supplies",
+                "",
+                "13.06%",
+                "$7,912.50"
+              ],
+              [
+                "Tables",
+                "",
+                "6.24%",
+                "$19,775.14"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Untitled Visual"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "REGION",
+              "Total Sales",
+              "Total Orders",
+              "Return Rate %"
+            ],
+            "rows": [
+              [
+                "Africa",
+                "$423,766.81",
+                "1145",
+                ""
+              ],
+              [
+                "Total",
+                "$423,766.81",
+                "1145",
+                ""
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Untitled Visual"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "Year",
+              "Consumer"
+            ],
+            "rows": [
+              [
+                "2011",
+                "$64,948.95"
+              ],
+              [
+                "2012",
+                "$91,505.32"
+              ],
+              [
+                "2013",
+                "$99,738.38"
+              ],
+              [
+                "2014",
+                "$167,574.16"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Total Sales by Year and SEGMENT"
+          },
+          {
+            "has_row_header": true,
+            "headers": [
+              "SHIP_MODE",
+              "Total Orders"
+            ],
+            "rows": [
+              [
+                "Standard Class",
+                "702"
+              ],
+              [
+                "Second Class",
+                "231"
+              ],
+              [
+                "First Class",
+                "163"
+              ],
+              [
+                "Same Day",
+                "59"
+              ]
+            ],
+            "strategy": "role-grid+rowheader",
+            "visual_title": "Total Orders by SHIP_MODE"
+          }
+        ]
+      }
+    ],
+    "pbi_slicer_col_map": {},
+    "pbi_slicer_base_queries": []
+  }
+}

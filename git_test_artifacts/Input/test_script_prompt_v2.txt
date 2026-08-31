@@ -1,0 +1,285 @@
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+
+YOUR TASK:
+Generate a COMPLETE, runnable, production-ready test script file using the provided inputs:
+
+test_file_language = {test_file_language}
+page_files_content = {page_files_content}
+test_files_content = {test_files_content}
+recorded_actions (optional) = {recorded_actions}
+
+Where test_file_language is one of:
+"Java-Selenium", "Java-Playwright", "Python-Selenium", "Python-Playwright".
+==========================================
+EXECUTION ORDER
+==========================================
+You MUST follow this exact sequence when generating the script: **all test case must be converted as script**
+
+1. Parse test cases → extract scenario steps, validations, inputs, assertions.
+2. Extract recorded_actions → detect:
+   - Base URL (first recorded URL only)
+   - User flows
+   - Element interactions
+   - Input values
+   - Window/tab opens
+3. Parse page_files_content → extract:
+   - CLASS names
+   - METHOD names
+   - LOCATORS
+   - Method signatures
+4. Generate the final executable test file using the correct language + library rules.
+────────────────────────────────────────
+MANDATORY PREPROCESSING
+────────────────────────────────────────
+
+Parse every file in page_files_content before generating code.
+
+Extract exact file/module name (file_key)
+
+Extract exact class name (class_name)
+
+Extract all method names and their parameter signatures
+
+Extract constructor signature(s)
+
+Extract all locators and their keys
+
+No assumptions — do not append _selenium, _playwright, or change casing. Use exact strings as found.
+
+────────────────────────────────────────
+STACK-AWARE PAGE FILE IMPORT
+────────────────────────────────────────
+
+Java-Selenium: import output.page_file_generator.<file_key>.<class_name>;
+
+Java-Playwright: import output.page_file_generator.<file_key>.<class_name>;
+
+Python-Selenium: from output.page_file_generator.<file_key> import <class_name>
+
+Python-Playwright: from output.page_file_generator.<file_key> import <class_name>
+
+C#: using output.page_file_generator.<file_key>; // instantiate <class_name>
+
+────────────────────────────────────────
+METHOD USAGE
+────────────────────────────────────────
+
+For each step in test_files_content:
+
+Call exact POM method if it exists (case-sensitive).
+
+If missing, create a helper method inside the test file:
+
+Name: helper_<action>_<file_key>
+
+Implement using direct driver/page locators from the POM
+
+Wrap in Allure.step for logging and screenshots
+
+────────────────────────────────────────
+WINDOW / POPUP HANDLING
+────────────────────────────────────────
+
+Python-Selenium / Java-Selenium
+
+def switch_to_new_window(self):
+    if len(self.driver.window_handles) > 1:
+        self.driver.switch_to.window(self.driver.window_handles[-1])
+
+public void switchToNewWindow() {{
+    List<String> handles = new ArrayList<>(driver.getWindowHandles());
+    if (handles.size() > 1) driver.switchTo().window(handles.get(handles.size() - 1));
+}}
+
+
+Python-Playwright / Java-Playwright
+
+def switch_to_new_window(self):
+    pages = self.page.context.pages
+    if len(pages) > 1: return pages[-1]
+    return self.page
+
+public Page switchToNewWindow(Page page) {{
+    return page.context().pages().get(page.context().pages().size() - 1);
+}}
+
+
+────────────────────────────────────────
+ALLURE & REPORTING
+────────────────────────────────────────
+
+Python (pytest):
+
+Use pytest fixtures for setup/teardown
+
+Allure step attachments for screenshots:
+allure.attach(driver.get_screenshot_as_png(), name, attachment_type=allure.attachment_type.PNG)
+
+Ensure allure-results is populated
+
+Java (TestNG/Playwright/Selenium):
+
+Use @BeforeClass, @AfterClass, @Test
+
+Allure annotations: @Epic, @Feature, @Story, @Severity
+
+Step-level attachments via Allure.addAttachment() or locator.screenshot()
+
+Fallback: if Allure unavailable → generate structured JSON + HTML in /reports
+────────────────────────────────────────
+TEST RUNNER & ALLURE RULES (EXPLICIT)
+────────────────────────────────────────
+Java-Selenium:
+
+Use TestNG by default unless test_files_content explicitly defines JUnit.
+
+Include TestNG annotations: @BeforeClass, @AfterClass, @Test, @BeforeMethod/@AfterMethod when appropriate.
+
+Use Allure annotations where applicable: @Epic, @Feature, @Story, @Severity (io.qameta.allure.*).
+
+Add step-level Allure.attachments via Allure.addAttachment or Allure lifecycle as appropriate.
+
+Ensure allure-results directory is created/written to during test execution.
+
+Java-Playwright:
+
+Use TestNG/JUnit as indicated by test_files_content.
+
+Use Allure annotations same as Java-Selenium.
+
+Use Playwright Java APIs (com.microsoft.playwright.*).
+
+Use locator.screenshot() to attach PNG to Allure.
+
+Python-Selenium:
+
+Use pytest; tests must be functions or methods using pytest conventions.
+
+Provide pytest fixtures for driver setup/teardown (scope=function or scope=session as appropriate).
+
+Use allure fixtures and add step-level attachments: allure.attach(driver.get_screenshot_as_png(), name, attachment_type=allure.attachment_type.PNG).
+
+Ensure "allure-results" is populated; provide example command comments are NOT allowed, but code must write attachments to that folder via allure APIs.
+
+Python-Playwright:
+
+Use pytest-playwright (sync by default unless page_files_content indicates async).
+
+Use pytest fixtures for browser/context/page setup or use sync_playwright() inside test.
+
+Use allure.attach(locator.screenshot(), name, attachment_type=allure.attachment_type.PNG).
+
+Use context.expect_page() or page.expect_popup() for popups/wait-for-page flows.
+
+────────────────────────────────────────
+WAITING, RETRY, AND SELF-HEALING
+────────────────────────────────────────
+
+Attempt direct interaction first (click/fill). If it fails, retry once after a short pause, then fallback to explicit wait:
+
+Selenium: WebDriverWait(driver, 5–10s) with ExpectedConditions
+
+Playwright: locator.wait_for(timeout=...) or page.wait_for_load_state()
+
+When interacting with a POM method, call it directly. If method fails due to locator issues:
+
+Attempt alternate locator keys defined in the same POM
+
+Attempt generated selectors using id/name/data-* or visible text (max 2 attempts)
+
+Log every healing attempt with Allure.step and attach before/after screenshots
+
+If POM lacks a required method, create a local helper inside the test script (name it clearly like helper_<action>_<page>), implement using direct driver/page locators and attach an Allure.step that documents this helper creation.
+
+────────────────────────────────────────
+WINDOW / POPUP HANDLING (PER STACK)
+────────────────────────────────────────
+Selenium:
+
+Use driver.getWindowHandles(), store original handle, perform action, wait until count increases, switch to the newest handle, validate URL if provided, close and switch back when needed.
+
+Playwright:
+
+Wrap the popup-triggering action inside context.waitForEvent("page", () -> action()) or with page.expect_popup(): action(); new_page = popup_info.value. Bring new page to front and reinitialize POM if needed.
+
+────────────────────────────────────────
+METHOD & PARAMETER MAPPING
+────────────────────────────────────────
+
+For each test step in test_files_content:
+
+Find a POM method with an exact match name and matching parameter signature.
+
+If exact method exists, call it with parameters mapped from test_files_content or recorded_actions (match by param name case-insensitively).
+
+If no exact method exists, create a local helper in the test file (helper must use direct locators and be logged via Allure.step).
+
+Do NOT rename or invent POM methods.
+
+────────────────────────────────────────
+IMPORTS, INITIALIZATION & TEARDOWN
+────────────────────────────────────────
+
+Imports must strictly follow the chosen stack and include only used classes.
+
+Test must include setup and teardown:
+
+Java TestNG: @BeforeClass to initialize driver/browser/context; @AfterClass to quit.
+
+Python pytest: fixtures for setup/teardown, using yield to teardown.
+
+Allure results must be produced during execution; attach screenshots at each major step.
+
+────────────────────────────────────────
+ASSERTIONS & REPORTING
+────────────────────────────────────────
+
+Implement exactly one primary assertion per test as dictated by test_files_content.
+
+Use the stack-appropriate assertion APIs:
+
+Java/TestNG: org.testng.Assert or AssertJ if present
+
+Python/pytest: assert expression
+
+C#: NUnit Assert
+
+On assertion failure: attach screenshot and HTML snapshot to Allure. If Allure unavailable, write JSON + HTML snapshot into /reports and reference it in the test logs.
+
+────────────────────────────────────────
+FINAL VALIDATIONS (MUST PASS BEFORE RETURN)
+────────────────────────────────────────
+
+All referenced POM classes and methods must exist in page_files_content or be adapted and documented via local helper methods in the test file.
+
+All imports used must be present and stack-appropriate.
+
+No undefined variables remain.
+
+The action that triggers popups is wrapped properly with the stack’s popup-wait construct.
+
+The allure-results directory will be populated with attachments via Allure API calls during the script.
+
+Exactly one primary assertion per test implemented.
+
+No unused imports.
+
+────────────────────────────────────────
+OUTPUT RULE (ABSOLUTE)
+────────────────────────────────────────
+Return ONLY the final test script file as RAW CODE.
+Do NOT include explanations, comments, or any markdown.
+Do NOT wrap in triple backticks.
+RETURN ONLY RAW CODE. Do NOT wrap output in triple backticks like ```language,```java,```python,```.
+────────────────────────────────────────
+NOW GENERATE the final test script using:
+
+test_file_language
+
+page_files_content
+
+test_files_content
+
+recorded_actions (optional)
+
+OUTPUT MUST BE A SINGLE, COMPLETE, READY-TO-RUN TEST SCRIPT FILE.

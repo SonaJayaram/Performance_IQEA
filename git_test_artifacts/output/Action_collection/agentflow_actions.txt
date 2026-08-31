@@ -1,0 +1,49 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/Home]
+Click the "link-Agent Studio" link (URL: https://agentflow-uat.tigeranalyticstest.in/Home)
+Click the "+ New Agent" button (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)
+Click on "Experiment Name"
+Enter "agentfloeiqea" in the "Experiment Name" field
+Enter "agentfloeiqea" in the "Experiment Name" field
+Click on "Experiment Description"
+Enter "agentflowiqea details" in the "Experiment Description" field
+Enter "agentflowiqea details" in the "Experiment Description" field
+Click the "Continue" button
+[Flow state: 0 node(s), 0 connection(s)] (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=d562fc80-ccfe-4484-94d0-f7b2a204203d&agentId=2482&pageType=form)
+Click the "button" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 0 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "iqea" in the "Node Name" field
+Enter "iqea" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "If Else" node onto the canvas
+[Flow state: 3 node(s), 0 connection(s)]
+Click on "Node Name"
+Press Enter in "Node Name"
+Enter "testcase status" in the "Node Name" field
+Enter "testcase status" in the "Node Name" field
+Click the "If Else" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 4 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "test case execution" in the "Node Name" field
+Enter "test case execution" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 5 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "test case rerun" in the "Node Name" field
+Enter "test case rerun" in the "Node Name" field
+Click the "Add" button
+Click the "Router" button
+Click the "Close" button
+Click on "Iqea (BASE)"
+Click the "Edit Settings · Iqea (BASE)" button
+Select "gpt-image-1.5" from the dropdown
+Click the "Add Input" button
+Click the "User Query The user's input message" button
+Select "Structured Output" from the dropdown
+Click on "user_query"
+Enter the prompt: "{{user_query}} testiqea"
+Click the "Save" button
+[Flow state: 6 node(s), 2 connection(s)]

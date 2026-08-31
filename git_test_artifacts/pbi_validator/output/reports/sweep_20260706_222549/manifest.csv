@@ -1,0 +1,3 @@
+combination,applied_ok,visual_sheets,file,error,REGION,SEGMENT
+Default (no filter),True,5,00_default.xlsx,,,
+REGION=Africa | SEGMENT=EMEA,False,5,01_REGION_Africa__SEGMENT_EMEA.xlsx,,Africa,EMEA

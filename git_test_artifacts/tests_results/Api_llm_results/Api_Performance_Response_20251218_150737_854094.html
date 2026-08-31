@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Performance Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f6f8; }
+    .good { color: green; font-weight: bold; }
+    .moderate { color: orange; font-weight: bold; }
+    .poor { color: red; font-weight: bold; }
+    .na { color: gray; }
+  </style>
+</head>
+<body>
+
+<h1>Test Execution Configuration</h1>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Ramp Users</td><td>20</td></tr>
+  <tr><td>Spawn Rate (users/sec)</td><td>0.5</td></tr>
+  <tr><td>Run Time</td><td>10s</td></tr>
+  <tr><td>Stop Time</td><td>100</td></tr>
+</table>
+
+<hr/>
+
+<h1>Overall Performance Summary</h1>
+<ul>
+  <li><strong>Total APIs Tested:</strong> 2</li>
+  <li><strong>Overall Health:</strong> Not Available</li>
+</ul>
+
+<h2>Key Risks</h2>
+<ul>
+  <li>Insufficient data for performance analysis.</li>
+  <li>Potential configuration or testing tool misconfiguration leading to data absence.</li>
+</ul>
+
+<hr/>
+
+<h1>API-wise Performance Analysis</h1>
+
+<section>
+  <h2>API: C:\Users\sathanantham.aru\PycharmProjects\ai-accelerator\tests_results\locust_reports\locust_report_GET_api_users_2_20251218_150638_306208.html</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td>Not Available</td></tr>
+    <tr><td>Total Requests</td><td>Not Available</td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td>Not Available</td></tr>
+    <tr><td>P95 Response Time</td><td>Not Available</td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td>Not Available</td></tr>
+    <tr><td>Failure Rate</td><td>Not Available</td></tr>
+    <tr><td>Observations</td><td>Not Available</td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p>Not Available</p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Ensure Locust data collection mechanisms (CSV generation) are functioning correctly.</li>
+    <li>Validate that the load test is executed under appropriate conditions to generate meaningful metrics.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<section>
+  <h2>API: C:\Users\sathanantham.aru\PycharmProjects\ai-accelerator\tests_results\locust_reports\locust_report_POST_api_users_20251218_150702_444964.html</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td>Not Available</td></tr>
+    <tr><td>Total Requests</td><td>Not Available</td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td>Not Available</td></tr>
+    <tr><td>P95 Response Time</td><td>Not Available</td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td>Not Available</td></tr>
+    <tr><td>Failure Rate</td><td>Not Available</td></tr>
+    <tr><td>Observations</td><td>Not Available</td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p>Not Available</p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Verify the correctness of Locust input parameters and test configuration.</li>
+    <li>Monitor the testing environment for potential issues during load test execution.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<h1>Final Recommendation</h1>
+<p>Due to the lack of performance data, it is not possible to provide a conclusive assessment of the tested APIs. It is recommended to verify the test execution setup, ensure adequate data collection, and re-run the tests to obtain meaningful metrics for analysis before determining production readiness.</p>
+
+</body>
+</html>

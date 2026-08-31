@@ -1,0 +1,329 @@
+[
+  {
+    "tc_id": "TC_001",
+    "tc_name": "Complete purchase using saved address and card (Happy Path)",
+    "category": "Positive",
+    "type": "Functional",
+    "priority": "Critical",
+    "description": "Verify a user can search for a product, add to cart, checkout using saved address and credit card, and receive an order confirmation.",
+    "precondition": "User is logged in, has a valid saved delivery address and a saved payment method, stable internet connection.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Launch Amazon app on Samsung SM-A226B",
+        "expected": "App opens to home screen"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap on search field and enter a valid product name (e.g., 'wireless headphones')",
+        "expected": "Search suggestions appear; search results displayed"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Select a product from results",
+        "expected": "Product detail page (PDP) opens with price, availability and Buy/Add to Cart options"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "Tap 'Add to Cart'",
+        "expected": "Item added to cart; mini cart updated"
+      },
+      {
+        "step_no": 5,
+        "step_desc": "Proceed to cart and tap 'Proceed to Buy' or 'Checkout'",
+        "expected": "Checkout page displays delivery address and payment options"
+      },
+      {
+        "step_no": 6,
+        "step_desc": "Confirm saved address and select saved credit card as payment",
+        "expected": "Selected address and payment are populated"
+      },
+      {
+        "step_no": 7,
+        "step_desc": "Place order",
+        "expected": "Order is processed and order confirmation page with order id is displayed; confirmation email/push notification received"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_002",
+    "tc_name": "Search using voice/keyboard and use 'Use my current location' for delivery",
+    "category": "Positive",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Verify user can search for product and select 'Use my current location' to autofill delivery pin/address during checkout.",
+    "precondition": "Location permission granted to the app; internet connection available.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Open app and enter product keyword in search field (//android.widget.EditText[@resource-id='in.amazon.mShop.android.shopping:id/rs_search_src_text'])",
+        "expected": "Search results displayed"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Select a product and proceed to checkout",
+        "expected": "Checkout page loads"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Tap 'Use my current location' (//android.widget.Button[@resource-id='in.amazon.mShop.android.shopping:id/loc_ux_gps_auto_detect'])",
+        "expected": "App retrieves current GPS location and autofills delivery pincode/address"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "Confirm delivery address and place order",
+        "expected": "Order placed successfully using the detected address"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_003",
+    "tc_name": "Login flow via webview with valid credentials and OTP",
+    "category": "Positive",
+    "type": "Security",
+    "priority": "High",
+    "description": "Verify login via Amazon webview (apwebview) using email and OTP completes and returns user to checkout flow.",
+    "precondition": "User has an active Amazon account and mobile number for OTP; internet connectivity.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "From checkout, select login and ensure webview (apwebview) opens",
+        "expected": "Webview loads login page (//android.webkit.WebView[@resource-id='in.amazon.mShop.android.shopping:id/apwebview'])"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Enter registered email/phone in ap_email_login field (//android.widget.EditText[@resource-id='ap_email_login'])",
+        "expected": "Email/phone accepted"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Request OTP and enter received OTP",
+        "expected": "OTP accepted and user logged in"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "Continue checkout after login",
+        "expected": "User returns to checkout with saved/available addresses"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_004",
+    "tc_name": "Resend OTP when OTP not received",
+    "category": "Negative",
+    "type": "Security",
+    "priority": "High",
+    "description": "Verify 'Resend OTP' link works and prevents brute force attempts by rate limiting or displaying cooldown.",
+    "precondition": "User initiated login and OTP delivery is delayed or failed; webview displayed.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "On OTP entry screen in webview, do not receive OTP within expected time",
+        "expected": "No OTP received"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap 'Resend OTP' (//android.view.View[@resource-id='cvf-resend-link'])",
+        "expected": "OTP resent and UI shows confirmation or countdown"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Attempt rapid repeated taps on 'Resend OTP'",
+        "expected": "App enforces cooldown or displays error to prevent abuse"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_005",
+    "tc_name": "Attempt purchase with expired/declined card",
+    "category": "Negative",
+    "type": "Functional",
+    "priority": "Critical",
+    "description": "Verify app handles payment failures gracefully and provides actionable error messages when card is declined.",
+    "precondition": "User logged in with a payment method that will be declined (expired/insufficient funds).",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Add product to cart and proceed to checkout",
+        "expected": "Checkout page displayed"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Select the expired/declined card as payment and attempt to place order",
+        "expected": "Payment gateway rejects transaction and error message shown"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Verify user can select alternative payment or retry",
+        "expected": "User offered options to update card, try another method or save order for later"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_006",
+    "tc_name": "Search yields no results - user sees helpful suggestions",
+    "category": "Negative",
+    "type": "Usability",
+    "priority": "Medium",
+    "description": "Verify when search term returns no results, app shows helpful suggestions like spelling corrections, broader categories, or popular items.",
+    "precondition": "App launched and online.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Enter a gibberish or very specific unavailable product into search field",
+        "expected": "No results page displayed"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Observe UI for suggestions such as spelling corrections, 'Try these instead' or category suggestions",
+        "expected": "Helpful suggestions displayed and user can navigate to suggested items"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_007",
+    "tc_name": "Out of stock item selected at checkout",
+    "category": "Edge Case",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Verify behavior when an item becomes out of stock between adding to cart and checkout.",
+    "precondition": "User adds item to cart. Inventory changes to out-of-stock before checkout.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Add item to cart",
+        "expected": "Item added to cart"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Proceed to checkout after delay (simulate inventory change)",
+        "expected": "Checkout flow detects item is out of stock and shows message"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Ensure user cannot place order for out-of-stock item and is offered options (remove item, waitlist, similar items)",
+        "expected": "Appropriate fallback options presented"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_008",
+    "tc_name": "Cancel during checkout and verify cart persistence",
+    "category": "Functional",
+    "type": "Usability",
+    "priority": "Medium",
+    "description": "Verify that canceling checkout or tapping back keeps the cart intact and returns user to previous screen.",
+    "precondition": "User has items in cart and is on checkout page.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "From checkout, tap 'Cancel' (//android.widget.Button[@resource-id='in.amazon.mShop.android.shopping:id/top_bar_cancel_text_button'])",
+        "expected": "Checkout cancelled and user returned to cart or previous page"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Re-open cart",
+        "expected": "Previously added items remain in cart with correct quantities and prices"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_009",
+    "tc_name": "Close promotional modal/pop-up and continue purchase",
+    "category": "UI",
+    "type": "Usability",
+    "priority": "Low",
+    "description": "Verify that closing modal/pop-up (e.g., promotional offers) does not disrupt checkout flow or cause navigation issues.",
+    "precondition": "A promotional modal appears during browsing or checkout.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "When promotional modal appears, tap 'Close' (//android.widget.Button[@resource-id='closeButton'])",
+        "expected": "Modal closes and underlying screen is visible"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Continue the purchase flow (navigate to product or checkout)",
+        "expected": "User can continue without loss of state or errors"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_010",
+    "tc_name": "Perform purchase with intermittent/slow network",
+    "category": "Performance",
+    "type": "Non-Functional",
+    "priority": "High",
+    "description": "Verify app behavior and resilience during slow or temporarily lost network while performing search and checkout.",
+    "precondition": "Simulate network throttling or intermittent connectivity on device.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Start search for a product under network throttling",
+        "expected": "App shows loading state; results eventually load or timeout with message"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Attempt to add item to cart and proceed to checkout with intermittent connectivity",
+        "expected": "App queues/saves actions where possible; shows retry options on failure; no duplicate orders placed when connection restored"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Restore stable connection and retry any failed steps",
+        "expected": "User can complete checkout or is informed of partial failures"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_011",
+    "tc_name": "Attempt login with invalid email and navigate Back",
+    "category": "Negative",
+    "type": "Usability",
+    "priority": "Medium",
+    "description": "Verify entering invalid email on apwebview shows validation and that back navigation returns to previous state without crashes.",
+    "precondition": "User on login webview (apwebview).",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "Enter invalid email format into ap_email_login field (//android.widget.EditText[@resource-id='ap_email_login']) and submit",
+        "expected": "Inline validation error displayed preventing submission"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Tap device/app back button (//android.widget.ImageButton[@resource-id='in.amazon.mShop.android.shopping:id/chrome_action_bar_back_icon']) to return to previous screen",
+        "expected": "App navigates back gracefully and session remains stable"
+      }
+    ]
+  },
+  {
+    "tc_id": "TC_012",
+    "tc_name": "Place order with maximum allowed quantity and apply coupon",
+    "category": "Edge Case",
+    "type": "Functional",
+    "priority": "High",
+    "description": "Verify behavior when user selects the maximum allowed quantity for a product and applies a coupon/promo code during checkout.",
+    "precondition": "Product allows multiple quantities; a valid coupon code available; user logged in.",
+    "steps": [
+      {
+        "step_no": 1,
+        "step_desc": "On product page, set quantity to maximum permitted value",
+        "expected": "Quantity updates and subtotal recalculates"
+      },
+      {
+        "step_no": 2,
+        "step_desc": "Add to cart and proceed to checkout",
+        "expected": "Checkout shows correct total with quantity reflected"
+      },
+      {
+        "step_no": 3,
+        "step_desc": "Apply valid coupon code and verify discount applied",
+        "expected": "Coupon accepted; discount reflected in order total"
+      },
+      {
+        "step_no": 4,
+        "step_desc": "Place order and confirm order placement",
+        "expected": "Order placed successfully; confirmation shows correct discounted total and quantities"
+      }
+    ]
+  }
+]

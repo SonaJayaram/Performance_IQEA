@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Performance Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f6f8; }
+    .good { color: green; font-weight: bold; }
+    .moderate { color: orange; font-weight: bold; }
+    .poor { color: red; font-weight: bold; }
+    .na { color: gray; }
+  </style>
+</head>
+
+<body>
+
+<h1>Test Execution Configuration</h1>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Ramp Users</td><td>20</td></tr>
+  <tr><td>Spawn Rate (users/sec)</td><td>0.5</td></tr>
+  <tr><td>Run Time</td><td>10s</td></tr>
+  <tr><td>Stop Time</td><td>100</td></tr>
+</table>
+
+<hr/>
+
+<h1>Overall Performance Summary</h1>
+<ul>
+  <li><strong>Total APIs Tested:</strong> 0</li>
+  <li><strong>Overall Health:</strong> <span class="na">Not Available</span></li>
+</ul>
+
+<h2>Key Risks</h2>
+<ul>
+  <li><strong>Insufficient Data:</strong> No CSV-derived metrics were provided. This prevents validation of throughput, latency, and error behavior.</li>
+  <li><strong>Decision Risk:</strong> Any readiness or capacity conclusions would be speculative without recorded test results; proceeding to production based on missing data poses operational risk.</li>
+</ul>
+
+<hr/>
+
+<h1>API-wise Performance Analysis</h1>
+
+<p class="na"><strong>No API metrics were found in the supplied CSV data. All subsequent API-specific metrics are Not Available.</strong></p>
+
+<section>
+  <h2>API: Not Available</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td class="na">Not Available</td></tr>
+    <tr><td>Total Requests</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td class="na">Not Available</td></tr>
+    <tr><td>P95 Response Time</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td class="na">Not Available</td></tr>
+    <tr><td>Failure Rate</td><td class="na">Not Available</td></tr>
+    <tr><td>Observations</td><td class="na">Not Available</td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p class="na">Not Available</p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Verify that Locust was configured to write CSV outputs and that the test completed successfully. Confirm existence and accessibility of stats.csv, stats_history.csv, failures.csv, and exceptions.csv.</li>
+    <li>Re-run the load test with CSV export enabled and confirm files contain records; ensure the run duration provides sufficient steady-state sampling for meaningful metrics.</li>
+    <li>If intermittent test execution issues occur (missing files), enable verbose logging for the test runner and capture stdout/stderr to diagnose failures during the run.</li>
+    <li>After obtaining CSVs, perform a follow-up analysis to validate throughput (req/s), latency percentiles (p50/p95/p99), and error rates, and compare to SLAs.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<h1>Final Recommendation</h1>
+<p>
+  Performance assessment cannot be completed because the CSV-derived test results are missing. Do not make production-readiness decisions based on the current inputs. Next steps:
+</p>
+<ul>
+  <li>Re-run the test and ensure CSV files are generated and transferred for analysis.</li>
+  <li>Capture additional diagnostics (Locust logs, system metrics, network traces) during the next run to correlate application behavior with load.</li>
+  <li>Use an adequate steady-state duration and sufficient sampling so that percentile calculations are statistically meaningful; adjust load pattern if needed based on objectives.</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Enter "test" in the "firstName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "ssn" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "***-**-6876" in the "ssn" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "lastName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "lastName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "phoneNumber" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "786-867-****" in the "phoneNumber" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "addressLine1" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine1" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "About Us" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "Last-Name-Input" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/about-equifax/who-we-are]
+Click on "Leadership" (URL: https://www.equifax.com/about-equifax/who-we-are)
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "cityName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "cityName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "address-title" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/about-equifax/leadership/]
+Click on "View Bio" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Close" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Change the value to "Board of Directors" in "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Select" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Audit Committee" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "View Bio" (URL: https://www.equifax.com/about-equifax/leadership/)

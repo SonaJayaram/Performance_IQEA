@@ -1,0 +1,47 @@
+================================================================================
+IQEA MOBILE AUTOMATION — RECORDED SESSION
+================================================================================
+Generated  : 2026-05-12 17:17:46
+Device     : Google sdk_gphone64_x86_64 (Android)
+OS         : Android Android 15
+Session ID : SES-OQY1FNE9
+Total Steps: 4
+
+================================================================================
+RECORDED ACTIONS
+================================================================================
+
+[STEP #01]  INPUT
+  Time      : 17:16:33.077
+  Label     : Search or type URL
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : Search or type URL
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #02]  TAP
+  Time      : 17:16:40.226
+  Label     : Open the home page
+  XPath     : //android.widget.ImageButton[@resource-id="com.android.chrome:id/home_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #03]  INPUT
+  Time      : 17:16:46.733
+  Label     : https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_50mih
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_50mih90ikb_e&adgrpid=159067175652&hvpone=&hvptwo=&hvadid=674834481301&hvpos=&hvnetw=g&hvrand=13327485234546991
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #04]  INPUT
+  Time      : 17:16:53.188
+  Label     : google.com/search?gs_ssp=eJzj4tDP1TfITc9OV2A0YHRg8GJLzE2sys8
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : google.com/search?gs_ssp=eJzj4tDP1TfITc9OV2A0YHRg8GJLzE2sys8DAELoBhw&q=amazon&oq=ama&gs_lcrp=EgZjaHJvbWUqEwgBEC4YgwEYxwEYsQMY0QMYgAQyDAgAEEUYORixAxiABDITCAEQLhiDARjH
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------

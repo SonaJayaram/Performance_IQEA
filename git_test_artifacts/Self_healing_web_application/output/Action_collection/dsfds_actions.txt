@@ -1,0 +1,13 @@
+Page: [https://www.saucedemo.com/]
+- Click on "login_credentials"
+- Click on "user-name"
+- Change the value in "user-name"
+- Enter "standard_user" in the "user-name" field
+- Click on "Password for all users:
+secret_sauce"
+- Click on "password"
+- Change the value in "password"
+- Enter "secret_sauce" in the "password" field
+- Click on "login-button"
+Page: [https://www.saucedemo.com/inventory.html]
+- Enter "Login" in the "login-button" field

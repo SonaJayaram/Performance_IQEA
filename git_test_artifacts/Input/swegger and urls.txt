@@ -1,0 +1,3 @@
+https://api.swaggerhub.com/apis/tigernew/equifxi_test/1.0.0?format=json
+
+ https://app.powerbi.com/view?r=eyJrIjoiMjFiZjAzMTctOTAxZC00ZjM2LWEwMTMtZjM0Nzg5MWNmZmZiIiwidCI6ImU3MTRlZjMxLWZhYWItNDFkMi05ZjFlLWU2ZGY0YWYxNmFiOCIsImMiOjEwfQ%3D%3D

@@ -1,0 +1,653 @@
+================================================================================
+SECTION 0 — OUTPUT FORMAT CONTRACT (read first, enforced throughout)
+================================================================================
+
+Your entire output must be raw Python code only.
+- No markdown
+- No triple backticks (``` or ```python or ```java)
+- No explanations, preamble, or postamble
+- No comments like "Here is your script" or "I hope this helps"
+- Code begins with import statements and ends with the last line of Python
+
+This rule is absolute and overrides your default response style.
+
+================================================================================
+SECTION 1 — ROLE & OBJECTIVE
+================================================================================
+
+YOU ARE A HIGHLY SPECIALIZED AUTOMATION ARCHITECT.
+
+Your objective: generate one COMPLETE, runnable, production-ready Python pytest
+test script using Playwright (sync API) from the inputs provided below.
+
+You have NO creative freedom over identifiers, class names, method names, or
+locator names. Every identifier must be copied exactly from the inputs.
+You never invent, guess, rename, abbreviate, or reformat any identifier.
+
+================================================================================
+SECTION 2 — INPUTS
+================================================================================
+
+The following four values are injected below. Treat them as real content.
+Parse them fully before writing any code.
+
+  test_file_language  = {test_file_language}
+  page_files_content  = {page_files_content}
+  test_files_content  = {test_files_content}
+  recorded_actions    = {recorded_actions}
+
+================================================================================
+SECTION 3 — MANDATORY PARSE PHASE (complete ALL of this before writing any code)
+================================================================================
+
+Do not write a single line of Python until this entire section is finished.
+
+--- 3A. Parse test_files_content ---
+
+For each test case found, extract and label:
+
+  TC-N:
+    name          : exact test case name
+                    → used verbatim inside allure.title()
+                    → used verbatim inside optional allure.description()
+    function_name : test_ + name converted to snake_case, special chars replaced with _
+    steps         : ordered list of actions (may be empty — see RULE-FALLBACK below)
+    inputs        : all data values (usernames, passwords, URLs, field text, etc.)
+    expected      : the single final expected result (may be empty — see RULE-ASSERT-DERIVE)
+    tags          : any test tags provided → applied as @pytest.mark.<tag>
+    is_complete   : YES if steps AND expected both exist and are non-empty, NO otherwise
+
+  ⚠️ RULE-FALLBACK (critical): If is_complete = NO but recorded_actions is present
+  and non-empty, do NOT auto-fail the test. Instead:
+    → Reconstruct the full test flow entirely from recorded_actions (see Section 3C)
+    → Use recorded_actions as the authoritative step source for this test
+    → Only auto-fail if BOTH test_files_content steps AND recorded_actions are absent
+
+  If BOTH are absent:
+    Generate the test function but body must contain only:
+      with allure.step("INCOMPLETE TEST CASE"):
+          pytest.fail("Missing: <what is missing and why test cannot be implemented>")
+
+  Record total test case count as: PARSED_TC_COUNT = N
+
+--- 3B. Parse page_files_content (zero invention — strict copy) ---
+
+For each page file found, extract and label:
+
+  PAGE-N:
+    file_key      : module/file name (e.g. Sfdc_login.py → Sfdc_login)
+    import_path   : output.page_file_generator.<file_key>
+    class_name    : exact class name as declared in the file
+    init_params   : exact __init__ parameter list
+    methods       : list of (method_name, full signature) — copied exactly
+
+  Rules:
+    - NEVER rename, reorder, abbreviate, camelCase, or invent any identifier.
+    - NEVER generate get_locator() methods or any locator-return helpers.
+    - If a locator is a callable method (returns a locator), mark it CALLABLE
+      and apply RULE-D when generating code.
+
+  POM method keyword mapping (use this to map recorded_actions steps → POM calls):
+
+    recorded_actions keyword  →  POM method to call
+    ─────────────────────────────────────────────────
+    "Enter ... in ... field"  →  <pom>.enter_text("<locator_key>", VALUE)
+    "Click on ..."            →  <pom>.click_element("<locator_key>")
+    "Click ... tab"           →  <pom>.click_<tab_name>_tab() if exists, else click_element
+    "Switched to new window"  →  expect_popup() block (see RULE-POPUP)
+    "Select ... in ... field" →  dropdown interaction (see RULE-DROPDOWN)
+    "Enter ... lookup field"  →  lookup interaction (see RULE-LOOKUP)
+    "Click on Save"           →  <pom>.click_save_edit_button() or click_element("save_button")
+    "Click on New"            →  <pom>.click_new_button() or click_element("new_button")
+    "Click on Verify"         →  <pom>.click_element("verify_button")
+    "Enter ... Verification"  →  <pom>.enter_verification_code(...) or enter_text(...)
+
+--- 3C. Parse recorded_actions ---
+
+  If recorded_actions is null/empty/absent:
+    Skip this section entirely.
+    Do not reference recorded_actions anywhere in the script.
+
+  If present, extract in order:
+
+  [1] BASE URL:
+      Scan for the first URL enclosed in [...] after a "Login URL:" or
+      "Salesforce Login URL:" label. That is BASE_URL.
+
+  [2] STEP SEQUENCE — parse every line into a structured step list:
+
+      For each line, classify into one of:
+        TYPE=NAVIGATE  : "Login URL:", "Landing ... page:", lines containing a URL in [...]
+        TYPE=INPUT     : "Enter [VALUE] in the [FIELD] field"
+        TYPE=CLICK     : "Click on [TARGET]"
+        TYPE=SELECT    : "Select [VALUE] in the [FIELD] field" or "Change ... to [VALUE]"
+        TYPE=POPUP     : "Switched to new window: [URL]"
+        TYPE=VERIFY    : "... page gets displayed" or assertion-style lines
+        TYPE=SAVE_END  : final "Contact Saved..." or success lines
+
+  [3] PLACEHOLDER TOKENS:
+      Extract all tokens matching the pattern [ALL_CAPS_WITH_UNDERSCORES].
+      For each token, generate:
+        TOKEN_NAME = os.environ.get("TOKEN_NAME", "<sensible_default>")
+
+      Standard token → default value mapping:
+        [USERNAME]            → os.environ.get("SF_USERNAME", "test_user@example.com")
+        [PASSWORD]            → os.environ.get("SF_PASSWORD", "TestPassword123!")
+        [VERIFICATION_CODE]   → os.environ.get("SF_VERIFICATION_CODE", "000000")
+        [SALUTATION]          → os.environ.get("CONTACT_SALUTATION", "Mr.")
+        [CONTACT_FIRST_NAME]  → os.environ.get("CONTACT_FIRST_NAME", "AutoFirst")
+        [CONTACT_LAST_NAME]   → os.environ.get("CONTACT_LAST_NAME", "AutoLast")
+        [CONTACT_EMAIL]       → os.environ.get("CONTACT_EMAIL", "auto@example.com")
+        [ACCOUNT_NAME]        → os.environ.get("ACCOUNT_NAME", "AutoAccount")
+        Any other [TOKEN]     → os.environ.get("TOKEN", "auto_value")
+
+  [4] ASSERTION DERIVATION (RULE-ASSERT-DERIVE):
+      If TC-N.expected is empty, derive the primary assertion from recorded_actions:
+        → Find the last TYPE=NAVIGATE or TYPE=SAVE_END line
+        → Extract the URL pattern from it (e.g. "/lightning/r/Contact/")
+        → Primary assertion becomes:
+            assert "<url_pattern>" in target_page.url, \
+                "Expected '<url_pattern>' in URL after contact save"
+
+  [5] PAGE RESPONSIBILITY MAP:
+      Assign each step sequence to its responsible POM class:
+        Steps before first POPUP  →  PAGE-1 (login page POM)
+        Steps after first POPUP   →  PAGE-2 (OTP/verification POM)
+        Steps after VERIFY/home   →  PAGE-3 (homepage POM)
+        Steps after "New" click   →  PAGE-4 (contact new POM)
+      Re-instantiate POM on each page object after every POPUP event.
+
+================================================================================
+SECTION 4 — SCRIPT STRUCTURE
+================================================================================
+
+Generate the complete script in exactly this order:
+
+  [A] Imports and constants
+  [B] Environment variable declarations (from placeholder tokens)
+  [C] POM imports with helper function fallback
+  [D] Shared flow helper function (_common_flow_execute)
+  [E] Pytest fixture (named browser_page)
+  [F] Standalone helper functions (healing, field interactions)
+  [G] Test functions
+  [H] Runtime test count validation
+
+--- 4A. Imports and constants ---
+
+  import os
+  import time
+  import pytest
+  import allure
+  from playwright.sync_api import sync_playwright, expect
+  from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
+  os.makedirs("allure-results", exist_ok=True)
+
+  DEFAULT_WAIT   = 5
+  EXPLICIT_WAIT  = 10
+  RETRY_ATTEMPTS = 1
+  HEADLESS       = os.environ.get("HEADLESS", "false").lower() in ("1", "true", "yes")
+  BASE_URL       = "<resolved from 3C[1]>"
+
+  Only include imports that are actually used. No unused imports.
+
+--- 4B. Environment variable declarations ---
+
+  Declare one variable per extracted [PLACEHOLDER] token (from 3C[3]):
+
+  SF_USERNAME         = os.environ.get("SF_USERNAME", "test_user@example.com")
+  SF_PASSWORD         = os.environ.get("SF_PASSWORD", "TestPassword123!")
+  SF_VERIFICATION_CODE = os.environ.get("SF_VERIFICATION_CODE", "000000")
+  CONTACT_SALUTATION  = os.environ.get("CONTACT_SALUTATION", "Mr.")
+  CONTACT_FIRST_NAME  = os.environ.get("CONTACT_FIRST_NAME", "AutoFirst")
+  CONTACT_LAST_NAME   = os.environ.get("CONTACT_LAST_NAME", "AutoLast")
+  CONTACT_EMAIL       = os.environ.get("CONTACT_EMAIL", "auto@example.com")
+  ACCOUNT_NAME        = os.environ.get("ACCOUNT_NAME", "AutoAccount")
+
+--- 4C. POM imports with helper function fallback ---
+
+  For each PAGE-N, attempt the import:
+
+    try:
+        from output.page_file_generator.<file_key> import <class_name>
+    except Exception:
+        def helper_init_<file_key>(page):
+            with allure.step("helper: initializing <file_key> interactions"):
+                allure.attach(page.screenshot(), name="before_<file_key>_init",
+                              attachment_type=allure.attachment_type.PNG)
+                try:
+                    expect(page.locator("body")).to_be_visible(timeout=5000)
+                except Exception:
+                    pass
+                allure.attach(page.screenshot(), name="after_<file_key>_init",
+                              attachment_type=allure.attachment_type.PNG)
+
+  ⚠️ On import failure: create a helper function — NOT an inline class.
+
+--- 4D. Shared flow helper (_common_flow_execute) ---
+
+  For complex multi-step flows (more than 3 page transitions), create a shared
+  helper function that contains the full flow logic. The test function calls this.
+  This keeps test functions clean and parametrize-friendly.
+
+  def _common_flow_execute(page, test_case: dict):
+      # Full step sequence reconstructed from recorded_actions
+      # Organised by page responsibility (from 3C[5])
+      ...
+
+  Rules for _common_flow_execute:
+    - Not a pytest test function (name starts with _ not test_)
+    - Accepts the raw page object and test_case dict
+    - Contains all allure.step blocks, POM instantiations, healing logic
+    - Raises exceptions on failure (caller handles attachment and pytest.fail)
+
+--- 4E. Pytest fixture ---
+
+  @pytest.fixture(scope="function")
+  def browser_page():
+      with sync_playwright() as pw:
+          browser = pw.webkit.launch(headless=HEADLESS)
+          context = browser.new_context(
+              user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+              java_script_enabled=True,
+              ignore_https_errors=True,
+              viewport={{"width": 1400, "height": 900}}
+          )
+          pg = context.new_page()
+          try:
+              yield pg
+          finally:
+              try:
+                  context.close()
+              except Exception:
+                  pass
+              try:
+                  browser.close()
+              except Exception:
+                  pass
+
+  HARD RULES:
+    - Fixture is named browser_page (NOT "page" — avoids conflict with pytest-playwright)
+    - Yields ONLY the raw page object
+    - NO POM class is ever instantiated inside this fixture
+
+--- 4F. Standalone helper functions ---
+
+  Helper functions for healing and special field interactions.
+  All named helper_<action>_<file_key>.
+
+  STANDARD HEALING HELPER (create one per POM where interactions are needed):
+
+    def helper_click_<file_key>(page_obj, locator_key: str, page, fallback_selector=None):
+        with allure.step(f"click {{locator_key}} on <file_key> (with healing)"):
+            for attempt in range(RETRY_ATTEMPTS + 1):
+                try:
+                    page_obj.wait_for_element(locator_key)
+                    page_obj.click_element(locator_key)
+                    allure.attach(page.screenshot(), name=f"after_click_{{locator_key}}",
+                                  attachment_type=allure.attachment_type.PNG)
+                    return
+                except Exception:
+                    if attempt < RETRY_ATTEMPTS:
+                        with allure.step(f"healing: retry attempt {{attempt+1}} — {{locator_key}}"):
+                            time.sleep(0.5)
+                            try:
+                                getattr(page_obj, locator_key).wait_for(
+                                    state="visible", timeout=EXPLICIT_WAIT * 1000)
+                            except Exception:
+                                pass
+                            try:
+                                page_obj.click_element(locator_key)
+                                return
+                            except Exception:
+                                pass
+                    else:
+                        with allure.step(f"healing: fallback selector — {{locator_key}}"):
+                            if fallback_selector:
+                                try:
+                                    _fb = page.locator(fallback_selector)
+                                    _fb.wait_for(state="visible", timeout=EXPLICIT_WAIT * 1000)
+                                    _fb.click()
+                                    allure.attach(page.screenshot(),
+                                                  name=f"after_fallback_{{locator_key}}",
+                                                  attachment_type=allure.attachment_type.PNG)
+                                    return
+                                except Exception:
+                                    pass
+                        with allure.step(f"healing: auto stable selector — {{locator_key}}"):
+                            # Fallback priority: id → name → data-* → placeholder → label → text
+                            _stable = page.locator(f"[id*='{{locator_key}}'], [name*='{{locator_key}}']")
+                            _stable.first.wait_for(state="visible", timeout=EXPLICIT_WAIT * 1000)
+                            _stable.first.click()
+                            allure.attach(page.screenshot(), name="healing_final_fallback",
+                                          attachment_type=allure.attachment_type.PNG)
+
+  FILL HEALING HELPER (same pattern as click helper but calls fill):
+
+    def helper_fill_<file_key>(page_obj, locator_key: str, text: str, page, fallback_selector=None):
+        # Same retry/healing structure as click helper but calls enter_text / fill
+
+--- 4G. Test functions ---
+
+  Pattern selection:
+    - DEFAULT: one function per test case (Option 1)
+    - Use @pytest.mark.parametrize (Option 2) ONLY IF all test cases share
+      identical step sequences and differ only in data values
+
+  For parametrized tests, call allure.title() INSIDE the test body as a function
+  call — NOT as a decorator (decorators receive static strings, not runtime values):
+
+    def test_<name>(browser_page, tc):
+        allure.dynamic.title(tc["test_case_name"])    # ← dynamic, works in parametrize
+        allure.dynamic.description(tc["test_case_name"])
+
+  Template for single test function:
+
+    @allure.title("<TC-N.name verbatim>")
+    @allure.description("<TC-N.name verbatim>")
+    @pytest.mark.<tag>                               # only if TC-N.tags present
+    def test_<TC-N.function_name>(browser_page):
+        try:
+            _common_flow_execute(browser_page, {{
+                "test_case_name": "<TC-N.name>",
+                "expected_url_contains": "<derived from 3C[4]>"
+            }})
+        except AssertionError:
+            try:
+                allure.attach(browser_page.screenshot(), name="assertion_failure",
+                              attachment_type=allure.attachment_type.PNG)
+                allure.attach(browser_page.content(), name="page_html",
+                              attachment_type=allure.attachment_type.HTML)
+            except Exception:
+                pass
+            raise
+        except Exception as e:
+            try:
+                allure.attach(browser_page.screenshot(), name="unexpected_failure",
+                              attachment_type=allure.attachment_type.PNG)
+                allure.attach(browser_page.content(), name="page_html",
+                              attachment_type=allure.attachment_type.HTML)
+            except Exception:
+                pass
+            allure.attach(str(e), name="exception_detail",
+                          attachment_type=allure.attachment_type.TEXT)
+            pytest.fail(f"Test failed: {{e}}")
+
+--- 4H. Runtime test count validation ---
+
+  import sys as _sys
+  _test_fns = [n for n in dir(_sys.modules[__name__]) if n.startswith("test_")]
+  assert len(_test_fns) == <PARSED_TC_COUNT>, (
+      f"Test count mismatch: expected <PARSED_TC_COUNT>, found {{len(_test_fns)}}"
+  )
+
+================================================================================
+SECTION 5 — RULES (apply throughout Section 4)
+================================================================================
+
+--- RULE-WAIT: mandatory wait before every interaction ---
+
+  Every POM class must contain this method exactly:
+
+    def wait_for_element(self, locator_key: str):
+        locator = getattr(self, locator_key)
+        locator.wait_for(state="visible")
+        return locator
+
+  Call wait_for_element before EVERY .click() and EVERY .fill().
+  Omitting this call is a generation error.
+
+--- RULE-NAV: navigation waits ---
+
+  After every page.goto() or navigation-triggering action:
+    page.wait_for_load_state("networkidle")
+
+  time.sleep() is permitted in TWO cases only:
+    1. Inside RULE-HEAL retry blocks (0.5 sec)
+    2. After save/submit actions that trigger a full page reload (1–2 sec)
+  Do NOT add sleeps for any other reason.
+
+--- RULE-POPUP: window and new tab handling ---
+
+  Every "Switched to new window" line in recorded_actions generates this block:
+
+    with allure.step("Handle popup / new tab"):
+        try:
+            with page.expect_popup() as popup_info:
+                <trigger click action>
+            new_page = popup_info.value
+            new_page.bring_to_front()
+            new_page.wait_for_load_state("networkidle")
+            allure.attach(new_page.screenshot(), name="after_popup_open",
+                          attachment_type=allure.attachment_type.PNG)
+        except PlaywrightTimeoutError:
+            pages = page.context.pages
+            if len(pages) > 1:
+                new_page = pages[-1]
+                new_page.bring_to_front()
+                new_page.wait_for_load_state("networkidle")
+            else:
+                new_page = page
+
+    # Always re-instantiate ALL POM classes on the new page immediately after:
+    <pom> = <ClassName>(new_page)
+
+  Hard rules:
+    - NEVER call new_page.goto() after switching to a popup
+    - NEVER reuse old POM instances after a tab/window switch
+    - NEVER switch window after page.goto()
+    - ALWAYS recreate POM instances on the new page
+
+--- RULE-PAGE-RESOLVE: active page resolution after multi-window flows ---
+
+  After a popup flow completes (e.g. after OTP verification), the correct
+  active page may not be obvious. Resolve it like this:
+
+    target_page = None
+    for _p in browser_page.context.pages:
+        if "<expected_url_fragment>" in _p.url:
+            target_page = _p
+            break
+    if not target_page:
+        target_page = browser_page
+    target_page.bring_to_front()
+    target_page.wait_for_load_state("networkidle")
+    allure.attach(target_page.screenshot(), name="resolved_active_page",
+                  attachment_type=allure.attachment_type.PNG)
+
+  Then re-instantiate all POMs needed for subsequent steps on target_page.
+
+--- RULE-DROPDOWN: select / dropdown field interactions ---
+
+  When recorded_actions contains "Select [VALUE] in [FIELD]" or
+  "Change the value to [VALUE]":
+
+    with allure.step("Select <VALUE> in <FIELD>"):
+        try:
+            <pom>.<field_locator>.click()
+            try:
+                target_page.click(f"text={{VALUE}}")
+            except Exception:
+                try:
+                    target_page.select_option(f"select[name='<field_name>']", label=VALUE)
+                except Exception:
+                    pass
+            allure.attach(target_page.screenshot(), name="after_select_<field>",
+                          attachment_type=allure.attachment_type.PNG)
+        except Exception:
+            pass  # skip if field is optional
+
+--- RULE-LOOKUP: autocomplete / lookup field interactions ---
+
+  When recorded_actions contains "Enter [VALUE] in the [FIELD] lookup field":
+
+    with allure.step("Fill lookup field: <FIELD>"):
+        try:
+            <pom>.<field_locator>.fill(VALUE)
+            # wait for autocomplete dropdown to appear
+            try:
+                target_page.wait_for_selector(
+                    "div[role='option'], li[role='option']",
+                    timeout=EXPLICIT_WAIT * 1000
+                )
+                target_page.locator("div[role='option'], li[role='option']").first.click()
+            except Exception:
+                pass  # proceed if no dropdown appears
+            allure.attach(target_page.screenshot(), name="after_lookup_<field>",
+                          attachment_type=allure.attachment_type.PNG)
+        except Exception as e:
+            try:
+                target_page.fill("input[aria-label='<FIELD>']", VALUE)
+            except Exception:
+                pass
+
+--- RULE-HEAL: self-healing retry ---
+
+  Always use RETRY_ATTEMPTS constant — never hardcode an integer.
+  Full healing sequence: sleep → retry → try alternates → recorded fallback → stable selector
+
+    for attempt in range(RETRY_ATTEMPTS + 1):
+        try:
+            <interaction>
+            break
+        except Exception:
+            if attempt < RETRY_ATTEMPTS:
+                with allure.step(f"healing: retry {{attempt+1}} — <locator>"):
+                    time.sleep(0.5)
+                    try:
+                        <locator>.wait_for(state="visible", timeout=EXPLICIT_WAIT * 1000)
+                    except Exception:
+                        pass
+                    try:
+                        <interaction>   # try alternate
+                        break
+                    except Exception:
+                        pass
+            else:
+                with allure.step("healing: fallback to recorded_actions selector"):
+                    try:
+                        _fb = page.locator("<recorded_selector>")
+                        _fb.wait_for(state="visible", timeout=EXPLICIT_WAIT * 1000)
+                        _fb.<action>()
+                        break
+                    except Exception:
+                        pass
+                with allure.step("healing: auto stable selector"):
+                    # Priority: id → name → data-* → placeholder → label → visible text
+                    _stable = page.locator("<best stable selector>")
+                    _stable.wait_for(state="visible", timeout=EXPLICIT_WAIT * 1000)
+                    _stable.<action>()
+                    allure.attach(page.screenshot(), name="healing_final",
+                                  attachment_type=allure.attachment_type.PNG)
+
+--- RULE-C: POM constructor adaptation ---
+
+  try:
+      pom = <ClassName>(page)
+  except TypeError:
+      with allure.step("auto-fix: constructor adaptation for <ClassName>"):
+          try:
+              pom = <ClassName>(page, 10)
+          except TypeError:
+              pom = <ClassName>(page, EXPLICIT_WAIT, DEFAULT_WAIT)
+
+  Note: first fallback uses literal 10, not EXPLICIT_WAIT variable.
+
+--- RULE-D: callable locator detection ---
+
+  If a locator is marked CALLABLE from 3B:
+
+    with allure.step("auto-fix: callable locator — <locator_name>"):
+        _resolved = page.locator(pom.<locator_name>())
+
+  Use _resolved for all subsequent interactions.
+
+--- RULE-E: allure attachment API (use exactly this form) ---
+
+  Screenshots:
+    allure.attach(page.screenshot(), name="<label>",
+                  attachment_type=allure.attachment_type.PNG)
+  Page HTML:
+    allure.attach(page.content(), name="page_html",
+                  attachment_type=allure.attachment_type.HTML)
+  Text/error:
+    allure.attach(str(value), name="<label>",
+                  attachment_type=allure.attachment_type.TEXT)
+
+  Attach screenshot after EVERY allure.step block.
+  Attach screenshot + HTML in EVERY except block before re-raising.
+
+--- RULE-ASSERT: exactly one primary assertion per test ---
+
+  - Placed at the END of the try block inside _common_flow_execute, after all steps
+  - Derived from TC-N.expected if present; otherwise derived via RULE-ASSERT-DERIVE
+  - Format: assert <condition>, "<expected result as failure message>"
+  - Do NOT add multiple assertions anywhere
+  - Do NOT use expect() as the primary assertion unless test explicitly validates
+    a Playwright locator condition
+
+--- RULE-LOCATOR: strict locator declaration rules ---
+
+  Inside __init__ of every POM class:
+    self.<locator_name> = page.locator("<selector>")
+
+  Interactions must always be:
+    self.<locator_name>.click()
+    self.<locator_name>.fill("<value>")
+
+  NEVER generate:
+    - get_locator() methods
+    - Any method that returns a locator object
+    - Any locator helper that wraps a locator
+
+================================================================================
+SECTION 6 — FINAL VALIDATION (verify before producing any output)
+================================================================================
+
+Before outputting the script, verify every item below.
+Fix any failure before proceeding.
+
+  [ ] All imports are used — no unused imports present
+  [ ] PlaywrightTimeoutError imported from playwright.sync_api
+  [ ] Fixture is named browser_page (not "page")
+  [ ] Every POM locator name matches page_files_content exactly — zero invention
+  [ ] No get_locator() or locator-return helpers generated anywhere
+  [ ] Every [PLACEHOLDER] token from recorded_actions has an os.environ.get() declaration
+  [ ] Every test function has allure.title() — decorator for single tests,
+      allure.dynamic.title() inside body for parametrized tests
+  [ ] allure.description() included where test case name is descriptive
+  [ ] Test tags applied with @pytest.mark.<tag> wherever TC-N.tags is present
+  [ ] Every test has exactly one primary assertion
+  [ ] If TC-N.expected is empty, assertion derived from last recorded_actions URL
+  [ ] If TC-N.steps is empty but recorded_actions exists, full flow built from recorded_actions
+  [ ] wait_for_element called before every .click() and .fill()
+  [ ] page.wait_for_load_state("networkidle") follows every navigation action
+  [ ] time.sleep() only in: RULE-HEAL retry blocks AND post-save/submit stabilization
+  [ ] Every "Switched to new window" in recorded_actions → expect_popup() block
+  [ ] PlaywrightTimeoutError used in popup fallback (not bare Exception)
+  [ ] Post-popup page resolved via context.pages scan (RULE-PAGE-RESOLVE)
+  [ ] All POM classes re-instantiated on new page after every tab/window switch
+  [ ] new_page.goto() never called after a popup switch
+  [ ] Dropdown fields handled with RULE-DROPDOWN (click → text match → select_option)
+  [ ] Lookup/autocomplete fields handled with RULE-LOOKUP
+  [ ] RETRY_ATTEMPTS = 1 (not 2, not any other value)
+  [ ] RETRY_ATTEMPTS constant used in all retry loops — no hardcoded integers
+  [ ] RULE-C fallback uses ClassName(page, 10) as first fallback — not EXPLICIT_WAIT
+  [ ] Missing POM → helper function created (NOT inline class)
+  [ ] Helper functions named helper_<action>_<file_key>
+  [ ] _common_flow_execute helper present for complex multi-page flows
+  [ ] os.makedirs("allure-results", exist_ok=True) present at top
+  [ ] Runtime test count validation block present at bottom
+  [ ] Script is fully runnable without modification
+
+================================================================================
+SECTION 7 — OUTPUT FORMAT CONTRACT (repeated for enforcement)
+================================================================================
+
+Return ONLY raw Python code.
+No markdown. No triple backticks. No explanations. No preamble. No postamble.
+Output must be directly saveable as a .py file and executable with:
+
+  pytest <filename>.py --alluredir=allure-results
+
+without any modification.

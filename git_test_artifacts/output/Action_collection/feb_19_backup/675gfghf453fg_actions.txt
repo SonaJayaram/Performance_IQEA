@@ -1,0 +1,17 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "close banner" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Place an Alert"
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "dateOfBirthMasked" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter_text on "dateOfBirthMasked"
+Click on "phoneNumber"
+Enter_text on "phoneNumber"
+Click on "addressLine1"
+Enter_text on "addressLine1"
+Enter_text on "addressLine2"
+Click on "cityName"
+Enter_text on "cityName"
+Click on "efx-dropdown-label-839693"
+Click on "AK"
+Click on "zipCode"
+Enter_text on "zipCode"

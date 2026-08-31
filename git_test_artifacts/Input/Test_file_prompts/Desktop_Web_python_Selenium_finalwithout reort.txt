@@ -1,0 +1,357 @@
+# Generic Hybrid Automation Script Generation Prompt
+
+You are an expert automation engineer. Your task is to generate a complete, executable Python automation script using pytest that performs hybrid automation across Windows desktop applications and web applications.
+
+You must intelligently interpret the workflow steps provided and map each step to the correct automation technique — regardless of which application is being automated.
+
+---
+
+## INPUTS
+
+Application Path:
+{application_path}
+
+Workflow Steps:
+{workflow_steps}
+
+---
+
+## OBJECTIVE
+
+Analyze the workflow steps and generate a fully working end-to-end Python automation script that:
+- Launches and automates any Windows desktop application
+- Automates any web application if the workflow includes browser steps
+- Requires zero manual intervention to execute
+- Handles all synchronization, window switching, and error recovery automatically
+
+---
+
+## TECHNOLOGY STACK
+
+Use exactly and only these libraries:
+
+| Purpose | Library |
+|---|---|
+| Desktop automation | pywinauto — Application(backend="uia") |
+| Desktop keyboard input | pywinauto.keyboard.send_keys — for ALL key input |
+| Web automation | selenium — Chrome WebDriver |
+| Web keyboard/typing input | ActionChains — MANDATORY for ALL web input |
+| Test execution | pytest |
+| Utility | time, os |
+
+No other libraries. No pip install comments. No explanations.
+
+---
+
+## STEP 1 — WORKFLOW ANALYSIS (DO THIS BEFORE WRITING CODE)
+
+Before generating any code, mentally classify every workflow step into one of these action types:
+
+### Desktop Action Types:
+| Step Pattern | Action Type | Technique to Use |
+|---|---|---|
+| "open / launch [app]" | APP_LAUNCH | Application(backend="uia").start() |
+| "create new / open blank" | START_SCREEN | send_keys("{ENTER}") or send_keys("^n") |
+| "click [menu item]" | MENU_NAV | send_keys with keyboard shortcut equivalent |
+| "type / enter / fill [text] in [field]" | TEXT_INPUT | send_keys("text") |
+| "press [key] / hit enter / click ok" | KEY_ACTION | send_keys("{KEY}") |
+| "save / save as [filename]" | SAVE_FILE | send_keys("^s") → clear → type name → ENTER |
+| "close / exit app" | APP_CLOSE | send_keys("%{F4}") |
+| "select / choose [option]" | SELECTION | send_keys with TAB/arrow keys |
+| "navigate to [field/cell/section]" | NAVIGATION | send_keys with TAB/arrow/shortcut |
+
+### Web Action Types:
+| Step Pattern | Action Type | Technique to Use |
+|---|---|---|
+| "open browser / launch [url]" | BROWSER_OPEN | webdriver.Chrome() + driver.get(url) |
+| "go to / navigate to [url]" | URL_NAV | driver.get(url) |
+| "enter / type [text] in [field]" | WEB_INPUT | ActionChains.send_keys("text").perform() |
+| "click [button/link]" | WEB_CLICK | find_element(XPath) then .click() OR ActionChains ENTER |
+| "press enter / click next / submit" | WEB_KEY | ActionChains.send_keys(Keys.ENTER).perform() |
+| "login / sign in" | WEB_LOGIN | email → ENTER → password → ENTER sequence |
+| "wait for [condition]" | WAIT | time.sleep(N) — choose N based on operation weight |
+| "open file / click file" | FILE_OPEN | find_element(XPath contains filename) + .click() |
+| "move to new window / switch tab" | WINDOW_SWITCH | switch_to_new_window(driver) |
+| "search for [command] / use command bar" | CMD_BAR | ALT+Q → type command → ENTER |
+| "download / export" | DOWNLOAD | CMD_BAR or find download button via XPath |
+| "verify / confirm / check" | ASSERTION | find_element + read text or assert condition |
+
+### Hybrid Transition Types:
+| Step Pattern | Action Type | Technique to Use |
+|---|---|---|
+| "open browser" after desktop steps | DESKTOP_TO_WEB | close desktop if done, then open_browser() |
+| "go back to app" after web steps | WEB_TO_DESKTOP | driver.quit() then re-attach or re-launch app |
+
+---
+
+## STEP 2 — UNIVERSAL AUTOMATION RULES
+
+These rules apply regardless of which application is being automated.
+
+### RULE 1: Desktop — Always Use Keyboard, Never Mouse
+- Import send_keys ONLY as: from pywinauto.keyboard import send_keys
+- NEVER use: .click(), .click_input(), .type_keys(), element.set_text()
+- ALWAYS use: send_keys() for every single keystroke and key combination
+- ALWAYS call dlg.set_focus() before every function that interacts with the desktop window
+- ALWAYS call dlg.wait("visible", timeout=30) immediately after getting the window reference
+
+### RULE 2: Desktop — Handle Start/Splash Screens
+- ANY desktop application may show a start screen, splash screen, or welcome dialog on launch
+- NEVER assume the main workspace is ready immediately after Application.start()
+- ALWAYS add logic to dismiss start screens:
+  - If a default option is highlighted (e.g., "New", "Blank", "Continue") → send_keys("{ENTER}")
+  - If no selection exists → send_keys("^n") to open a new document/session
+  - Always add time.sleep(5) after dismissing the start screen
+
+### RULE 3: Desktop — Universal Keyboard Shortcut Mapping
+When the workflow says "click X" or "select X" for a desktop app, convert it:
+
+| Workflow Says | Use This |
+|---|---|
+| click Save / save file | send_keys("^s") |
+| click Save As | send_keys("^s") — prefer this over Save As |
+| click New / create new | send_keys("^n") or send_keys("{ENTER}") on start screen |
+| click Open | send_keys("^o") |
+| click Close / exit | send_keys("%{F4}") |
+| click OK / Yes / Confirm | send_keys("{ENTER}") |
+| click Cancel / No | send_keys("{ESC}") |
+| click Next (wizard) | send_keys("{TAB}") then send_keys("{ENTER}") |
+| click a menu item | send_keys("%") + accelerator key (e.g., send_keys("%f") for File) |
+| tab between fields | send_keys("{TAB}") |
+| move between rows/items | send_keys("{ENTER}") or send_keys("{DOWN}") |
+| navigate to a cell/field | send_keys("^g") + target address + send_keys("{ENTER}") |
+| select all text in field | send_keys("^a") |
+| clear a field | send_keys("^a{BACKSPACE}") |
+| press Enter/Return | send_keys("{ENTER}") |
+
+### RULE 4: Web — Always Use ActionChains
+- NEVER use element.send_keys() or element.click() for text input
+- ALWAYS use ActionChains for typing and key presses:
+  ```
+  actions = ActionChains(driver)
+  actions.send_keys("text").perform()
+  actions.send_keys(Keys.ENTER).perform()
+  ```
+- For keyboard shortcuts in web apps:
+  ```
+  actions.key_down(Keys.ALT).send_keys("q").key_up(Keys.ALT).perform()
+  actions.key_down(Keys.CONTROL).send_keys("s").key_up(Keys.CONTROL).perform()
+  ```
+- Exception: .click() IS allowed on elements found via find_element — only for clicking, not for typing
+
+### RULE 5: Web — Login Sequence Pattern
+For ANY web login flow, always follow this exact pattern:
+```
+driver.get(login_url)
+time.sleep(5)
+actions = ActionChains(driver)
+actions.send_keys(username_or_email).perform()
+time.sleep(2)
+actions.send_keys(Keys.ENTER).perform()
+time.sleep(5)
+actions.send_keys(password).perform()
+time.sleep(2)
+actions.send_keys(Keys.ENTER).perform()
+time.sleep(15)
+try:
+    actions.send_keys(Keys.ENTER).perform()   # dismiss any "stay signed in" dialog
+except:
+    pass
+time.sleep(10)
+```
+
+### RULE 6: Web — Finding Elements
+- ALWAYS prefer these XPath strategies in this priority order:
+  1. By visible text: `//tag[contains(text(),'visible text')]`
+  2. By button/link text: `//button[contains(text(),'label')]` or `//a[contains(text(),'label')]`
+  3. By placeholder: `//input[@placeholder='hint text']`
+  4. By name/id: `//input[@name='fieldname']` or `//input[@id='fieldid']`
+  5. By role+label: `//*[@role='button' and contains(@aria-label,'label')]`
+- NEVER use nth-child, positional XPath like `(//div)[3]`, or CSS class-based selectors
+- NEVER use Tab-key navigation to find elements in web apps
+
+### RULE 7: Window and Tab Switching
+- After ANY action that may open a new browser tab or window, ALWAYS call switch_to_new_window(driver)
+- Always add time.sleep(3) after switching
+- Always implement switch_to_new_window() as a utility function:
+  ```
+  def switch_to_new_window(driver):
+      current_window = driver.current_window_handle
+      for handle in driver.window_handles:
+          if handle != current_window:
+              driver.switch_to.window(handle)
+              break
+  ```
+
+### RULE 8: In-App Command Bar (Web Office Apps, Electron Apps)
+When the workflow says "search for [command]" or "use command bar" or "find [action] option":
+```
+actions.key_down(Keys.ALT).send_keys("q").key_up(Keys.ALT).perform()
+time.sleep(3)
+actions.send_keys("command text here").perform()
+time.sleep(2)
+actions.send_keys(Keys.ENTER).perform()
+time.sleep(10)
+actions.send_keys(Keys.ENTER).perform()   # confirm any follow-up dialog
+time.sleep(10)
+```
+
+### RULE 9: Save File (Desktop — Any App)
+When the workflow says "save" or "save as [filename]":
+```
+send_keys("^s")
+time.sleep(3)
+send_keys("^a{BACKSPACE}")    # clear existing/default filename
+time.sleep(1)
+send_keys("your_filename")    # type new filename
+time.sleep(1)
+send_keys("{ENTER}")
+time.sleep(10)                # wait for save/upload to complete
+```
+
+### RULE 10: Synchronization Timing Guide
+Use these wait times based on operation type:
+
+| Operation | Wait Time |
+|---|---|
+| After app launch | time.sleep(5) |
+| After dismissing start screen | time.sleep(5) |
+| After opening browser | time.sleep(3) |
+| After navigating to URL | time.sleep(5) |
+| After login / authentication | time.sleep(15) |
+| After opening file in web app | time.sleep(5) |
+| After window/tab switch | time.sleep(3) |
+| After triggering save | time.sleep(3) |
+| After cloud save completes | time.sleep(10) |
+| After triggering download | time.sleep(10) |
+| After any menu/dialog open | time.sleep(2) |
+| After any form field entry | time.sleep(1) |
+| After app close | time.sleep(5) |
+
+---
+
+## STEP 3 — SCRIPT STRUCTURE (MANDATORY — NO DEVIATION)
+
+Generate code in exactly this structure:
+
+```
+[1] IMPORTS
+[2] GLOBAL CONSTANTS (app paths, URLs, credentials — mask passwords as "************")
+[3] DESKTOP FUNCTIONS — one function per logical desktop operation group
+[4] WEB FUNCTIONS — one function per logical web operation group
+[5] UTILITY FUNCTIONS — switch_to_new_window(), any shared helpers
+[6] MAIN TEST FUNCTION — def test_end_to_end_flow():
+```
+
+### Function Naming Convention
+Name functions based on what they DO, not which app they're for:
+
+| Operation | Function Name |
+|---|---|
+| Launch desktop app | launch_application(app_path) |
+| Handle start screen | handle_start_screen(dlg) |
+| Enter data / fill form | enter_data(dlg) OR fill_order_form(dlg) etc. |
+| Save desktop file | save_file(dlg) |
+| Close desktop app | close_application() |
+| Open web browser | open_browser() |
+| Log in to web app | login_to_web(driver, url, username, password) |
+| Open/find a file or record | open_item_in_web(driver, item_name) |
+| Execute web command | execute_web_command(driver, command_text) |
+| Download / export | download_file(driver) |
+| Verify / confirm result | verify_result(driver, expected_value) |
+| Switch window | switch_to_new_window(driver) |
+
+---
+
+## STEP 4 — CHROME BROWSER SETUP (ALWAYS USE THIS EXACT CONFIG)
+
+```python
+def open_browser():
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-software-rasterizer")
+    chrome_options.add_argument("--remote-debugging-port=9222")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--remote-allow-origins=*")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.maximize_window()
+    return driver
+```
+
+---
+
+## STEP 5 — HYBRID FLOW SEQUENCING
+
+Execute steps in the order they appear in the workflow. Respect these transition rules:
+
+- If workflow moves from desktop to web: finish all desktop steps, close the desktop app if not needed further, then open_browser()
+- If workflow moves from web back to desktop: driver.quit() then re-attach or re-launch the desktop app
+- If both run in parallel (e.g., copy data from web to desktop): keep both open, switch between them as needed
+- Always wrap web automation in try/finally to ensure driver.quit() is called
+
+---
+
+## STEP 6 — RESILIENCE PATTERNS
+
+Apply these patterns everywhere:
+
+### Optional/Unpredictable Dialogs
+Wrap steps that may or may not appear in try/except:
+```python
+try:
+    # handle optional popup or dialog
+    send_keys("{ENTER}")
+except:
+    pass
+```
+
+### Element Not Found Fallback
+When finding web elements that might have variable locators:
+```python
+try:
+    element = driver.find_element(By.XPATH, "//button[contains(text(),'Primary Label')]")
+except:
+    element = driver.find_element(By.XPATH, "//button[contains(text(),'Alternate Label')]")
+element.click()
+```
+
+---
+
+## OUTPUT RULES (ABSOLUTE — NO EXCEPTIONS)
+
+1. OUTPUT ONLY RAW PYTHON CODE
+2. NO markdown formatting, NO triple backticks, NO language tags
+3. NO explanations before or after the code
+4. NO comments that describe what the prompt says — only inline comments that clarify non-obvious automation choices
+5. Script must run directly with: pytest script_name.py -s
+6. ALL passwords must be masked as "************"
+7. Use 4-space indentation throughout
+8. Every function must have a single blank line between them
+9. The test function name must always be: def test_end_to_end_flow():
+
+---
+
+## ANTI-PATTERNS — NEVER DO THESE
+
+- ❌ NEVER use .type_keys() on any pywinauto window or element
+- ❌ NEVER use element.send_keys() in Selenium — ALWAYS use ActionChains
+- ❌ NEVER skip start screen / splash screen handling for desktop apps
+- ❌ NEVER omit dlg.wait("visible", timeout=30) after getting window reference
+- ❌ NEVER use Tab key navigation to locate web elements
+- ❌ NEVER use positional XPath like (//div)[3] or nth-child selectors
+- ❌ NEVER forget switch_to_new_window() when a new tab/window opens
+- ❌ NEVER use Save As menu path (Alt+F → A) when Ctrl+S works
+- ❌ NEVER skip clearing the filename field before typing a new name on save
+- ❌ NEVER hardcode app-specific logic — derive everything from the workflow steps
+- ❌ NEVER use mouse clicks on desktop UI elements
+- ❌ NEVER leave driver.quit() outside a finally block
+
+---
+
+## GENERATE THE SCRIPT NOW
+
+Analyze the workflow steps in the INPUTS section above.
+Classify each step using the action type tables in STEP 1.
+Apply the matching technique from STEP 2 rules.
+Generate the complete script following the structure in STEP 3.

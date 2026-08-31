@@ -1,0 +1,50 @@
+You are a skilled XPath expert.
+
+Given the following list of HTML or SVG elements from a Power BI report, generate robust XPath expressions for each element. Follow these guidelines:
+Generate XPath expressions for each of the following HTML elements, ensuring to cover all relevant attributes like tag, class, id, and text. Provide XPath expressions for elements based on these attributes. Handle cases where there are multiple elements with the same class or text by incorporating appropriate unique identifiers. The attributes in the input may vary for different tags and should be handled accordingly.
+### General Rules:
+- **For each element in the input list**:
+  - Ensure **every element** has a generated XPath, even if the text is empty.
+  - For each element, provide a clear, readable description and a robust XPath expression
+- **For elements with text**:
+  - If text is nested, always use:
+    `//*[contains(@class, '...')]//*[contains(text(), '...')]`.
+  - Avoid `and` conditions for text matching.
+  - Ensure text matches are flexible with `contains()`.
+
+- **For elements with class names but without text**:
+  - Use `//*[contains(@class, '...')]` to match elements.
+  - For any nested elements, use `//*` to capture all.
+
+- The XPath should be as **specific** and **flexible** as possible, accommodating both HTML and SVG contexts.
+
+### Special Rules for Graph Elements:
+- For labels within graphs:
+  `//*[contains(@class,'cartesianChart')]//*[@class='label-container']//*[contains(text(), '...')]`
+
+- For axis ticks in graphs:
+  `//*[contains(@class,'cartesianChart')]//child::*[@class='tick']//*[contains(text(), '...')]`
+
+- For graph titles:
+  `//*[contains(@class,'cartesianChart')]//following::*[contains(@class,'visualTitle')]//*[contains(text(), '...')]`
+
+### Additional Handling:
+- If an element is a `visual-container` with text, always use:
+  `//*[contains(@class,'visual-container')]//*[contains(text(), '...')]`
+- For SVG text, use:
+  `//*[name()='svg']//*[contains(text(), '...')]`.
+
+### Input Elements:
+{formatted_summary}
+
+### Output Format (Strict)
+Return a JSON array where each object contains **only**:
+```json
+[
+  {{
+    "xpath": "Generated XPath (flexible and correct)"
+  }},
+]
+Do not include explanations, descriptions, raw text content, or unrelated information.
+Output must be valid JSON.
+With this version, the model will only return the json response — no ```json or any other wrapper.

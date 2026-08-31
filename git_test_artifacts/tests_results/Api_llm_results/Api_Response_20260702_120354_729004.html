@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>API Quality Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #111; line-height: 1.4; margin: 20px; }
+    h1 { font-size: 20px; }
+    h2 { font-size: 16px; margin-top: 20px; }
+    h3 { font-size: 14px; margin: 12px 0 6px; }
+    p { margin: 6px 0; }
+    ul { margin: 6px 0 12px 20px; }
+    .api-block { border: 1px solid #ddd; padding: 12px; margin-bottom: 12px; border-radius: 4px; background:#fafafa; }
+    .ok { color: #0a7; font-weight: bold; }
+    .fail { color: #c33; font-weight: bold; }
+    .warn { color: #d99a00; font-weight: bold; }
+    .mono { font-family: monospace; background:#f2f2f2; padding:2px 6px; border-radius:3px; }
+  </style>
+</head>
+<body>
+  <h1>API Quality Analysis Report</h1>
+
+  <!-- API 1 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <ul>
+      <li><strong>Method:</strong> GET</li>
+      <li><strong>Endpoint:</strong> https://reqres.in/api/users/2</li>
+      <li><strong>Status Code:</strong> 200</li>
+      <li><strong>Result:</strong> <span class="ok">PASS</span></li>
+    </ul>
+
+    <h2>Validation Results</h2>
+    <h3>Status code validation</h3>
+    <p>Returned HTTP 200 OK — appropriate and expected for a successful GET of an existing resource.</p>
+
+    <h3>Field/value validation details</h3>
+    <ul>
+      <li>Response contains top-level <span class="mono">data</span> object with fields:
+        <span class="mono">id</span>, <span class="mono">email</span>, <span class="mono">first_name</span>, <span class="mono">last_name</span>, <span class="mono">avatar</span>. <strong>first_name</strong> = "Janet" — matches expected value.</li>
+      <li><span class="mono">support</span> object and <span class="mono">_meta</span> metadata object are present as additional contextual data.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>No functional defects detected for this GET request based on the provided expected field <span class="mono">first_name:Janet</span>.</li>
+      <li>Observations (non-blocking): <span class="mono">_meta</span> presence is useful for examples but should be documented in the API contract so clients know to expect it.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Low</strong> — The GET response contains required fields and expected values. No mismatches detected.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Document the full response schema (including <span class="mono">_meta</span> and <span class="mono">support</span> objects) so consumers know which fields are stable vs. example-only.</li>
+      <li>Add automated schema validation in CI for GET endpoints to ensure required fields and types (e.g., <span class="mono">first_name</span> present and string) are enforced.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><span class="ok">PASS</span> — GET /api/users/2 returned HTTP 200 and the expected <span class="mono">first_name: Janet</span>.</p>
+  </div>
+
+  <!-- API 2 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <ul>
+      <li><strong>Method:</strong> POST</li>
+      <li><strong>Endpoint:</strong> https://reqres.in/api/users</li>
+      <li><strong>Status Code:</strong> 201</li>
+      <li><strong>Result:</strong> <span class="fail">FAIL</span></li>
+    </ul>
+
+    <h2>Validation Results</h2>
+    <h3>Status code validation</h3>
+    <p>Returned HTTP 201 Created — appropriate for a successful resource creation request.</p>
+
+    <h3>Field/value validation details</h3>
+    <ul>
+      <li>Response includes <span class="mono">name</span> = "John Doe" and <span class="mono">job</span> = "Developer". These are typical for a creation response and indicate the server accepted creation data.</li>
+      <li>Response contains <span class="mono">id</span> (value "282") and <span class="mono">createdAt</span> (ISO timestamp) — expected metadata for created resources.</li>
+      <li>However, the expected response specified <span class="mono">first_name:John</span>. The actual response does not include a <span class="mono">first_name</span> field; instead it provides a single <span class="mono">name</span> field. This is a contract mismatch relative to the expectation.</li>
+      <li>Request payload for the POST was not provided in the execution data. Without the original request body we cannot fully verify that the server echoed the submitted values correctly (beyond comparing available response fields).</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>Contract mismatch: expected field <span class="mono">first_name</span> is missing from the response; server returns <span class="mono">name</span> instead. This prevents reliable automated verification against expected <span class="mono">first_name</span>.</li>
+      <li>Type consistency: <span class="mono">id</span> is returned as a string ("282"). If clients expect a numeric id, this may cause type-related issues. Confirm and document id data type.</li>
+      <li>Missing test artifact: the POST request payload was not provided, limiting full verification that submitted values were persisted and returned as expected.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Medium</strong> — Functional creation works (201), but the mismatch in field naming (first_name vs name) and missing request payload create integration risk for clients that expect a specific schema.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Align API contract: decide whether user name is returned as a single <span class="mono">name</span> or split into <span class="mono">first_name</span> and <span class="mono">last_name</span>. Update API documentation and implementation to be consistent.</li>
+      <li>If the expected contract is <span class="mono">first_name</span>, modify the POST response to include <span class="mono">first_name</span> (and optionally <span class="mono">last_name</span>) or update tests/expectations to use <span class="mono">name</span>.</li>
+      <li>Ensure data-type consistency for returned identifiers (document whether <span class="mono">id</span> is string or number). Convert to numeric type if required by clients or explicitly document string usage.</li>
+      <li>Include the request payload in test execution logs and reports so automated checks can assert payload values are persisted and/or echoed back correctly.</li>
+      <li>Add schema (contract) validation in CI for creation endpoints so tests fail clearly when required fields are missing or renamed.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><span class="fail">FAIL</span> — Although the POST returned HTTP 201 Created, the response schema does not contain the expected <span class="mono">first_name</span> field (it contains <span class="mono">name</span> instead). Because of this contract mismatch and the absence of the request payload in the test artifact, this execution cannot be considered a full pass.</p>
+  </div>
+
+  <h2>Final Summary</h2>
+  <ul>
+    <li>GET /api/users/2: PASS — correct status and expected field/value present.</li>
+    <li>POST /api/users: FAIL — HTTP status correct, but response schema does not match expected field <span class="mono">first_name</span>; request payload missing from test data. Action required to resolve contract mismatch and improve test artifacts.</li>
+  </ul>
+</body>
+</html>

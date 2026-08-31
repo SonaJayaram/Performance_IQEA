@@ -1,0 +1,9 @@
+Switched to new window: [http://localhost:8080/index.html]
+Click on "__component0---app--username-inner" (URL: http://localhost:8080/index.html)
+Enter_text on "__component0---app--username-inner"
+Enter_text on "__component0---app--email-inner"
+Enter_text on "__component0---app--role-inner"
+Enter_text on "__component0---app--department-inner"
+Enter_text on "__component0---app--password-inner"
+Enter_text on "__component0---app--confirm-inner"
+Click on "__button0"

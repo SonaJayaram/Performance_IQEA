@@ -1,0 +1,3 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/Home]
+Click the "link-Agent Studio" link (URL: https://agentflow-uat.tigeranalyticstest.in/Home)
+Click the "+ New Agent" button (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)

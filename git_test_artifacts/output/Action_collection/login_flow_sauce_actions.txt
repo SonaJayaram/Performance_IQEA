@@ -1,0 +1,10 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Key_tab on "user-name"
+Enter "standard_user" in the "user-name" field
+Enter "secret_sauce" in the "password" field
+Click on "login-button"
+Click on "react-burger-menu-btn" (URL: https://www.saucedemo.com/inventory.html)
+Change the value to "All Items" in "inventory_sidebar_link"
+Click on "logout_sidebar_link"
+Change the value to "Logout" in "logout_sidebar_link" (URL: https://www.saucedemo.com/)

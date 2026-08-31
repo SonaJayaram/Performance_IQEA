@@ -1,0 +1,78 @@
+================================================================================
+IQEA MOBILE AUTOMATION — RECORDED SESSION
+================================================================================
+Generated  : 2026-04-06 15:14:08
+Device     : samsung SM-A226B (Android)
+OS         : Android Android 13
+Session ID : SES-8SLNH0JQ
+Total Steps: 8
+
+================================================================================
+RECORDED ACTIONS
+================================================================================
+
+[STEP #01]  TAP
+  Time      : 15:12:21.910
+  Label     : Search
+  XPath     : //android.widget.ImageButton[@resource-id="in.amazon.mShop.android.shopping:id/chrome_search_box"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #02]  TAP
+  Time      : 15:12:28.790
+  Label     : Back
+  XPath     : //android.widget.ImageButton[@resource-id="in.amazon.mShop.android.shopping:id/chrome_action_bar_back_icon"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #03]  TAP
+  Time      : 15:12:35.627
+  Label     : All Filters Icon
+  XPath     : //android.widget.Button[@resource-id="s-all-filters-announce"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #04]  TAP
+  Time      : 15:12:43.240
+  Label     : Search
+  XPath     : //android.widget.ImageButton[@resource-id="in.amazon.mShop.android.shopping:id/chrome_search_box"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #05]  TAP
+  Time      : 15:12:49.308
+  Label     : See more like this OnePlus 15 | 16GB+512GB | Infinite Black 
+  XPath     : //android.widget.Button[@resource-id="comparison-lite-trigger-B0FTRMJNPX-announce"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #06]  INPUT
+  Time      : 15:12:55.176
+  Label     : satha
+  XPath     : //android.widget.EditText[@resource-id="ap_email_login"]
+  Value     : satha
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #07]  TAP
+  Time      : 15:13:01.033
+  Label     : Change
+  XPath     : //android.view.View[@content-desc="Change"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #08]  INPUT
+  Time      : 15:13:14.594
+  Label     : 9629
+  XPath     : //android.widget.EditText[@resource-id="ap_phone_number"]
+  Value     : 9629
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------

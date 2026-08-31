@@ -58,7 +58,7 @@ Total Columns: 3
 
 http: /sql/1.0/warehouses/2c6c012178222d1b
 hots: dbc-35255fb7-9e4c.cloud.databricks.com
-token:dapi4281b3da3ea39c5f58a2eb57844038ef
+token:
 catelog:tiger_data_engineering
 schema:global_superstore_gold
 

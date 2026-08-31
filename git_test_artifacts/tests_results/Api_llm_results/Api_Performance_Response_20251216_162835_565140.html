@@ -1,0 +1,100 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        .risk-low {
+            color: green;
+            font-weight: bold;
+        }
+        .risk-medium {
+            color: orange;
+            font-weight: bold;
+        }
+        .risk-high {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Test Overview</h2>
+    <p><strong>API Method & Endpoint:</strong></p>
+    <ul>
+        <li>GET: /api/users</li>
+        <li>POST: /api/users</li>
+    </ul>
+    <p><strong>Load Configuration Summary:</strong></p>
+    <ul>
+        <li>Ramp-up Users: 20</li>
+        <li>Spawn Rate: 0.5 users/second</li>
+        <li>Run Time: 10 seconds</li>
+        <li>Stop Time: 100 seconds</li>
+    </ul>
+
+    <h2>Key Metrics Summary</h2>
+    <p><strong>API: GET /api/users</strong></p>
+    <ul>
+        <li>Average Response Time: <em>Data not available</em></li>
+        <li>P95 Response Time: <em>Data not available</em></li>
+        <li>Throughput: <em>Data not available</em></li>
+        <li>Error Rate: <em>Data not available</em></li>
+    </ul>
+    <p><strong>API: POST /api/users</strong></p>
+    <ul>
+        <li>Average Response Time: <em>Data not available</em></li>
+        <li>P95 Response Time: <em>Data not available</em></li>
+        <li>Throughput: <em>Data not available</em></li>
+        <li>Error Rate: <em>Data not available</em></li>
+    </ul>
+
+    <h2>Performance Findings</h2>
+    <p>The provided raw Locust report does not include sufficient performance metrics to conduct a meaningful analysis. Key data points such as throughput, response times (avg, p95, p99), and failure rate are absent. As a result, it is impossible to draw conclusions regarding system performance, bottlenecks, or overall behavior under the specified load configuration.</p>
+    <p>This lack of data renders it impossible to accurately assess if the system demonstrates acceptable stability or scalability under load.</p>
+
+    <h2>Risk Level</h2>
+    <p class="risk-high">High</p>
+    <p>The absence of critical performance metrics poses significant risks to determining system readiness. There is no visibility into potential bottlenecks, failure trends, or responsiveness of the application under the tested load.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure that future Locust test results include comprehensive performance metrics, such as throughput, latency distributions (avg, p95, p99), and detailed failure observations.</li>
+        <li>Review Locust configuration to ensure the repository of analytics data is preserved and correctly generated for actionable testing insights.</li>
+        <li>If necessary, consider enabling additional logging or monitoring tools alongside Locust to ensure all critical metrics are captured.</li>
+        <li>Consider defining Service Level Agreements (SLAs) and Service Level Objectives (SLOs) for these APIs. This ensures the baseline performance and availability requirements are measurable and testable.</li>
+        <li>Increase the load test duration to capture sufficient metrics and observe the behavior over a longer period to better simulate real-world usage.</li>
+    </ul>
+
+    <h2>Production Readiness Verdict</h2>
+    <p><strong>Not Ready</strong>: The lack of sufficient performance data prevents determining the system's capability to handle expected workloads under real-world conditions.</p>
+    <p>It is advised to rerun the tests with improved configurations and metrics collection before making an assessment for production deployment.</p>
+
+</body>
+</html>
+```

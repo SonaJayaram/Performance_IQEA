@@ -1,0 +1,100 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/Home]
+Click the "link-Agent Studio" link (URL: https://agentflow-uat.tigeranalyticstest.in/Home)
+Click the "+ New Agent" button (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)
+Click on "Experiment Name"
+Enter "testcasegeneration" in the "Experiment Name" field
+Click on "Experiment Description"
+Enter "agent to generate the test cases" in the "Experiment Description" field
+Click the "Continue" button
+[Flow state: 0 node(s), 0 connection(s)] (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=ec3bd047-66a8-4248-a78d-a2f1ba967e72&agentId=2484&pageType=form)
+Click the "button" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 0 node(s), 0 connection(s)]
+Click on "Node Name"
+Click on "Node Name"
+Enter "Requirement phase" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 3 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "Analysis" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 4 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "Test case generation" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "If Else" node onto the canvas
+[Flow state: 5 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "test case generation failure" in the "Node Name" field
+Click the "Add" button
+Click the "button" button
+Click the "Close" button
+Click the "button" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 6 node(s), 2 connection(s)]
+Click on "Node Name"
+Enter "stoarge" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 7 node(s), 2 connection(s)]
+Click on "Node Name"
+Enter "failure" in the "Node Name" field
+Click the "Add" button
+Click the "Edit Settings · Requirement Phase (BASE)" button
+Select "gemini-3-flash-preview" from the dropdown
+Click the "Add Input" button
+Click the "User Query The user's input message" button
+Select "Structured Output" from the dropdown
+Click on "user_query"
+Enter the prompt: "{{user_query}} input"
+Click the "Save" button
+[Flow state: 8 node(s), 4 connection(s)]
+Click the "Edit Settings · Analysis (BASE)" button
+Select "gemini-3-flash-preview" from the dropdown
+Click on "requirement_phase_response"
+Enter the prompt: "{{requirement_phase_response}} requirement analysis"
+Click the "Save" button
+[Flow state: 8 node(s), 4 connection(s)]
+Click the "Edit Settings · Test Case Generation (BASE)" button
+Select "gemini-3-flash-preview" from the dropdown
+Click on "analysis_response"
+Enter the prompt: "{{analysis_response}} test case generation"
+Click the "Save" button
+[Flow state: 8 node(s), 4 connection(s)]
+Click the "link-Data Store" link
+Click the "Add Data Store" button (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Click the "S3" button
+Click on "Enter Data Source Name"
+Enter "test" in the "Enter Data Source Name" field
+Click on "Data Source Description"
+Enter "test" in the "Data Source Description" field
+Click on "Enter Data Source Name"
+Enter "testiqea" in the "Enter Data Source Name" field
+Select "S3 ( IRSA )" from the dropdown
+Click on "text"
+Enter "test" in the "text" field
+Click on "text"
+Enter "testiqea" in the "text" field
+Enter "test" in the "Search files and folders..." field
+Click the "Next" button
+Click on ""
+Click on "generate-image-description"
+Check "generate-image-description"
+Enter "on" in the "generate-image-description" field
+Click on ""
+Click on "checkbox"
+Check "checkbox"
+Enter "on" in the "checkbox" field
+Select "Claude 4 Sonnet" from the dropdown
+Click the "Next" button
+Click on "execution_mode"
+Select radio option "on" (execution_mode)
+Enter "on" in the "execution_mode" field
+Select "Monthly" from the dropdown
+Click on "execution_mode"
+Select radio option "on" (execution_mode)
+Enter "on" in the "execution_mode" field
+Select "ChromaDB" from the dropdown
+Click the "Next" button

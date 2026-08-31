@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Performance Test Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h1, h2, h3 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f6f8; }
+    .good { color: green; font-weight: bold; }
+    .moderate { color: orange; font-weight: bold; }
+    .poor { color: red; font-weight: bold; }
+    .na { color: gray; }
+  </style>
+</head>
+
+<body>
+
+<h1>Test Execution Configuration</h1>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Ramp Users</td><td>20</td></tr>
+  <tr><td>Spawn Rate (users/sec)</td><td>0.5</td></tr>
+  <tr><td>Run Time</td><td>10s</td></tr>
+  <tr><td>Stop Time</td><td>100</td></tr>
+</table>
+
+<hr/>
+
+<h1>Overall Performance Summary</h1>
+<ul>
+  <li><strong>Total APIs Tested:</strong> 2</li>
+  <li><strong>Overall Health:</strong> <span class="na">Not Available</span></li>
+</ul>
+
+<h2>Key Risks</h2>
+<ul>
+  <li>Test artifact files (stats, stats_history, failures, exceptions) are empty or not present → cannot validate performance or reliability.</li>
+  <li>Insufficient observable data prevents detection of latency, throughput, and error-rate issues; production readiness cannot be determined.</li>
+</ul>
+
+<hr/>
+
+<h1>API-wise Performance Analysis</h1>
+
+<section>
+  <h2>API: C:\Users\sathanantham.aru\PycharmProjects\ai-accelerator\tests_results\locust_reports\locust_report_GET_api_users_2_20260702_120154_079850.html</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Total Requests</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>P95 Response Time</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Failure Rate</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Observations</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p><span class="na">Not Available</span></p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Confirm that Locust CSV reporting is enabled and targets the correct output directory; ensure file system permissions allow writes.</li>
+    <li>Rerun the test and validate that stats.csv and stats_history.csv contain rows. Increase run_time beyond 10s to capture a clear steady-state period for meaningful metrics.</li>
+    <li>Enable or collect server-side metrics (CPU, memory, application logs) and distributed tracing to correlate client-side behavior with backend performance.</li>
+    <li>If intermittent errors are suspected, capture exceptions and failures output by enabling detailed logging in Locust and the application under test.</li>
+  </ul>
+</section>
+
+<hr/>
+
+<section>
+  <h2>API: C:\Users\sathanantham.aru\PycharmProjects\ai-accelerator\tests_results\locust_reports\locust_report_POST_api_users_20260702_120246_007904.html</h2>
+
+  <h3>Throughput</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Requests / Second</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Total Requests</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Latency</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Average Response Time</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>P95 Response Time</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Reliability</h3>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Failure Count</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Failure Rate</td><td><span class="na">Not Available</span></td></tr>
+    <tr><td>Observations</td><td><span class="na">Not Available</span></td></tr>
+  </table>
+
+  <h3>Stability Assessment</h3>
+  <p><span class="na">Not Available</span></p>
+
+  <h3>Recommendations</h3>
+  <ul>
+    <li>Verify that the Locust run completed successfully and that the CSV export path is correct for the POST report.</li>
+    <li>Extend the steady-state duration (run_time) to allow measurable throughput and latency stabilization; the current run_time was 10s which may be too short to observe trends.</li>
+    <li>Instrument the application to capture request/response logs and error details so that, when CSVs are generated, failures can be analyzed.</li>
+    <li>Add assertion checks or failure thresholds in the test to surface issues during execution (e.g., max allowable P95, error rate limits).</li>
+  </ul>
+</section>
+
+<hr/>
+
+<h1>Final Recommendation</h1>
+<p>
+  Production readiness cannot be assessed from the provided artifacts because the Locust CSV outputs (stats, stats_history, failures, exceptions) are empty. Before making a go/no-go decision:
+</p>
+<ul>
+  <li>Re-run the tests ensuring CSV output is produced and retained. Confirm the test completed and that files contain data.</li>
+  <li>Increase the run_time to capture a meaningful steady-state period and collect backend telemetry during the run.</li>
+  <li>Once valid CSVs are available, perform a follow-up analysis to extract throughput, latency (avg/P95), and failure characteristics and re-evaluate readiness against SLAs.</li>
+</ul>
+
+</body>
+</html>

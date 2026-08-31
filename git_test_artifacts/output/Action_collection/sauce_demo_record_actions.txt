@@ -1,0 +1,7 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Enter "standard_user" in the "user-name" field
+Click on "password"
+Enter "secret_sauce" in the "password" field
+Click on "login-button"
+Enter "Login" in the "login-button" field (URL: https://www.saucedemo.com/inventory.html)

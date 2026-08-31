@@ -1,0 +1,164 @@
+{
+    "root_group": {
+        "checks": {
+            "TC_01_save_draft - Status is 200": {
+                "name": "TC_01_save_draft - Status is 200",
+                "path": "::TC_01_save_draft - Status is 200",
+                "id": "f66471abfcfe281b2b61333c5c79c9cf",
+                "passes": 0,
+                "fails": 158
+            },
+            "TC_01_save_draft - Message is correct": {
+                "name": "TC_01_save_draft - Message is correct",
+                "path": "::TC_01_save_draft - Message is correct",
+                "id": "e9f9b9f34a064d450e8b628f56b478e4",
+                "passes": 0,
+                "fails": 158
+            },
+            "TC_02_create_draft - Status is 201": {
+                "name": "TC_02_create_draft - Status is 201",
+                "path": "::TC_02_create_draft - Status is 201",
+                "id": "ce10e6e2e33e4c027a0772e78c98e830",
+                "passes": 0,
+                "fails": 158
+            },
+            "TC_03_update_agent - Status is 200": {
+                "fails": 158,
+                "name": "TC_03_update_agent - Status is 200",
+                "path": "::TC_03_update_agent - Status is 200",
+                "id": "c225afc3da6f8b62cb2c212f94acb9e4",
+                "passes": 0
+            },
+            "TC_04_save_draft_update - Status is 200": {
+                "name": "TC_04_save_draft_update - Status is 200",
+                "path": "::TC_04_save_draft_update - Status is 200",
+                "id": "604cd45a1a307eb4da1e04c63edd3c9f",
+                "passes": 0,
+                "fails": 158
+            },
+            "TC_04_save_draft_update - Message is correct": {
+                "name": "TC_04_save_draft_update - Message is correct",
+                "path": "::TC_04_save_draft_update - Message is correct",
+                "id": "0f502cfb74c39f72db538b691fa91302",
+                "passes": 0,
+                "fails": 158
+            },
+            "TC005_Prompts_Clone - Status is 200": {
+                "name": "TC005_Prompts_Clone - Status is 200",
+                "path": "::TC005_Prompts_Clone - Status is 200",
+                "id": "6d7de7e96778ce104052fe8ed00f056f",
+                "passes": 0,
+                "fails": 158
+            }
+        },
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {}
+    },
+    "metrics": {
+        "vus_max": {
+            "value": 10,
+            "min": 10,
+            "max": 10
+        },
+        "http_req_sending": {
+            "avg": 0.5492356962025318,
+            "min": 0,
+            "med": 0.5774,
+            "max": 3.8968,
+            "p(90)": 0.9221900000000002,
+            "p(95)": 1.2043099999999998
+        },
+        "checks": {
+            "passes": 0,
+            "fails": 1106,
+            "value": 0
+        },
+        "iteration_duration": {
+            "min": 2193.7995,
+            "med": 2231.9345,
+            "max": 3395.6569,
+            "p(90)": 2289.53274,
+            "p(95)": 2961.3914,
+            "avg": 2292.7532101265815
+        },
+        "vus": {
+            "min": 1,
+            "max": 10,
+            "value": 3
+        },
+        "http_req_receiving": {
+            "med": 0,
+            "max": 2.9193,
+            "p(90)": 0.7305200000000001,
+            "p(95)": 0.8969849999999998,
+            "avg": 0.20489949367088597,
+            "min": 0
+        },
+        "data_sent": {
+            "count": 349542,
+            "rate": 8291.504005580748
+        },
+        "http_req_duration": {
+            "med": 244.8988,
+            "max": 895.5346,
+            "p(90)": 251.20265,
+            "p(95)": 257.37985,
+            "avg": 248.65561037974686,
+            "min": 237.0443
+        },
+        "http_reqs": {
+            "count": 790,
+            "rate": 18.739631187121404
+        },
+        "iterations": {
+            "rate": 3.7479262374242808,
+            "count": 158
+        },
+        "data_received": {
+            "rate": 4620.1967665544435,
+            "count": 194772
+        },
+        "http_req_connecting": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 3.1012775949367084,
+            "min": 0,
+            "med": 0,
+            "max": 272.613
+        },
+        "http_req_failed": {
+            "passes": 790,
+            "fails": 0,
+            "value": 1
+        },
+        "http_req_blocked": {
+            "med": 0,
+            "max": 811.0407,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 9.464027974683544,
+            "min": 0
+        },
+        "http_req_waiting": {
+            "min": 236.0882,
+            "med": 244.1402,
+            "max": 895.0126,
+            "p(90)": 250.54056,
+            "p(95)": 256.37941,
+            "avg": 247.90147518987408
+        },
+        "http_req_tls_handshaking": {
+            "min": 0,
+            "med": 0,
+            "max": 537.1921,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 6.315335949367088
+        }
+    },
+    "setup_data": {
+        "bearer_token": ""
+    }
+}

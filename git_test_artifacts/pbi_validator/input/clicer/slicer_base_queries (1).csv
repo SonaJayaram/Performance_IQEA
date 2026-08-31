@@ -1,0 +1,42 @@
+query_name,visual_type,sql_query,dimension_column,metric_columns,kpi_patterns,description
+Top 10 Total Sales by PRODUCE_NAME,table,"SELECT o.produce_name AS PRODUCE_NAME,
+       SUM(o.sales) AS ""Total Sales""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.produce_name
+ORDER BY SUM(o.sales) DESC
+LIMIT 10",PRODUCE_NAME,"[""Total Sales""]","[""Total Sales""]",Top 10 products by total sales (sum of sales) filtered by slicers.
+"Sub-Category: Return Rate %, Profit Margin, Total Sales",table,"SELECT o.sub_category AS SUB_CATEGORY,
+       CASE WHEN COUNT(DISTINCT o.order_id) = 0 THEN 0.0 ELSE COUNT(DISTINCT r.order_id) * 1.0 / COUNT(DISTINCT o.order_id) END AS ""Return Rate %"",
+       CASE WHEN SUM(o.sales) = 0 THEN 0.0 ELSE SUM(o.profit) / NULLIF(SUM(o.sales),0) END AS ""Profit Margin"",
+       SUM(o.sales) AS ""Total Sales""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+LEFT JOIN tiger_data_engineering.global_superstore_gold.gold_returns r
+  ON r.order_id = o.order_id
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.sub_category
+ORDER BY SUM(o.sales) DESC",SUB_CATEGORY,"[""Return Rate %"", ""Profit Margin"", ""Total Sales""]","[""Return Rate %"", ""Profit Margin"", ""Total Sales""]","Per sub-category metrics: return rate (distinct returned orders / distinct orders), profit margin, and total sales."
+"Region: Total Sales, Total Orders, Return Rate %",table,"SELECT o.region AS REGION,
+       SUM(o.sales) AS ""Total Sales"",
+       COUNT(DISTINCT o.order_id) AS ""Total Orders"",
+       CASE WHEN COUNT(DISTINCT o.order_id) = 0 THEN 0.0 ELSE COUNT(DISTINCT r.order_id) * 1.0 / COUNT(DISTINCT o.order_id) END AS ""Return Rate %""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+LEFT JOIN tiger_data_engineering.global_superstore_gold.gold_returns r
+  ON r.order_id = o.order_id
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.region
+ORDER BY SUM(o.sales) DESC",REGION,"[""Total Sales"", ""Total Orders"", ""Return Rate %""]","[""Total Sales"", ""Total Orders"", ""Return Rate %""]","Region-level operational scorecard: total sales, distinct total orders, and return rate."
+Total Sales by Year and SEGMENT,table,"SELECT YEAR(o.order_date) AS Year,
+       SUM(CASE WHEN o.segment = 'Consumer' THEN o.sales ELSE 0 END) AS Consumer,
+       SUM(CASE WHEN o.segment = 'Corporate' THEN o.sales ELSE 0 END) AS Corporate,
+       SUM(CASE WHEN o.segment = 'Home Office' THEN o.sales ELSE 0 END) AS ""Home Office""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE {SLICER_CONDITIONS}
+GROUP BY YEAR(o.order_date)
+ORDER BY YEAR(o.order_date)",Year,"[""Consumer"", ""Corporate"", ""Home Office""]","[""Consumer"", ""Corporate"", ""Home Office""]","Yearly pivot of total sales by segment (Consumer, Corporate, Home Office)."
+Total Orders by SHIP_MODE,table,"SELECT o.ship_mode AS SHIP_MODE,
+       COUNT(DISTINCT o.order_id) AS ""Total Orders""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.ship_mode
+ORDER BY COUNT(DISTINCT o.order_id) DESC",SHIP_MODE,"[""Total Orders""]","[""Total Orders""]",Donut source: total distinct orders aggregated by ship mode.

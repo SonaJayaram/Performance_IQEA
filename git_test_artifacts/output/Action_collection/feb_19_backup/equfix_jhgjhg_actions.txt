@@ -1,0 +1,32 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "close banner" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Place an Alert"
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Enter_text on "firstName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "lastName"
+Enter_text on "lastName"
+Click on "ssn"
+Enter_text on "ssn"
+Click on "phoneNumber"
+Enter_text on "phoneNumber"
+Click on "dateOfBirthMasked"
+Enter_text on "dateOfBirthMasked"
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "About Us" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Leadership" (URL: https://www.equifax.com/about-equifax/who-we-are)
+Click on "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Select"
+Click on "Audit Committee"
+Click on "View Bio"
+Click on "Close"
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "addressLine1" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter_text on "addressLine1"
+Click on "cityName"
+Enter_text on "cityName"
+Click on "addressLine2"
+Enter_text on "addressLine2"
+Click on "efx-dropdown-label-636716"
+Click on "AL"
+Click on "zipCode"
+Enter_text on "zipCode"

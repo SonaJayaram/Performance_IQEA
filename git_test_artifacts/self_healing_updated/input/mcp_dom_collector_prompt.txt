@@ -1,0 +1,20 @@
+You are a Playwright automation expert. Generate a Node.js Playwright script that navigates to each page listed below and captures the full DOM HTML after the page loads.
+
+Page navigation sequence (JSON):
+{nav_data}
+
+Full action context (for understanding the navigation flow):
+{action_content}
+
+Requirements for the generated script:
+1. Use Playwright with chromium in headful mode (headless: false).
+2. For each page in the nav_data array, navigate to the URL and wait for networkidle.
+3. After landing on each page, capture the full outer HTML of the document.
+4. Store all captured DOMs in an array of objects: [{ "page_name": "<name>", "html": "<full html>" }, ...]
+5. Write the array to a JSON file at: output/Dom_details/all_page_dom_details.json
+6. Save the script as: output/Dom_script/dom_collector_1.js
+7. Handle login pages if credentials are present in the action content — look for enter_text actions on username/password fields.
+8. Add a 1000ms wait after each navigation to ensure dynamic content has loaded.
+9. Wrap everything in an async IIFE with proper error handling per page (one page failure should not stop the rest).
+
+Output ONLY the raw JavaScript code with no explanation, no markdown fences.

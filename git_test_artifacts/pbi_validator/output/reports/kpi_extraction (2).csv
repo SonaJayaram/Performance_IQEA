@@ -1,0 +1,104 @@
+visual_name,kpi_name,value,value_type,visual_type
+Untitled Visual,REGION,Africa,number,table
+Untitled Visual,SEGMENT,Consumer,number,table
+Untitled Visual,Value,1/1/2011,number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Apple Smart Phone, Full Size]","$86,935.78",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Cisco Smart Phone, Full Size]","$76,441.53",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Motorola Smart Phone, Full Size]","$73,156.30",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Nokia Smart Phone, Full Size]","$71,904.56",number,table
+Top 10 Total Sales by PRODUCE_NAME,Total Sales [Canon imageCLASS 2200 Advanced Copier],"$61,599.82",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Hon Executive Leather Armchair, Adjustable]","$58,193.48",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Office Star Executive Leather Armchair, Adjustable]","$50,661.68",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Harbour Creations Executive Leather Armchair, Adjustable]","$50,121.52",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Samsung Smart Phone, Cordless]","$48,653.46",number,table
+Top 10 Total Sales by PRODUCE_NAME,"Total Sales [Nokia Smart Phone, with Caller ID]","$47,877.79",number,table
+,Return Rate % [Accessories],6.96 %,number,table
+,Profit Margin [Accessories],17.30%,number,table
+,Total Sales [Accessories],"$749,237.02",number,table
+,Return Rate % [Appliances],7.18 %,number,table
+,Profit Margin [Appliances],14.01%,number,table
+,Total Sales [Appliances],"$1,011,064.30",number,table
+,Return Rate % [Art],4.49 %,number,table
+,Profit Margin [Art],15.58%,number,table
+,Total Sales [Art],"$372,091.97",number,table
+,Return Rate % [Binders],5.42 %,number,table
+,Profit Margin [Binders],15.68%,number,table
+,Total Sales [Binders],"$461,911.51",number,table
+,Return Rate % [Bookcases],5.91 %,number,table
+,Profit Margin [Bookcases],11.04%,number,table
+,Total Sales [Bookcases],"$1,466,572.24",number,table
+,Return Rate % [Chairs],6.09 %,number,table
+,Profit Margin [Chairs],9.35%,number,table
+,Total Sales [Chairs],"$1,501,681.76",number,table
+,Return Rate % [Copiers],5.94 %,number,table
+,Profit Margin [Copiers],17.13%,number,table
+,Total Sales [Copiers],"$1,509,436.27",number,table
+,Return Rate % [Envelopes],6.02 %,number,table
+,Profit Margin [Envelopes],17.32%,number,table
+,Total Sales [Envelopes],"$170,904.30",number,table
+,Return Rate % [Fasteners],7.20 %,number,table
+,Profit Margin [Fasteners],13.85%,number,table
+,Total Sales [Fasteners],"$83,242.32",number,table
+,Return Rate % [Furnishings],6.44 %,number,table
+,Profit Margin [Furnishings],12.18%,number,table
+,Total Sales [Furnishings],"$385,578.26",number,table
+,Return Rate % [Labels],5.41 %,number,table
+,Profit Margin [Labels],20.45%,number,table
+,Total Sales [Labels],"$73,404.03",number,table
+,Return Rate % [Machines],4.85 %,number,table
+,Profit Margin [Machines],7.56%,number,table
+,Total Sales [Machines],"$779,060.07",number,table
+,Return Rate % [Paper],6.56 %,number,table
+,Profit Margin [Paper],24.24%,number,table
+,Total Sales [Paper],"$244,291.72",number,table
+,Return Rate % [Phones],5.87 %,number,table
+,Profit Margin [Phones],12.70%,number,table
+,Total Sales [Phones],"$1,706,824.14",number,table
+,Return Rate % [Storage],4.85 %,number,table
+,Profit Margin [Storage],9.62%,number,table
+,Total Sales [Storage],"$1,127,085.86",number,table
+,Return Rate % [Supplies],5.92 %,number,table
+,Profit Margin [Supplies],9.29%,number,table
+,Total Sales [Supplies],"$243,074.22",number,table
+,Return Rate % [Tables],7.54 %,number,table
+,Profit Margin [Tables],-8.46%,number,table
+,Total Sales [Tables],"$757,041.92",number,table
+Untitled Visual,Total Sales [North Asia],"$848,309.78",number,table
+Untitled Visual,Total Orders [North Asia],1150,number,table
+Untitled Visual,Return Rate % [North Asia],13.83 %,number,table
+Untitled Visual,Total Sales [West],"$725,457.82",number,table
+Untitled Visual,Total Orders [West],1611,number,table
+Untitled Visual,Return Rate % [West],11.73 %,number,table
+Untitled Visual,Total Sales [North],"$1,248,165.60",number,table
+Untitled Visual,Total Orders [North],2356,number,table
+Untitled Visual,Return Rate % [North],10.02 %,number,table
+Untitled Visual,Total Sales [Central],"$2,822,302.52",number,table
+Untitled Visual,Total Orders [Central],5249,number,table
+Untitled Visual,Return Rate % [Central],4.80 %,number,table
+Untitled Visual,Total Sales [South],"$1,600,907.04",number,table
+Untitled Visual,Total Orders [South],3270,number,table
+Untitled Visual,Return Rate % [South],4.10 %,number,table
+Untitled Visual,Total Sales [Southeast Asia],"$884,423.17",number,table
+Untitled Visual,Total Orders [Southeast Asia],1517,number,table
+Untitled Visual,Return Rate % [Southeast Asia],3.63 %,number,table
+Untitled Visual,Total Sales [Oceania],"$1,100,184.61",number,table
+Untitled Visual,Total Orders [Oceania],1744,number,table
+Untitled Visual,Return Rate % [Oceania],3.33 %,number,table
+Untitled Visual,Total Sales [East],"$678,781.24",number,table
+Untitled Visual,Total Orders [East],1401,number,table
+Untitled Visual,Return Rate % [East],3.21 %,number,table
+Untitled Visual,Total Sales [Caribbean],"$324,280.86",number,table
+Untitled Visual,Total Orders [Caribbean],855,number,table
+Untitled Visual,Return Rate % [Caribbean],2.92 %,number,table
+Untitled Visual,Total Sales [Central Asia],"$752,826.57",number,table
+Untitled Visual,Total Orders [Central Asia],1026,number,table
+Untitled Visual,Return Rate % [Central Asia],2.34 %,number,table
+Untitled Visual,Total Sales [Africa],"$783,773.21",number,table
+Untitled Visual,Total Orders [Africa],2232,number,table
+Untitled Visual,Total Sales [Canada],"$66,928.17",number,table
+Untitled Visual,Total Orders [Canada],201,number,table
+Untitled Visual,Total Sales [EMEA],"$806,161.31",number,table
+Untitled Visual,Total Orders [EMEA],2462,number,table
+Untitled Visual,Total Sales [Total],"$12,642,501.91",number,table
+Untitled Visual,Total Orders [Total],25035,number,table
+Untitled Visual,Return Rate % [Total],4.68 %,number,table

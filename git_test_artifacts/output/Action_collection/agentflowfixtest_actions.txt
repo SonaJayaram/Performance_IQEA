@@ -1,0 +1,417 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/Home]
+Click on "" (URL: https://agentflow-uat.tigeranalyticstest.in/Home)
+Change the value to "" in "link-Agent Studio" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)
+Click on "+
+New Agent"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (DeepAgent)
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (D"
+Click on "Experiment Name"
+Enter "agentflowcheckagent" in the "Experiment Name" field
+Click on "Experiment Description"
+Enter "agentflowcheck agent to validate the agent flow fucntionality" in the "Experiment Description" field
+Click on "Continue"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (DeepAgent)
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (D" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=876534d5-9f8a-4bcd-bb09-dc6cc4fb7fea&agentId=2481&pageType=form)
+Click on ""
+Change the value to "Nodes
+
+
+Core Structural
+Base
+Flow Control
+Router
+Loop
+If Else
+Utilities
+HITL
+Sticky Note" in "Nodes
+
+
+Core Structural
+Base
+Flow Control
+Router
+Loop
+If Else
+Utilities
+HITL
+S"
+Drag_start on "Base"
+Drop on "react-flow__pane"
+Change the value to "Add Node1
+Add" in "Add Node1
+Add"
+Click on "Node Name"
+Key_enter on "Node Name"
+Enter "testnbode1" in the "Node Name" field
+Click on "Base"
+Drag_start on "Base"
+Drop on "Add Input
+Testnbode1
+BASE
+LLM Message
+Edit
+Clone"
+Change the value to "Add Node1
+Add" in "Add Node1
+Add"
+Click on "Node Name"
+Key_enter on "Node Name"
+Enter "testnode2" in the "Node Name" field
+Click on "Base"
+Drag_start on "If Else"
+Drop on "Add Input
+Testnbode1
+BASE
+LLM Message
+Edit
+Clone
+Add Input
+Testnode2
+BASE
+LLM Me"
+Change the value to "Add Node1
+Add" in "Add Node1
+Add"
+Click on "Node Name"
+Key_enter on "Node Name"
+Enter "conditionnode1" in the "Node Name" field
+Click on "If Else"
+Click on "Router"
+Click on "Add Input
+Testnbode1
+BASE
+LLM Message
+Edit
+Clone
+Add Input
+Testnode2
+BASE
+LLM Me"
+Change the value to "Input
+Conditionnode1
+IF ELSE
+If
+Else" in "node-df1237fc-66f8-4ae1-a877-2d1b05712d1e"
+Change the value to "Add Input
+Testnode2
+BASE
+LLM Message" in "node-2232dc0b-5e39-4a8e-add8-fbe2be950f26"
+Drag_start on "Base"
+Drop on "Add Input
+Testnbode1
+BASE
+LLM Message
+Edit
+Clone
+conditionnode1_if
+Add Input
+Tes"
+Change the value to "Add Node1
+Add" in "Add Node1
+Add"
+Click on "Node Name"
+Key_enter on "Node Name"
+Enter "fail" in the "Node Name" field
+Click on "Base"
+Change the value to "Add Input
+Fail
+BASE
+LLM Message" in "node-afa08006-49ef-455e-8220-2bccf73596e9"
+Click on "Edit"
+Click on "Use prompt..."
+Change the value to "Testnbode1
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+Select source name
+
+Temperature (%)
+*
+Top_P
+*
+Max Output Tokens
+*
+Max Steps
+*
+Input Type
+Add Input
+
+Add Input variables to your Nodes
+
+Output Type
+LLM Message
+E
+System Prompt
+Use prompt...
+
+﻿
+
+Use prompt...
+
+Cancel
+Save" in "Testnbode1
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+Select"
+Change the value to "testprompt" in "testprompt"
+Change the value to "Select source name" in "Select source name"
+Change the value to "gpt-image-1.5" in "gpt-image-1.5"
+Click on "gpt-4.1-mini"
+Change the value to "gpt-4.1-mini" in "gpt-4.1-mini"
+Change the value to "gpt-4.1-mini" in "gpt-4.1-mini"
+Scroll on "node-form-popup-scrollable-section"
+Change the value to "Testnbode1
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+gpt-4.1-mini
+
+Temperature (%)
+*
+Top_P
+*
+Max Output Tokens
+*
+Max Steps
+*
+Input Type
+Add Input
+
+Add Input variables to your Nodes
+
+Output Type
+LLM Message
+E
+System Prompt
+Use prompt...
+
+testprompt
+
+Cancel
+Save" in "Testnbode1
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+gpt-4.1"
+Click on "Add Input"
+Click on "User Query
+
+The user's input message"
+Scroll on "node-form-popup-scrollable-section"
+Change the value to "Testnbode1
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+gpt-4.1-mini
+
+Temperature (%)
+*
+Top_P
+*
+Max Output Tokens
+*
+Max Steps
+*
+Input Type
+Add Input
+user_query
+Type:
+String
+Output Type
+LLM Message
+E
+System Prompt
+Use prompt...
+
+testprompt 
+user_query﻿
+
+Cancel
+Save" in "Testnbode1
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+gpt-4.1"
+Click on "css-8mmkcg"
+Click on "react-select-2-option-1"
+Click on "css-8mmkcg"
+Click on "testprompt 
+user_query"
+Change the value to "testprompt 
+user_query" in "testprompt 
+user_query"
+Click on "Save"
+Click on "flex items-center justify-center w-8 h-8 rounded text-primaryBtn"
+Change the value to "" in "node-b1a78bfb-c054-4d47-8909-74b95e889728"
+Click on ""
+Change the value to "Agent Versions
+Show all versions
+agentflowcheckagent
+Draft
+Current
+Latest
+Draft
+Description
+Add" in "Agent Versions
+Show all versions
+agentflowcheckagent
+Draft
+Current
+Latest
+Draft"
+Change the value to "Draft
+Current
+Latest
+Draft
+Description
+Add" in "Draft
+Current
+Latest
+Draft
+Description
+Add"
+Click on "Write your Description"
+Enter "test" in the "Write your Description" field
+Click on "Draft"
+Change the value to "Draft
+Current
+Latest
+Draft
+Description
+Add" in "Draft
+Current
+Latest
+Draft
+Description
+Add"
+Click on ""

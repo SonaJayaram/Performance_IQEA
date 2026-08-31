@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>API Quality Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height:1.4; color:#222; padding:20px; }
+    h2 { color:#0b5394; margin-top:24px; }
+    h3 { color:#1155cc; margin-bottom:6px; }
+    ul { margin-top:6px; }
+    .api-block { border:1px solid #ddd; padding:12px; margin-bottom:18px; border-radius:6px; background:#fbfbfb; }
+    .pass { color: green; font-weight:600; }
+    .fail { color: red; font-weight:600; }
+    .medium { color: #b36b00; font-weight:600; }
+    .low { color: #006600; font-weight:600; }
+    .mono { font-family: monospace; background:#f2f2f2; padding:2px 6px; border-radius:4px; }
+  </style>
+</head>
+<body>
+  <h1>QUALITY ANALYSIS REPORT</h1>
+
+  <!-- API 1 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <ul>
+      <li><strong>Method:</strong> GET</li>
+      <li><strong>Endpoint:</strong> https://reqres.in/api/users/2</li>
+      <li><strong>Status Code:</strong> 200</li>
+      <li><strong>Result:</strong> <span class="pass">PASS</span></li>
+    </ul>
+
+    <h2>Validation Results</h2>
+    <h3>Status code validation</h3>
+    <ul>
+      <li>Returned HTTP <span class="mono">200</span>. For a GET user-details endpoint, <span class="mono">200 OK</span> is expected — validated as correct.</li>
+    </ul>
+
+    <h3>Field/value validation details</h3>
+    <ul>
+      <li>Expected: <span class="mono">first_name: Janet</span>. Actual response contains <span class="mono">data.first_name = "Janet"</span> — match confirmed.</li>
+      <li>Other fields present under <span class="mono">data</span>: <span class="mono">id, email, last_name, avatar</span> — all present and populated.</li>
+      <li>Support and <span class="mono">_meta</span> objects are present (diagnostic/metadata content) — acceptable for this endpoint.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>No defects found for the validated expectations (first_name matched and required fields present).</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <ul>
+      <li><strong>Level:</strong> <span class="low">Low</span></li>
+      <li><strong>Justification:</strong> Response matches expected content for this GET; standard metadata present. No contract deviations detected for asserted fields.</li>
+    </ul>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Continue enforcing response schema validation (e.g., JSON Schema/OpenAPI) for GET responses to detect regressions early.</li>
+      <li>Include explicit contract checks for related fields (email format, id type) as part of automated tests.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <ul>
+      <li><strong>Final:</strong> <span class="pass">PASS</span> — The GET response satisfies the provided expectation (first_name = "Janet") and status code is correct.</li>
+    </ul>
+  </div>
+
+  <!-- API 2 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <ul>
+      <li><strong>Method:</strong> POST</li>
+      <li><strong>Endpoint:</strong> https://reqres.in/api/users</li>
+      <li><strong>Status Code:</strong> 201</li>
+      <li><strong>Result:</strong> <span class="fail">FAIL</span> (contract mismatch identified)</li>
+    </ul>
+
+    <h2>Validation Results</h2>
+    <h3>Status code validation</h3>
+    <ul>
+      <li>Returned HTTP <span class="mono">201</span>. For a successful resource creation, <span class="mono">201 Created</span> is correct.</li>
+    </ul>
+
+    <h3>Field/value validation details</h3>
+    <ul>
+      <li>Expected (as provided): <span class="mono">first_name: John</span>.</li>
+      <li>Actual response fields: <span class="mono">name = "John Doe"</span>, <span class="mono">job = "Developer"</span>, <span class="mono">id</span>, <span class="mono">createdAt</span>, and <span class="mono">_meta</span>.</li>
+      <li>Observed mismatch: the response does NOT include a <span class="mono">first_name</span> field. Instead there is a <span class="mono">name</span> field containing the full name ("John Doe"). This is a field-name and value semantic mismatch relative to the expected assertion.</li>
+      <li>Request payload: Not provided in the input data. Because the original request body is missing, it is not possible to conclusively verify whether the API reflected the submitted payload values or transformed them intentionally (e.g., combining first and last name into name).</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>Contract mismatch: Expected field <span class="mono">first_name</span> is absent; response uses <span class="mono">name</span> (full name). Test expectation and API output are not aligned.</li>
+      <li>Missing test artifact: request payload is not supplied in the provided execution data, preventing full validation of request-to-response fidelity.</li>
+      <li>Ambiguity in field semantics: It is unclear whether the API is expected to return separate <span class="mono">first_name/last_name</span> or a combined <span class="mono">name</span>.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <ul>
+      <li><strong>Level:</strong> <span class="medium">Medium</span></li>
+      <li><strong>Justification:</strong> Field-name inconsistency between expected assertion and actual response can cause integration breaks for clients relying on <span class="mono">first_name</span>. Lack of the original request payload increases risk of silent data-loss or unintended transformations.</li>
+    </ul>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Align contract: Decide and document whether create-user responses should return <span class="mono">first_name/last_name</span> or a single <span class="mono">name</span>. Update API specification (OpenAPI) accordingly.</li>
+      <li>Make tests deterministic: Include the exact request payload in test artifacts and assertions. For POST tests, assert presence and exact values of fields returned that correspond to the request (e.g., assert <span class="mono">name</span> equals submitted name or that <span class="mono">first_name</span> is present and equals submitted first name).</li>
+      <li>Add schema validation on the server side to prevent unexpected field omissions/renaming for public endpoints, and publish response examples in documentation.</li>
+      <li>If the API intentionally returns a combined <span class="mono">name</span>, update client expectations and test cases to assert <span class="mono">name</span> instead of <span class="mono">first_name</span>. If not intentional, fix the implementation to return the expected <span class="mono">first_name</span>.</li>
+      <li>Include and validate timestamps (<span class="mono">createdAt</span>) format/timezone in integration tests; ensure ID type consistency (string vs number) is specified in the contract.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <ul>
+      <li><strong>Final:</strong> <span class="fail">FAIL</span></li>
+      <li><strong>Reasoning:</strong> Although the POST returned a correct creation status (201), there is a contract mismatch: the expected <span class="mono">first_name</span> is not present and the actual response uses a differing field (<span class="mono">name</span>). Additionally, the original request payload is not provided, preventing confirmation that the API correctly reflected submitted values. These factors constitute a functional/contract issue that must be resolved.</li>
+    </ul>
+  </div>
+
+  <!-- Consolidated recommendations and final note -->
+  <h2>Consolidated Recommendations</h2>
+  <ul>
+    <li>Adopt and enforce a machine-readable contract (OpenAPI/JSON Schema) for all endpoints and run schema validation in CI to catch naming/type regressions early.</li>
+    <li>Include complete test artifacts: request payloads, expected response fragments, and schema expectations with each test execution record.</li>
+    <li>Standardize naming conventions (e.g., prefer <span class="mono">first_name/last_name</span> vs <span class="mono">name</span>) and document them in API guidelines.</li>
+    <li>Add automated integration tests that assert both HTTP status codes and body contracts (field presence, types, and values) rather than loose substring matches.</li>
+  </ul>
+
+  <p style="margin-top:18px; font-size:0.9em; color:#555;">
+    Note: Analysis is based solely on the provided execution data. Missing request payloads and absent explicit expected status codes for each test were treated as gaps and are highlighted above.
+  </p>
+</body>
+</html>

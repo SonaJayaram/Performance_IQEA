@@ -1,0 +1,8 @@
+Switched to new window: [https://portal.foodtruck-qa.com/]
+Click the "Enter" button (URL: https://portal.foodtruck-qa.com/)
+Click the "HDR Portal" link
+Switched to new window: [https://hdr-portal.foodtruck-qa.com/orders/summary]
+Click the "" link (URL: https://hdr-portal.foodtruck-qa.com/orders/summary)
+Click the "Restaurants" link (URL: https://hdr-portal.foodtruck-qa.com/restaurants/manager)
+Click the "Export" button
+Click the "Export" button

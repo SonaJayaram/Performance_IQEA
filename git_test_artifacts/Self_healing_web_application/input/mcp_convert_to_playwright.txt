@@ -1,0 +1,6 @@
+You are a coding assistant.
+Convert the following Gherkin feature file into a Playwright Python script with step-by-step actions.
+Ensure the code is fully executable.
+
+Feature file content:
+{gherkin_data}

@@ -1,0 +1,92 @@
+
+
+
+SCHEMA: tiger_data_engineering.global_superstore_gold
+=====================================================
+
+TABLE 1: tiger_data_engineering.global_superstore_gold.gold_orders
+-------------------------------------------------------------------
+Column Name          Data Type
+-----------          ---------
+row_id               bigint
+order_id             string
+order_date           timestamp
+ship_date            timestamp
+ship_mode            string
+customer_id          string
+customer_name        string
+segment              string
+city                 string
+state                string
+country              string
+postal_code          double
+market               string
+region               string
+product_id           string
+category             string
+sub_category         string
+produce_name         string
+sales                double
+quantity             bigint
+discount             double
+profit               double
+shipping_cost        double
+order_priority       string
+
+Total Columns: 24
+
+
+TABLE 2: tiger_data_engineering.global_superstore_gold.gold_people
+-------------------------------------------------------------------
+Column Name          Data Type
+-----------          ---------
+person               string
+region               string
+
+Total Columns: 2
+
+
+TABLE 3: tiger_data_engineering.global_superstore_gold.gold_returns
+--------------------------------------------------------------------
+Column Name          Data Type
+-----------          ---------
+returned             string
+order_id             string
+market               string
+
+Total Columns: 3
+
+http: /sql/1.0/warehouses/2c6c012178222d1b
+hots: dbc-35255fb7-9e4c.cloud.databricks.com
+token:
+catelog:tiger_data_engineering
+schema:global_superstore_gold
+
+
+
+Buddy I think we have to work in pahse 1:
+
+Expectation:
+we need to extract all visuals and kpis from teh report our current approach is doing that
+but we need to finnd slicers from repotrt along with values listed 
+
+So our extraction must be:
+
+Find all visuals and slicer example in our sample reportL
+Slicer:
+REegion
+Segment
+Date
+visuals (Kpi's):
+Top 10 total sales by product name
+Subcategory (profit margin,return rate graph)
+Table with region wise data 
+total sale by year segment
+total order by Ship mode
+From all visual we can able to right click and select show as tabel and extarct all values 
+
+now we got visual wise data (kpi's) and slicer details 
+so 5 visual and 3 slicer
+we have to create visual wise sheet each sheet with each visual and data and seperate sheet fro visuals 
+
+Will first complete this and do you have any other idea or chnage in plan please let me know

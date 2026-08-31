@@ -3184,7 +3184,8 @@ def extract_wireframe_details_via_llm(image_b64, mime_type="image/png", file_nam
         details = re.sub(r"\s*```$", "", details).strip()
         if not details:
             return f"\nWireframe: {file_name}\nExtracted Details: (vision model returned nothing)\n"
-        print(f"[INFO] Wireframe vision extraction completed for {file_name} ({len(details)} chars and {details.count('\\n')} lines)")
+        line_count = details.count('\n')
+        print(f"[INFO] Wireframe vision extraction completed for {file_name} ({len(details)} chars and {line_count} lines)")
         return f"\nWireframe: {file_name}\nExtracted Details:\n{details}\n"
     except Exception as e:
         print(f"[ERROR] Wireframe vision extraction failed for {file_name}: {e}")

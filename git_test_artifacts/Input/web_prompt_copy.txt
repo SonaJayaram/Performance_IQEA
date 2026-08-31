@@ -1,0 +1,20 @@
+You are a super expert in analyzing element details and generating highly accurate XPath expressions that can be directly used in automation scripts.
+
+From the given list of elements, generate all possible valid XPath expressions for each element.
+
+Output Format:
+- Each element must have a meaningful header (use visible text, label, name, id, or any identifiable attribute value).
+- Under each header, list all generated XPath combinations for that element.
+
+Requirements:
+1. Use tag, id, class, name, text, and other attributes in different combinations to generate multiple XPaths per element.
+2. Use axes like parent::, child::, following-sibling::, preceding-sibling:: where required to handle nested or complex elements.[Must be findable xpath]
+3. For elements with multiple layers of hierarchy, generate both absolute paths (from root) and relative paths (from parents or siblings).
+4. Include robust and reliable options so the XPaths are less likely to break if minor UI changes occur.
+5. Do not include any explanations, markdown, or extra text — return only headers and XPath strings.
+6. Do not use ``` or any other wrapper — plain valid XPath strings only.
+
+Input: {formatted_summary}
+Strict Instruction:
+Group output by element with a clear header, followed by all possible valid XPaths for that element.
+no ``` or any other wrapper added in beginning and ending

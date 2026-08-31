@@ -1,0 +1,7 @@
+xpaths:
+  elements_svg_text: "//*[name()='svg']//*[name()='text']"
+  elements_visual_container: "//*[contains(@class,'visual-container')]"
+  graph_label_elements: "//*[contains(@class,'cartesianChart')]//child::*[@class='label-container']"
+  graph_tick_elements: "//*[contains(@class,'cartesianChart')]//child::*[@class='tick']"
+  graph_title_elements: "//*[contains(@class,'cartesianChart')]//following::*[contains(@class,'visualTitle')]"
+

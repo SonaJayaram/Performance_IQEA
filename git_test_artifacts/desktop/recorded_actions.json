@@ -1,0 +1,40 @@
+[
+    {
+        "action": "type",
+        "text": "test"
+    },
+    {
+        "action": "click",
+        "element_name": "Close",
+        "control_type": "Button"
+    },
+    {
+        "action": "click",
+        "element_name": "New tab",
+        "control_type": "Text"
+    },
+    {
+        "action": "type",
+        "text": "testnew tab"
+    },
+    {
+        "action": "click",
+        "element_name": "Close",
+        "control_type": "Button"
+    },
+    {
+        "action": "click",
+        "element_name": "Save",
+        "control_type": "Text"
+    },
+    {
+        "action": "click",
+        "element_name": "Save",
+        "control_type": "Button"
+    },
+    {
+        "action": "click",
+        "element_name": "ai-accelerator \u2013 main.py",
+        "control_type": "Window"
+    }
+]

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>API Quality Analysis Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.5; color: #222; margin: 20px; }
+    h2 { color: #0b5; margin-top: 24px; }
+    .section { margin-bottom: 18px; }
+    ul { margin-top: 6px; }
+    .note { color: #555; font-size: 0.95em; }
+    .pass { color: green; font-weight: bold; }
+    .fail { color: red; font-weight: bold; }
+    .medium { color: #d97706; font-weight: bold; }
+    code { background:#f3f4f6; padding:2px 4px; border-radius:4px; }
+  </style>
+</head>
+<body>
+  <h1>QUALITY ANALYSIS REPORT</h1>
+
+  <h2>API Summary</h2>
+  <div class="section">
+    <ul>
+      <li><strong>Method:</strong> PUT</li>
+      <li><strong>Endpoint:</strong> https://virtserver.swaggerhub.com/tigernew/equifxi_test/1.0.0/user/{username}</li>
+      <li><strong>Status Code:</strong> 200</li>
+      <li><strong>Result:</strong> <span class="pass">PASS</span> (per execution record)</li>
+    </ul>
+    <p class="note">Note: The execution record provided does not include the request payload, expected output, or the actual response JSON. Analysis is therefore limited to validation of status-code semantics and contract/observability recommendations.</p>
+  </div>
+
+  <h2>Validation Results</h2>
+  <div class="section">
+    <h3>- Status code validation</h3>
+    <ul>
+      <li>Observed HTTP status code: <strong>200 OK</strong>.</li>
+      <li>For a successful PUT update, <code>200 OK</code> is acceptable if the response returns a representation of the updated resource. <code>204 No Content</code> is an alternative when no body is returned.</li>
+      <li>Because the expected status code (from requirements) was not provided, we cannot definitively assert whether <code>200</code> matches the test's expectation beyond the execution record marking a PASS.</li>
+    </ul>
+
+    <h3>- Field/value validation details</h3>
+    <ul>
+      <li>No request payload (body) was provided in the input. Therefore it is impossible to verify that submitted values were applied or echoed back.</li>
+      <li>No actual response JSON was provided. Therefore it is impossible to:
+        <ul>
+          <li>confirm presence of required fields (IDs, username, timestamps, etc.),</li>
+          <li>verify that values match the request for PUT semantics,</li>
+          <li>check response schema conformance or additional headers (Content-Type, ETag, Location).</li>
+        </ul>
+      </li>
+      <li>Because of missing payload/response, field-level validation cannot be performed.</li>
+    </ul>
+  </div>
+
+  <h2>Issues Identified</h2>
+  <div class="section">
+    <ul>
+      <li>Missing artefacts: request payload and actual response JSON were not provided with the execution data — prevents any contract or value validation.</li>
+      <li>Endpoint contains a path parameter placeholder <code>{username}</code>; execution record does not indicate what concrete username was used. This prevents validation of path parameter handling and URL encoding behavior.</li>
+      <li>No information on expected behavior (e.g., whether 200 or 204 is required, or expected response schema), so conformance cannot be assessed.</li>
+      <li>No response headers or content-type information provided — cannot validate API uses JSON content-type or required caching/ETag headers.</li>
+    </ul>
+  </div>
+
+  <h2>Risk Assessment</h2>
+  <div class="section">
+    <ul>
+      <li><strong>Risk Level:</strong> <span class="medium">Medium</span></li>
+      <li><strong>Justification:</strong> The test run reports PASS with a 200 status code, indicating success at a superficial level. However, absence of request/response payloads and expected contract prevents verification of functional correctness, data integrity, and contract compliance. This creates medium risk because functional defects (wrong values persisted, fields missing, schema drift) could exist undetected.</li>
+    </ul>
+  </div>
+
+  <h2>Recommendations</h2>
+  <div class="section">
+    <ul>
+      <li>Include request and response payloads in test execution records. Always capture:
+        <ul>
+          <li>the full request body used for the PUT,</li>
+          <li>the concrete endpoint URL with the substituted <code>{username}</code>,</li>
+          <li>the full response body and response headers.</li>
+        </ul>
+      </li>
+      <li>Define and store expected outcomes for each test (expected status code and expected response schema/values). Use these to produce deterministic PASS/FAIL results rather than relying on an execution flag alone.</li>
+      <li>Automate JSON schema (contract) validation for responses. For PUT:
+        <ul>
+          <li>validate that required fields exist,</li>
+          <li>validate that response fields match the request where applicable (e.g., username, profile fields),</li>
+          <li>validate status-code semantics (200 with body vs 204 without body).</li>
+        </ul>
+      </li>
+      <li>Capture and assert response headers: Content-Type, ETag/Last-Modified (if applicable), Location (for resource creation), and any rate-limit or auditing headers.</li>
+      <li>Include negative and boundary tests: invalid username, unauthorized, missing required fields, and idempotency checks for repeated PUTs.</li>
+      <li>Log and surface the concrete path parameter substitution (which username was used) in test artifacts to help reproduce issues.</li>
+      <li>If using a mock/virtual server (the endpoint appears to be a SwaggerHub virtserver), ensure mock behavior aligns with production contract and add contract tests against the real implementation as well.</li>
+    </ul>
+  </div>
+
+  <h2>Overall Verdict</h2>
+  <div class="section">
+    <ul>
+      <li><strong>Final Status:</strong> PASS (per provided execution record)</li>
+      <li><strong>Reasoning:</strong> The execution record indicates a successful PUT (HTTP 200 and Result = PASS). However, because the request payload, full endpoint invocation (concrete username), expected output, and actual response JSON are not provided, the PASS cannot be independently validated for correctness or contract compliance.</li>
+      <li><strong>Recommendation Summary:</strong> Treat this PASS as incomplete evidence. Repeat the test with captured request/response artifacts and automated schema/value assertions to obtain a reliable, verifiable PASS.</li>
+    </ul>
+  </div>
+</body>
+</html>

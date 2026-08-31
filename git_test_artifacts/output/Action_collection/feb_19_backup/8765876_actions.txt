@@ -1,0 +1,20 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/agent-store]
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/agent-store)
+Click on "link-Data Store"
+Navigate to "AgentFlow" page (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Click on "submit-btn"
+Click on "S3"
+Click on "Enter Data Source Name"
+Enter_text on "Enter Data Source Name"
+Click on "Data Source Description"
+Enter_text on "Data Source Description"
+Click on "S3 Bucket Path"
+Enter_text on "S3 Bucket Path"
+Click on "Next"
+Click on "[unlabeled]"
+Check on "[unlabeled]"
+Enter_text on "[unlabeled]"
+Click on "[unlabeled]"
+Check on "[unlabeled]"
+Enter_text on "[unlabeled]"
+Click on "Next"

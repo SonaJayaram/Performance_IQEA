@@ -1,0 +1,62 @@
+@echo off
+SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
+REM Set PYTHONPATH so Python can locate the root project modules
+SET PYTHONPATH=%CD%
+
+SET VENV_DIR=.venv
+SET REQUIREMENTS=requirements.txt
+SET INIT_DB_FILE=utilities\db_utils\init_db.py
+SET STREAMLIT_SCRIPT=IQEA.py
+SET SETTINGS_FILE=config\settings.ini
+SET POSTGRES_PATH=D:\My_Programs\PostgreSQL\data
+REM Check if virtual environment exists
+IF NOT EXIST %VENV_DIR% (
+    echo Creating virtual environment...
+    python -m venv %VENV_DIR%
+)
+
+REM Activate the virtual environment
+CALL %VENV_DIR%\Scripts\activate
+
+REM Install dependencies
+IF EXIST %REQUIREMENTS% (
+    python.exe -m pip install --upgrade pip setuptools wheel
+    echo Installing all dependencies...
+    pip install -r %REQUIREMENTS%
+) ELSE (
+    echo No requirements.txt found, skipping installation.
+)
+
+REM Read source value from settings.ini
+FOR /F "tokens=2 delims==" %%A IN ('findstr /R "^source *= *" "%SETTINGS_FILE%"') DO (
+    SET "SOURCE=%%A"
+)
+
+REM Remove leading/trailing spaces
+FOR /F "tokens=* delims= " %%A in ("!SOURCE!") DO SET SOURCE=%%A
+REM Run init_db.py if source=database
+IF /I "!SOURCE!"=="database" (
+    REM Start the postgresql server
+CALL pg_ctl -D %POSTGRES_PATH% -l logfile start
+    echo Source is database. Running PostgreSQL initializer...
+    python -m utilities.db_utils.init_db
+)
+
+
+REM Run the Streamlit script
+IF EXIST %STREAMLIT_SCRIPT% (
+    echo Running %STREAMLIT_SCRIPT%...
+    set PYTHONUTF8=1
+    REM Force protobuf's pure-Python implementation. The native "upb" C-extension
+    REM access-violates (segfaults) when pages import heavy libs that touch
+    REM protobuf's descriptor pool, silently killing the Streamlit server and
+    REM producing "Failed to fetch dynamically imported module" in the browser.
+    REM Must be set BEFORE streamlit starts (streamlit imports protobuf on launch).
+    set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+    streamlit run %STREAMLIT_SCRIPT%
+) ELSE (
+    echo %STREAMLIT_SCRIPT% not found!
+)
+
+REM Keep the window open
+cmd /k

@@ -1,0 +1,25 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Enter_text on "user-name"
+Click on "password"
+Enter_text on "password"
+Click on "login-button"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/inventory.html)
+Click on "add-to-cart-sauce-labs-backpack"
+Click on "1"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/cart.html)
+Click on "checkout"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/checkout-step-one.html)
+Click on "firstName"
+Enter_text on "firstName"
+Enter_text on "lastName"
+Enter_text on "postalCode"
+Click on "continue"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/checkout-step-two.html)
+Click on "finish"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/checkout-complete.html)
+Click on "back-to-products"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/inventory.html)
+Click on "react-burger-menu-btn"
+Click on "logout_sidebar_link"
+Navigate to "Swag Labs" page (URL: https://www.saucedemo.com/)

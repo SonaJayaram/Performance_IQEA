@@ -1,0 +1,133 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance Analysis Report</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Performance Analysis Report</h1>
+
+  <h2>Test Overview</h2>
+  <ul>
+    <li><strong>API Method & Endpoint:</strong>
+      <ul>
+        <li>GET /api/users</li>
+        <li>POST /api/users</li>
+      </ul>
+    </li>
+    <li><strong>Load Configuration Summary:</strong></li>
+      <ul>
+        <li><strong>Ramp Users:</strong> 20</li>
+        <li><strong>Spawn Rate:</strong> 0.5 users/sec</li>
+        <li><strong>Run Time:</strong> 10 seconds</li>
+        <li><strong>Stop Time:</strong> 100 seconds</li>
+      </ul>
+  </ul>
+
+  <h2>Key Metrics Summary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>GET /api/users</th>
+        <th>POST /api/users</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Average Response Time</strong></td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+      </tr>
+      <tr>
+        <td><strong>95th Percentile Response Time (P95)</strong></td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+      </tr>
+      <tr>
+        <td><strong>99th Percentile Response Time (P99)</strong></td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+      </tr>
+      <tr>
+        <td><strong>Throughput (requests/sec)</strong></td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+      </tr>
+      <tr>
+        <td><strong>Error Rate</strong></td>
+        <td>Not Available</td>
+        <td>Not Available</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Performance Findings</h2>
+  <p>
+    The provided test report does not contain sufficient data for a meaningful analysis of system behavior under load. 
+    No throughput, latency, or error data could be assessed for the APIs (<code>GET /api/users</code> and 
+    <code>POST /api/users</code>).
+  </p>
+  <p>
+    As such, it is impossible to determine if the system exhibits performance bottlenecks, anomalies, or instability.
+  </p>
+
+  <h2>Risk Level</h2>
+  <p>
+    <strong>High</strong>: The absence of any measurable performance metrics significantly increases the risk of deploying
+    untested or unstable systems into production. Key performance indicators (e.g., response times, throughput, and error metrics) were
+    not provided in the report, making it impossible to assess system stability, scalability, or reliability.
+  </p>
+
+  <h2>Recommendations</h2>
+  <ul>
+    <li>Re-run the load test with full metric tracking enabled for the following key metrics at a minimum:
+      <ul>
+        <li>Average Response Time.</li>
+        <li>P95 and P99 Response Times.</li>
+        <li>Throughput (requests per second).</li>
+        <li>Failure rates and detailed failure reasons.</li>
+      </ul>
+    </li>
+    <li>Ensure that the report provides metrics over time so that any performance degradation trends under load can be identified.</li>
+    <li>Include sufficient load to simulate realistic production traffic over a longer test duration (e.g., 1 hour or longer with steady-state traffic).</li>
+    <li>Validate the test environment configuration to confirm it accurately represents the production environment.</li>
+    <li>Consider automated tools/plugins or monitoring solutions to capture missing information.</li>
+  </ul>
+
+  <h2>Production Readiness Verdict</h2>
+  <p>
+    <strong>Not Ready</strong>: The provided performance report lacks the necessary data to assess production readiness. Without
+    critical performance metrics, there is no evidence to demonstrate that the system can handle load and operate within acceptable
+    service level objectives (SLOs).
+  </p>
+</body>
+</html>
+```

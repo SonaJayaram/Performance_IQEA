@@ -1,0 +1,20 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "firstName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "firstName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "addressLine1" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine1" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "About Us" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Change the value to "Board of Directors" in "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Select" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Audit Committee" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "View Bio" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "tab3" (URL: https://www.equifax.com/about-equifax/leadership/)
+Change the value to "Investors" in "tab3" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Personal" (URL: https://www.equifax.com/about-equifax/leadership/)
+Click on "Business" (URL: https://www.equifax.com/)

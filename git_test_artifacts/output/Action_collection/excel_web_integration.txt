@@ -1,0 +1,22 @@
+open the excel application
+create new blank workbook
+add application_name column
+add application_url column
+add user type column
+add first row google, www.google.com admin
+add Second row amzzon, www.amazon.com localuser
+Click file
+Click save
+enter the file name as 'Apllication_details'
+Click save [ensure file save in ondriver]
+Open the chrome browser
+launch 'https://onedrive.live.com/login'
+enter the email "Sathanantham.aru@tigeranayltics.com'
+click next
+enter the password"************'
+click sign in
+wait for authednication
+Open the file 
+move to new window
+search for download a copy
+select and enter 

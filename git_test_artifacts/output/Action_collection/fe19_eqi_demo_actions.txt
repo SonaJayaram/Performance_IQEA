@@ -1,0 +1,36 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert"
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "First-Name-Input" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "firstName"
+Enter "test" in the "firstName" field
+Click on "ssn"
+Enter "***-**-6686" in the "ssn" field
+Click on "lastName"
+Enter "test" in the "lastName" field
+Click on "phoneNumber"
+Enter "876-876-****" in the "phoneNumber" field
+Click on "dateOfBirthMasked"
+Enter "04/20/1990" in the "dateOfBirthMasked" field
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "About Us" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "About Us" in "About Us"
+Click on "Leadership" (URL: https://www.equifax.com/about-equifax/who-we-are)
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "addressLine1" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine1" field
+Click on "cityName"
+Enter "test" in the "cityName" field
+Click on "addressLine2"
+Enter "test" in the "addressLine2" field
+Click on "Current address
+Address line 1
+Address line 2"
+Switched to window: [https://www.equifax.com/about-equifax/leadership/]
+Click on "tab-1420970-1" (URL: https://www.equifax.com/about-equifax/leadership/)
+Change the value to "Board of Directors" in "tab-1420970-1"
+Click on "dropdown-filter-btn__committees"
+Click on "Compensation, Human Resources & Management Succession Committee"
+Click on "View Bio"
+Click on "Close"

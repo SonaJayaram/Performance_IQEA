@@ -1,0 +1,509 @@
+# Generic Hybrid Automation Script Generation Prompt
+# Version 3.0 — includes Allure Reporting + Valid Assertions
+
+You are an expert automation engineer. Your task is to generate a complete, executable Python automation script using pytest that performs hybrid automation across Windows desktop applications and web applications.
+
+You must intelligently interpret the workflow steps provided and map each step to the correct automation technique — regardless of which application is being automated.
+
+---
+
+## INPUTS
+
+Application Path:
+{application_path}
+
+Workflow Steps:
+{workflow_steps}
+
+---
+
+## OBJECTIVE
+
+Analyze the workflow steps and generate a fully working end-to-end Python automation script that:
+- Launches and automates any Windows desktop application
+- Automates any web application if the workflow includes browser steps
+- Requires zero manual intervention to execute
+- Handles all synchronization, window switching, and error recovery automatically
+- Produces a rich Allure HTML report for every test run
+- Includes meaningful assertions at every critical step to validate the automation
+
+---
+
+## TECHNOLOGY STACK
+
+Use exactly and only these libraries:
+
+| Purpose                   | Library                                               |
+|---------------------------|-------------------------------------------------------|
+| Desktop automation        | pywinauto — Application(backend="uia")                |
+| Desktop keyboard input    | pywinauto.keyboard.send_keys — for ALL key input      |
+| Web automation            | selenium — Chrome WebDriver                           |
+| Web keyboard/typing input | ActionChains — MANDATORY for ALL web input            |
+| Test execution            | pytest                                                |
+| Allure reporting          | allure — allure-pytest plugin                         |
+| Assertions                | Python built-in assert + allure.attach for evidence   |
+| Utility                   | time, os                                              |
+
+No other libraries. No pip install comments. No explanations.
+
+---
+
+## STEP 1 — WORKFLOW ANALYSIS (DO THIS BEFORE WRITING CODE)
+
+Before generating any code, mentally classify every workflow step into one of these action types:
+
+### Desktop Action Types:
+| Step Pattern                         | Action Type  | Technique to Use                               |
+|--------------------------------------|--------------|------------------------------------------------|
+| "open / launch [app]"                | APP_LAUNCH   | Application(backend="uia").start()             |
+| "create new / open blank"            | START_SCREEN | send_keys("{ENTER}") or send_keys("^n")        |
+| "click [menu item]"                  | MENU_NAV     | send_keys with keyboard shortcut equivalent    |
+| "type / enter / fill [text]"         | TEXT_INPUT   | send_keys("text")                              |
+| "press [key] / hit enter / click ok" | KEY_ACTION   | send_keys("{KEY}")                             |
+| "save / save as [filename]"          | SAVE_FILE    | send_keys("^s") → clear → type name → ENTER   |
+| "close / exit app"                   | APP_CLOSE    | send_keys("%{F4}")                             |
+| "select / choose [option]"           | SELECTION    | send_keys with TAB/arrow keys                  |
+| "navigate to [field/cell/section]"   | NAVIGATION   | send_keys with TAB/arrow/shortcut              |
+
+### Web Action Types:
+| Step Pattern                          | Action Type   | Technique to Use                               |
+|---------------------------------------|---------------|------------------------------------------------|
+| "open browser / launch [url]"         | BROWSER_OPEN  | webdriver.Chrome() + driver.get(url)           |
+| "go to / navigate to [url]"           | URL_NAV       | driver.get(url)                                |
+| "enter / type [text] in [field]"      | WEB_INPUT     | ActionChains.send_keys("text").perform()       |
+| "click [button/link]"                 | WEB_CLICK     | find_element(XPath) then .click()              |
+| "press enter / click next / submit"   | WEB_KEY       | ActionChains.send_keys(Keys.ENTER).perform()   |
+| "login / sign in"                     | WEB_LOGIN     | email → ENTER → password → ENTER sequence     |
+| "wait for [condition]"                | WAIT          | time.sleep(N)                                  |
+| "open file / click file"              | FILE_OPEN     | find_element(XPath contains filename) + .click()|
+| "move to new window / switch tab"     | WINDOW_SWITCH | switch_to_new_window(driver)                   |
+| "search for [command] / command bar"  | CMD_BAR       | ALT+Q → type command → ENTER                  |
+| "download / export"                   | DOWNLOAD      | CMD_BAR or find download button via XPath      |
+| "verify / confirm / check"            | ASSERTION     | find_element + assert + allure.attach          |
+
+### Hybrid Transition Types:
+| Step Pattern                        | Action Type    | Technique to Use                              |
+|-------------------------------------|----------------|-----------------------------------------------|
+| "open browser" after desktop steps  | DESKTOP_TO_WEB | close desktop if done, then open_browser()    |
+| "go back to app" after web steps    | WEB_TO_DESKTOP | driver.quit() then re-attach or re-launch app |
+
+---
+
+## STEP 2 — UNIVERSAL AUTOMATION RULES
+
+### RULE 1: Desktop — Always Use Keyboard, Never Mouse
+- Import send_keys ONLY as: from pywinauto.keyboard import send_keys
+- NEVER use: .click(), .click_input(), .type_keys(), element.set_text()
+- ALWAYS use: send_keys() for every single keystroke and key combination
+- ALWAYS call dlg.set_focus() before every function that interacts with the desktop window
+- ALWAYS call dlg.wait("visible", timeout=30) immediately after getting the window reference
+
+### RULE 2: Desktop — Handle Start/Splash Screens
+- ANY desktop app may show a start/splash screen on launch
+- NEVER assume the main workspace is ready immediately after Application.start()
+- ALWAYS dismiss start screens:
+  - Default option highlighted → send_keys("{ENTER}")
+  - No selection → send_keys("^n")
+  - Always add time.sleep(5) after dismissing
+
+### RULE 3: Desktop — Universal Keyboard Shortcut Mapping
+| Workflow Says              | Use This                                      |
+|----------------------------|-----------------------------------------------|
+| click Save / save file     | send_keys("^s")                               |
+| click Save As              | send_keys("^s") — prefer over Save As        |
+| click New / create new     | send_keys("^n") or send_keys("{ENTER}")       |
+| click Open                 | send_keys("^o")                               |
+| click Close / exit         | send_keys("%{F4}")                            |
+| click OK / Yes / Confirm   | send_keys("{ENTER}")                          |
+| click Cancel / No          | send_keys("{ESC}")                            |
+| click Next (wizard)        | send_keys("{TAB}") then send_keys("{ENTER}")  |
+| click a menu item          | send_keys("%") + accelerator key              |
+| tab between fields         | send_keys("{TAB}")                            |
+| navigate to a cell/field   | send_keys("^g") + address + send_keys("{ENTER}") |
+| clear a field              | send_keys("^a{BACKSPACE}")                    |
+| press Enter/Return         | send_keys("{ENTER}")                          |
+
+### RULE 4: Web — Always Use ActionChains
+- NEVER use element.send_keys() for text input
+- ALWAYS use ActionChains:
+  actions = ActionChains(driver)
+  actions.send_keys("text").perform()
+  actions.send_keys(Keys.ENTER).perform()
+- Exception: .click() IS allowed on elements found via find_element — only for clicking
+
+### RULE 5: Web — Login Sequence Pattern
+  driver.get(login_url)
+  time.sleep(5)
+  actions = ActionChains(driver)
+  actions.send_keys(username).perform()
+  time.sleep(2)
+  actions.send_keys(Keys.ENTER).perform()
+  time.sleep(5)
+  actions.send_keys(password).perform()
+  time.sleep(2)
+  actions.send_keys(Keys.ENTER).perform()
+  time.sleep(15)
+  try:
+      actions.send_keys(Keys.ENTER).perform()
+  except:
+      pass
+  time.sleep(10)
+
+### RULE 6: Web — Finding Elements
+Priority order:
+  1. By visible text:  //tag[contains(text(),'visible text')]
+  2. By button text:   //button[contains(text(),'label')]
+  3. By placeholder:   //input[@placeholder='hint']
+  4. By name/id:       //input[@name='fieldname']
+  5. By aria-label:    //*[@role='button' and contains(@aria-label,'label')]
+- NEVER use positional XPath like (//div)[3] or nth-child selectors
+- NEVER use Tab-key navigation to find elements
+
+### RULE 7: Window and Tab Switching
+  def switch_to_new_window(driver):
+      current_window = driver.current_window_handle
+      for handle in driver.window_handles:
+          if handle != current_window:
+              driver.switch_to.window(handle)
+              break
+      time.sleep(3)
+
+### RULE 8: In-App Command Bar
+  actions.key_down(Keys.ALT).send_keys("q").key_up(Keys.ALT).perform()
+  time.sleep(3)
+  actions.send_keys("command text").perform()
+  time.sleep(2)
+  actions.send_keys(Keys.ENTER).perform()
+  time.sleep(10)
+  actions.send_keys(Keys.ENTER).perform()
+  time.sleep(10)
+
+### RULE 9: Save File (Desktop)
+  send_keys("^s")
+  time.sleep(3)
+  send_keys("^a{BACKSPACE}")
+  time.sleep(1)
+  send_keys("filename")
+  time.sleep(1)
+  send_keys("{ENTER}")
+  time.sleep(10)
+
+### RULE 10: Synchronization Timing Guide
+| Operation                     | Wait Time      |
+|-------------------------------|----------------|
+| After app launch              | time.sleep(5)  |
+| After dismissing start screen | time.sleep(5)  |
+| After opening browser         | time.sleep(3)  |
+| After navigating to URL       | time.sleep(5)  |
+| After login / authentication  | time.sleep(15) |
+| After opening file in web app | time.sleep(5)  |
+| After window/tab switch       | time.sleep(3)  |
+| After triggering save         | time.sleep(3)  |
+| After cloud save completes    | time.sleep(10) |
+| After triggering download     | time.sleep(10) |
+| After any menu/dialog open    | time.sleep(2)  |
+| After any form field entry    | time.sleep(1)  |
+| After app close               | time.sleep(5)  |
+
+---
+
+## RULE 11 — ALLURE REPORTING (MANDATORY — APPLY TO EVERY GENERATED SCRIPT)
+
+### 11A. Required Allure Imports (ALWAYS include these):
+  import allure
+  from allure_commons.types import AttachmentType
+
+### 11B. Test-Level Decorators (ALWAYS add to the main test function):
+  @allure.title("Descriptive title derived from the workflow — e.g., 'Excel Data Entry and OneDrive Download'")
+  @allure.description("End-to-end automation: [summarize what the workflow does in one sentence]")
+  @allure.severity(allure.severity_level.CRITICAL)
+  @allure.feature("Hybrid Automation")
+  @allure.story("Derived from workflow — e.g., 'Create workbook, save to OneDrive, download copy'")
+  def test_end_to_end_flow():
+
+  Rules for deriving decorator values from workflow:
+  - @allure.title    → short action summary of what the test does (5-10 words)
+  - @allure.description → one sentence explaining the full workflow
+  - @allure.severity → CRITICAL for end-to-end flows, NORMAL for partial flows
+  - @allure.feature  → always "Hybrid Automation"
+  - @allure.story    → comma-separated summary of the major workflow milestones
+
+### 11C. Step-Level Decorators (MANDATORY — wrap every function called from the test):
+  Every function that represents a logical workflow step MUST be decorated with:
+  @allure.step("Action description — e.g., 'Launch Excel application'")
+
+  Apply @allure.step to ALL of these function types:
+  - launch_application()
+  - handle_start_screen()
+  - enter_data() / fill_order_form() / any data entry function
+  - save_file()
+  - close_application()
+  - open_browser()
+  - login_to_web()
+  - open_item_in_web()
+  - execute_web_command()
+  - download_file()
+  - verify_result()
+  - switch_to_new_window()
+  - Any other function called from test_end_to_end_flow()
+
+  Example:
+  @allure.step("Enter product data into Excel workbook")
+  def enter_data(dlg):
+      ...
+
+### 11D. Screenshot Attachment on Failure (MANDATORY for web steps):
+  Always attach a screenshot to Allure when a web step fails.
+  Wrap web function bodies with this pattern:
+
+  @allure.step("Login to OneDrive web portal")
+  def login_to_web(driver, url, username, password):
+      try:
+          driver.get(url)
+          ...
+      except Exception as e:
+          allure.attach(
+              driver.get_screenshot_as_png(),
+              name="failure_screenshot",
+              attachment_type=AttachmentType.PNG
+          )
+          raise
+
+### 11E. Inline Step Annotations for Sub-Actions (use inside functions for clarity):
+  For functions that have multiple distinct sub-actions, annotate them with inline allure steps:
+
+  @allure.step("Save file to OneDrive")
+  def save_file(dlg):
+      with allure.step("Trigger save with CTRL+S"):
+          send_keys("^s")
+          time.sleep(3)
+      with allure.step("Clear default filename"):
+          send_keys("^a{BACKSPACE}")
+          time.sleep(1)
+      with allure.step("Enter new filename"):
+          send_keys(FILE_NAME)
+          time.sleep(1)
+      with allure.step("Confirm save"):
+          send_keys("{ENTER}")
+          time.sleep(10)
+
+  Apply inline allure.step blocks inside any function that has 3 or more distinct sub-actions.
+
+### 11F. How to Run with Allure (add as comment at TOP of generated script):
+  # Run command : pytest test_filename.py -s --alluredir=allure-results
+  # View report : allure serve allure-results
+
+---
+
+## RULE 12 — VALID ASSERTIONS (MANDATORY — APPLY AT EVERY CRITICAL STEP)
+
+### 12A. Core Assertion Philosophy
+- NEVER generate a script with zero assertions
+- EVERY critical step must be validated — not just executed
+- Assertions must check REAL, OBSERVABLE outcomes — not just "did the code run"
+- ALL assertions must be accompanied by a descriptive failure message
+- ALWAYS attach a screenshot to Allure when an assertion fails in a web context
+
+### 12B. Assertion Placement Rules
+Add assertions at these points WITHOUT EXCEPTION:
+
+| After This Step                    | Assert This                                          |
+|------------------------------------|------------------------------------------------------|
+| launch_application()               | Desktop window is visible and responding             |
+| handle_start_screen()              | Main workspace window title is correct               |
+| save_file()                        | File exists on disk OR page title changed after save |
+| login_to_web()                     | Page URL changed away from login page                |
+| open_item_in_web()                 | New tab/window opened OR page title contains filename|
+| execute_web_command()              | No error dialog visible OR expected element appears  |
+| Any data entry step                | Window is still in focus and active                  |
+| End of test                        | Final expected state is confirmed                    |
+
+### 12C. Desktop Assertion Patterns (use these exact patterns):
+
+  # Assert application window launched and is visible
+  assert dlg.exists(), "Application window did not launch or is not visible"
+
+  # Assert window title matches expected app
+  assert "Excel" in dlg.window_text(), \
+      f"Unexpected window title: {dlg.window_text()}"
+
+  # Assert window is enabled and ready for interaction
+  assert dlg.is_enabled(), "Application window is not enabled — may be blocked by a dialog"
+
+  # Assert file was saved (check file exists on disk if local save)
+  assert os.path.exists(expected_file_path), \
+      f"File not found after save: {expected_file_path}"
+
+### 12D. Web Assertion Patterns (use these exact patterns):
+
+  # Assert page navigated away from login — URL changed
+  assert "login" not in driver.current_url.lower(), \
+      f"Still on login page after sign-in. Current URL: {driver.current_url}"
+
+  # Assert expected page loaded by checking URL contains keyword
+  assert "onedrive" in driver.current_url.lower(), \
+      f"Expected OneDrive page but got: {driver.current_url}"
+
+  # Assert new tab/window opened after file click
+  assert len(driver.window_handles) > 1, \
+      "Expected new tab to open after clicking file, but no new tab detected"
+
+  # Assert specific element is present on page
+  elements = driver.find_elements(By.XPATH, "//h1[contains(text(),'Expected Title')]")
+  assert len(elements) > 0, "Expected page heading not found after navigation"
+
+  # Assert page title contains expected keyword
+  assert "expected keyword" in driver.title.lower(), \
+      f"Unexpected page title: {driver.title}"
+
+### 12E. Assertion with Allure Screenshot on Failure (MANDATORY for web assertions):
+  Always pair web assertions with screenshot capture on failure:
+
+  def assert_with_screenshot(driver, condition, message):
+      if not condition:
+          allure.attach(
+              driver.get_screenshot_as_png(),
+              name="assertion_failure",
+              attachment_type=AttachmentType.PNG
+          )
+          raise AssertionError(message)
+
+  Usage:
+  assert_with_screenshot(
+      driver,
+      "login" not in driver.current_url.lower(),
+      f"Login assertion failed. Still on: {driver.current_url}"
+  )
+
+### 12F. What NOT to Assert (avoid these weak/useless assertions):
+  - ❌ assert True  — meaningless
+  - ❌ assert driver is not None  — proves nothing about the workflow
+  - ❌ assert response == 200  — irrelevant to UI automation
+  - ❌ assert 1 == 1  — placeholder assertions
+  - ❌ Asserting immediately after an action with no sleep — element may not be ready
+
+---
+
+## STEP 3 — SCRIPT STRUCTURE (MANDATORY — NO DEVIATION)
+
+Generate code in exactly this structure:
+
+  [1]  IMPORTS — including allure and allure_commons.types
+  [2]  RUN COMMAND — as a comment at the top showing pytest + allure run command
+  [3]  GLOBAL CONSTANTS — app paths, URLs, credentials (mask passwords as "************")
+  [4]  DESKTOP FUNCTIONS — decorated with @allure.step, with inline steps and assertions
+  [5]  WEB FUNCTIONS — decorated with @allure.step, with screenshot-on-fail and assertions
+  [6]  UTILITY FUNCTIONS — switch_to_new_window(), assert_with_screenshot()
+  [7]  MAIN TEST FUNCTION — with full Allure decorators + @allure.step calls + final assertion
+
+### Function Naming Convention:
+| Operation                   | Function Name                          |
+|-----------------------------|----------------------------------------|
+| Launch desktop app          | launch_application(app_path)           |
+| Handle start screen         | handle_start_screen(dlg)               |
+| Enter data / fill form      | enter_data(dlg)                        |
+| Save desktop file           | save_file(dlg)                         |
+| Close desktop app           | close_application()                    |
+| Open web browser            | open_browser()                         |
+| Log in to web app           | login_to_web(driver, url, user, pwd)   |
+| Open/find a file or record  | open_item_in_web(driver, item_name)    |
+| Execute web command         | execute_web_command(driver, cmd)       |
+| Download / export           | download_file(driver)                  |
+| Verify / confirm result     | verify_result(driver, expected_value)  |
+| Screenshot assertion helper | assert_with_screenshot(driver, condition, message) |
+| Switch window               | switch_to_new_window(driver)           |
+
+---
+
+## STEP 4 — CHROME BROWSER SETUP (ALWAYS USE THIS EXACT CONFIG)
+
+  def open_browser():
+      chrome_options = Options()
+      chrome_options.add_argument("--disable-gpu")
+      chrome_options.add_argument("--disable-software-rasterizer")
+      chrome_options.add_argument("--remote-debugging-port=9222")
+      chrome_options.add_argument("--no-sandbox")
+      chrome_options.add_argument("--remote-allow-origins=*")
+      chrome_options.add_argument("--disable-dev-shm-usage")
+      driver = webdriver.Chrome(options=chrome_options)
+      driver.maximize_window()
+      return driver
+
+---
+
+## STEP 5 — HYBRID FLOW SEQUENCING
+
+- Desktop → Web: finish desktop steps, close app if not needed, then open_browser()
+- Web → Desktop: driver.quit() then re-attach or re-launch desktop app
+- Parallel use: keep both open, switch between them as needed
+- Always wrap web automation in try/finally to ensure driver.quit() is called
+- Always place final end-state assertion INSIDE the try block, before finally
+
+---
+
+## STEP 6 — RESILIENCE PATTERNS
+
+### Optional/Unpredictable Dialogs:
+  try:
+      send_keys("{ENTER}")
+  except:
+      pass
+
+### Element Not Found Fallback:
+  try:
+      element = driver.find_element(By.XPATH, "//button[contains(text(),'Primary')]")
+  except:
+      element = driver.find_element(By.XPATH, "//button[contains(text(),'Alternate')]")
+  element.click()
+
+---
+
+## OUTPUT RULES (ABSOLUTE — NO EXCEPTIONS)
+
+1.  OUTPUT ONLY RAW PYTHON CODE
+2.  NO markdown, NO triple backticks, NO language tags
+3.  NO explanations before or after the code
+4.  Add the run command as a comment on line 1: # Run: pytest test_file.py -s --alluredir=allure-results
+5.  Add view command as comment on line 2:      # View: allure serve allure-results
+6.  Script must run directly with: pytest script_name.py -s --alluredir=allure-results
+7.  ALL passwords masked as "************"
+8.  4-space indentation throughout
+9.  Single blank line between every function
+10. Test function always named: def test_end_to_end_flow():
+11. Every function called from the test MUST have @allure.step decorator
+12. Every critical step MUST have at least one meaningful assertion
+13. Every web assertion MUST use assert_with_screenshot() helper
+
+---
+
+## ANTI-PATTERNS — NEVER DO THESE
+
+- ❌ NEVER use .type_keys() on any pywinauto window or element
+- ❌ NEVER use element.send_keys() in Selenium — ALWAYS use ActionChains
+- ❌ NEVER skip start screen / splash screen handling for desktop apps
+- ❌ NEVER omit dlg.wait("visible", timeout=30) after getting window reference
+- ❌ NEVER use Tab key navigation to locate web elements
+- ❌ NEVER use positional XPath like (//div)[3] or nth-child selectors
+- ❌ NEVER forget switch_to_new_window() when a new tab/window opens
+- ❌ NEVER use Save As menu path when Ctrl+S works
+- ❌ NEVER skip clearing the filename field before typing new name on save
+- ❌ NEVER hardcode app-specific logic — derive everything from workflow steps
+- ❌ NEVER use mouse clicks on desktop UI elements
+- ❌ NEVER leave driver.quit() outside a finally block
+- ❌ NEVER generate a script with zero or placeholder assertions
+- ❌ NEVER assert True or assert driver is not None — useless assertions
+- ❌ NEVER omit @allure.step decorator from any function called in the test
+- ❌ NEVER omit @allure.title, @allure.description, @allure.severity from test function
+- ❌ NEVER skip screenshot attachment on web assertion failure
+- ❌ NEVER place final assertion inside the finally block — always in the try block
+
+---
+
+## GENERATE THE SCRIPT NOW
+
+Analyze the workflow steps in the INPUTS section above.
+Classify each step using the action type tables in STEP 1.
+Apply the matching technique from STEP 2 rules.
+Apply Allure decorators per RULE 11.
+Apply valid assertions per RULE 12.
+Generate the complete script following the structure in STEP 3.

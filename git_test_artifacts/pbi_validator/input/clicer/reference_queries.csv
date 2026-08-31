@@ -1,0 +1,54 @@
+query_name,visual_type,sql_query,dimension_column,metric_columns,kpi_patterns,description
+Untitled Visual,table,"SELECT o.market AS MARKET, SUM(o.sales) AS total_sales FROM tiger_data_engineering.global_superstore_gold.gold_orders o GROUP BY o.market ORDER BY SUM(o.sales) DESC",MARKET,"[""total_sales""]","[""Total Sales""]",Unfiltered total sales by MARKET aggregated across all orders.
+Untitled Visual,card,"SELECT SUM(o.sales) AS total_sales, COUNT(DISTINCT o.order_id) AS total_orders, COUNT(DISTINCT o.customer_id) AS total_customers, SUM(o.profit) AS total_profit, SUM(o.profit) / NULLIF(SUM(o.sales), 0) AS profit_margin, (1.0 * (SELECT COUNT(DISTINCT r.order_id) FROM tiger_data_engineering.global_superstore_gold.gold_returns r WHERE r.returned = 'Yes') / NULLIF((SELECT COUNT(DISTINCT o2.order_id) FROM tiger_data_engineering.global_superstore_gold.gold_orders o2), 0)) AS return_rate_pct FROM tiger_data_engineering.global_superstore_gold.gold_orders o;",,"[""total_sales"", ""total_orders"", ""total_customers"", ""total_profit"", ""profit_margin"", ""return_rate_pct""]","[""Total Sales"", ""Total Orders"", ""Total Customers"", ""Total Profit"", ""Profit Margin"", ""Return Rate %""]",Unfiltered single-row KPI card aggregating across the entire dataset. Return rate uses returns where returned = 'Yes'.
+Total Sales and Total Profit by Year and Quarter,table,"SELECT
+  year(o.order_date) AS Year,
+  quarter(o.order_date) AS Quarter,
+  SUM(o.sales) AS Total_Sales,
+  SUM(o.profit) AS Total_Profit
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+GROUP BY year(o.order_date), quarter(o.order_date)
+ORDER BY Year, Quarter",Year,"[""Total_Sales"", ""Total_Profit""]","[""Total Sales"", ""Total Profit""]",Unfiltered aggregation of Total Sales and Total Profit by calendar Year and Quarter from the orders table.
+Total Sales by MARKET,table,"SELECT o.market AS MARKET, SUM(o.sales) AS `Total Sales` FROM tiger_data_engineering.global_superstore_gold.gold_orders o GROUP BY o.market",MARKET,"[""Total Sales""]","[""Total Sales""]",Unfiltered total sales aggregated by MARKET (uses full orders table).
+Total Sales [APAC],card,SELECT SUM(o.sales) AS `Total Sales [APAC]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'APAC',,"[""Total Sales [APAC]""]","[""Total Sales [APAC]""]",Total Sales restricted to region = APAC.
+Total Sales [EU],card,SELECT SUM(o.sales) AS `Total Sales [EU]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'EU',,"[""Total Sales [EU]""]","[""Total Sales [EU]""]",Total Sales restricted to region = EU.
+Total Sales [US],card,SELECT SUM(o.sales) AS `Total Sales [US]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'US',,"[""Total Sales [US]""]","[""Total Sales [US]""]",Total Sales restricted to region = US.
+Total Sales [LATAM],card,SELECT SUM(o.sales) AS `Total Sales [LATAM]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'LATAM',,"[""Total Sales [LATAM]""]","[""Total Sales [LATAM]""]",Total Sales restricted to region = LATAM.
+Total Sales [EMEA],card,SELECT SUM(o.sales) AS `Total Sales [EMEA]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'EMEA',,"[""Total Sales [EMEA]""]","[""Total Sales [EMEA]""]",Total Sales restricted to region = EMEA.
+Total Sales [Africa],card,SELECT SUM(o.sales) AS `Total Sales [Africa]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'Africa',,"[""Total Sales [Africa]""]","[""Total Sales [Africa]""]",Total Sales restricted to region = Africa.
+Total Sales [Canada],card,SELECT SUM(o.sales) AS `Total Sales [Canada]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE o.region = 'Canada',,"[""Total Sales [Canada]""]","[""Total Sales [Canada]""]",Total Sales restricted to region = Canada.
+Total Sales (All),card,SELECT SUM(o.sales) AS `Total Sales` FROM tiger_data_engineering.global_superstore_gold.gold_orders o,,"[""Total Sales""]","[""Total Sales""]",Overall Total Sales across all orders (unfiltered).
+Total Orders,card,SELECT COUNT(DISTINCT o.order_id) AS `Total Orders` FROM tiger_data_engineering.global_superstore_gold.gold_orders o,,"[""Total Orders""]","[""Total Orders""]",Count of distinct ORDER_ID in orders table.
+Total Customers,card,SELECT COUNT(DISTINCT o.customer_id) AS `Total Customers` FROM tiger_data_engineering.global_superstore_gold.gold_orders o,,"[""Total Customers""]","[""Total Customers""]",Count of distinct CUSTOMER_ID in orders table.
+Total Profit,card,SELECT SUM(o.profit) AS `Total Profit` FROM tiger_data_engineering.global_superstore_gold.gold_orders o,,"[""Total Profit""]","[""Total Profit""]",Overall Total Profit across all orders.
+Profit Margin,card,SELECT CASE WHEN SUM(o.sales) = 0 THEN NULL ELSE SUM(o.profit) / SUM(o.sales) END AS `Profit Margin` FROM tiger_data_engineering.global_superstore_gold.gold_orders o,,"[""Profit Margin""]","[""Profit Margin""]",Profit Margin = SUM(profit) / SUM(sales); returns NULL when sales = 0.
+Return Rate %,card,"SELECT ( (SELECT COUNT(DISTINCT r.order_id) FROM tiger_data_engineering.global_superstore_gold.gold_returns r) / NULLIF((SELECT COUNT(DISTINCT o.order_id) FROM tiger_data_engineering.global_superstore_gold.gold_orders o),0) ) AS `Return Rate %`",,"[""Return Rate %""]","[""Return Rate %""]",Return Rate = distinct returned ORDER_IDs (returns table) divided by distinct ORDER_IDs (orders table).
+"Total Sales [2011, Qtr 1]",card,"SELECT SUM(o.sales) AS `Total Sales [2011, Qtr 1]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 1",,"[""Total Sales [2011, Qtr 1]""]","[""Total Sales [2011, Qtr 1]""]",Total Sales for year 2011 quarter 1.
+"Total Profit [2011, Qtr 1]",card,"SELECT SUM(o.profit) AS `Total Profit [2011, Qtr 1]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 1",,"[""Total Profit [2011, Qtr 1]""]","[""Total Profit [2011, Qtr 1]""]",Total Profit for year 2011 quarter 1.
+"Total Sales [2011, Qtr 2]",card,"SELECT SUM(o.sales) AS `Total Sales [2011, Qtr 2]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 2",,"[""Total Sales [2011, Qtr 2]""]","[""Total Sales [2011, Qtr 2]""]",Total Sales for year 2011 quarter 2.
+"Total Profit [2011, Qtr 2]",card,"SELECT SUM(o.profit) AS `Total Profit [2011, Qtr 2]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 2",,"[""Total Profit [2011, Qtr 2]""]","[""Total Profit [2011, Qtr 2]""]",Total Profit for year 2011 quarter 2.
+"Total Sales [2011, Qtr 3]",card,"SELECT SUM(o.sales) AS `Total Sales [2011, Qtr 3]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 3",,"[""Total Sales [2011, Qtr 3]""]","[""Total Sales [2011, Qtr 3]""]",Total Sales for year 2011 quarter 3.
+"Total Profit [2011, Qtr 3]",card,"SELECT SUM(o.profit) AS `Total Profit [2011, Qtr 3]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 3",,"[""Total Profit [2011, Qtr 3]""]","[""Total Profit [2011, Qtr 3]""]",Total Profit for year 2011 quarter 3.
+"Total Sales [2011, Qtr 4]",card,"SELECT SUM(o.sales) AS `Total Sales [2011, Qtr 4]` FROM tiger_data_engineering.global_superstore_gold.gold_orders o WHERE year(o.order_date) = 2011 AND quarter(o.order_date) = 4",,"[""Total Sales [2011, Qtr 4]""]","[""Total Sales [2011, Qtr 4]""]",Total Sales for year 2011 quarter 4.
+Total Sales by CATEGORY and SUB_CATEGORY,table,"SELECT o.category AS CATEGORY,
+  SUM(CASE WHEN o.sub_category = 'Accessories' THEN o.sales ELSE 0 END) AS Accessories,
+  SUM(CASE WHEN o.sub_category = 'Appliances' THEN o.sales ELSE 0 END) AS Appliances,
+  SUM(CASE WHEN o.sub_category = 'Art' THEN o.sales ELSE 0 END) AS Art,
+  SUM(CASE WHEN o.sub_category = 'Binders' THEN o.sales ELSE 0 END) AS Binders,
+  SUM(CASE WHEN o.sub_category = 'Bookcases' THEN o.sales ELSE 0 END) AS Bookcases,
+  SUM(CASE WHEN o.sub_category = 'Chairs' THEN o.sales ELSE 0 END) AS Chairs,
+  SUM(CASE WHEN o.sub_category = 'Copiers' THEN o.sales ELSE 0 END) AS Copiers,
+  SUM(CASE WHEN o.sub_category = 'Envelopes' THEN o.sales ELSE 0 END) AS Envelopes,
+  SUM(CASE WHEN o.sub_category = 'Fasteners' THEN o.sales ELSE 0 END) AS Fasteners,
+  SUM(CASE WHEN o.sub_category = 'Furnishings' THEN o.sales ELSE 0 END) AS Furnishings,
+  SUM(CASE WHEN o.sub_category = 'Labels' THEN o.sales ELSE 0 END) AS Labels,
+  SUM(CASE WHEN o.sub_category = 'Machines' THEN o.sales ELSE 0 END) AS Machines,
+  SUM(CASE WHEN o.sub_category = 'Paper' THEN o.sales ELSE 0 END) AS Paper,
+  SUM(CASE WHEN o.sub_category = 'Phones' THEN o.sales ELSE 0 END) AS Phones
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+GROUP BY o.category
+ORDER BY o.category;",CATEGORY,"[""Accessories"", ""Appliances"", ""Art"", ""Binders"", ""Bookcases"", ""Chairs"", ""Copiers"", ""Envelopes"", ""Fasteners"", ""Furnishings"", ""Labels"", ""Machines"", ""Paper"", ""Phones""]","[""Accessories"", ""Copiers"", ""Machines"", ""Phones"", ""Bookcases"", ""Chairs"", ""Furnishings"", ""Appliances"", ""Art"", ""Binders"", ""Envelopes"", ""Fasteners"", ""Labels"", ""Paper""]",Unfiltered total sales by CATEGORY with each SUB_CATEGORY exposed as its own sales KPI column (sums over all data).
+Total Sales by SEGMENT,table,"SELECT o.segment AS SEGMENT, SUM(o.sales) AS ""Total Sales""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+GROUP BY o.segment
+ORDER BY SUM(o.sales) DESC;",SEGMENT,"[""Total Sales""]","[""Total Sales""]",Unfiltered total sales aggregated by segment across the entire gold_orders table.

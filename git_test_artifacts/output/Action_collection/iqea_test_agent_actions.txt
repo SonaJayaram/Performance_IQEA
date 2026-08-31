@@ -1,0 +1,60 @@
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/workflow]
+Click the "Close" button (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)
+Click the "link-Home" link
+Click the "link-Agent Studio" link (URL: https://agentflow-uat.tigeranalyticstest.in/Home)
+Click the "+ New Agent" button (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)
+Click on "Experiment Name"
+Enter "iqeatcagent" in the "Experiment Name" field
+Enter "test case agent" in the "Experiment Description" field
+Click the "Continue" button
+[Flow state: 0 node(s), 0 connection(s)] (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=a1c6908d-6ed0-4973-8048-0d78ad078b24&agentId=2485&pageType=form)
+Click the "button" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 0 node(s), 0 connection(s)]
+Click on "Node Name"
+Press Enter in "Node Name"
+Enter "requirement agent" in the "Node Name" field
+Click the "Base" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 3 node(s), 0 connection(s)]
+Click on "Node Name"
+Enter "test case agent" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "If Else" node onto the canvas
+[Flow state: 4 node(s), 1 connection(s)]
+Click on "Node Name"
+Enter "pass" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 5 node(s), 1 connection(s)]
+Click on "Node Name"
+Enter "process" in the "Node Name" field
+Click the "Add" button
+Drag and drop a "Base" node onto the canvas
+[Flow state: 6 node(s), 1 connection(s)]
+Click on "Node Name"
+Enter "stop" in the "Node Name" field
+Click the "Add" button
+Click the "Edit Settings · Test Case Agent (BASE)" button
+Select "gpt-4.1-mini" from the dropdown
+Click the "Add Input" button
+Click the "User Query The user's input message" button
+Select "Structured Output" from the dropdown
+Click on "requirement_agent_response user_query"
+Enter the prompt: "{{requirement_agent_response}} {{user_query}} testcase"
+Click the "Save" button
+[Flow state: 7 node(s), 3 connection(s)]
+Click the "link-Data Store" link
+Click the "Add Data Store" button (URL: https://agentflow-uat.tigeranalyticstest.in/datasource)
+Click the "S3" button
+Click on "Enter Data Source Name"
+Enter "iqeatc" in the "Enter Data Source Name" field
+Click on "Data Source Description"
+Enter "iqeatest case" in the "Data Source Description" field
+Select "S3 ( pa Role )" from the dropdown
+Click on "text"
+Enter "iqeatestcase" in the "text" field
+Click on "text"
+Enter "iqeatestcasenew" in the "text" field
+Click the "Next" button
+Click the "Next" button

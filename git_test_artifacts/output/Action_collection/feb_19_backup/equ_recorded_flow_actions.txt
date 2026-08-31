@@ -1,0 +1,25 @@
+Switched to new window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "PLACE AN ALERT" in "Place an Alert" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Switched to new window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "firstName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "firstName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "ssn" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "***-**-9877" in the "ssn" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "lastName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "lastName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "phoneNumber" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "765-788-***" in the "phoneNumber" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/]
+Click on "tab1" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Change the value to "Learn" in "tab1" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Click on "Debt Management" (URL: https://www.equifax.com/personal/credit-report-services/credit-fraud-alerts/)
+Switched to window: [https://my.equifax.com/consumer-registration/UCSC/#/personal-info]
+Click on "addressLine1" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine1" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "addressLine2" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "addressLine2" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Click on "cityName" (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Enter "test" in the "cityName" field (URL: https://my.equifax.com/consumer-registration/UCSC/#/personal-info)
+Switched to window: [https://www.equifax.com/personal/education/debt-management/]
+Click on "About Us" (URL: https://www.equifax.com/personal/education/debt-management/)

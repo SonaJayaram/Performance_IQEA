@@ -1,0 +1,95 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Quality Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #2d89ef;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Quality Analysis Report</h1>
+
+    <h2>API Summary</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status Code</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GET</td>
+                <td>https://reqres.in/api/users/2</td>
+                <td>200</td>
+                <td>PASS</td>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>https://reqres.in/api/users</td>
+                <td>201</td>
+                <td>PASS</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Validation Results</h2>
+    <h3>GET https://reqres.in/api/users/2</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Expected: 200, Actual: 200 - <em>Pass</em></li>
+        <li><strong>Field/Value Validation:</strong> The "first_name" in the response matches the expected value "Janet". No missing fields or incorrect values were detected.</li>
+    </ul>
+
+    <h3>POST https://reqres.in/api/users</h3>
+    <ul>
+        <li><strong>Status Code Validation:</strong> Expected: 201 (Created), Actual: 201 - <em>Pass</em></li>
+        <li><strong>Field/Value Validation:</strong> The request payload expected "first_name: John", but the response does not contain this field. Only "id" and "createdAt" fields were returned. This is a potential contract mismatch.</li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+        <li>For the POST request to <code>/users</code>, the response is missing "first_name" or any reflection of the request payload. This could indicate improper implementation of API contract.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk Level:</strong> Medium</p>
+    <p><strong>Justification:</strong> While the GET request functions as expected, the POST request raises a potential functional issue, as it does not correctly reflect the input payload. This issue could lead to unpredictable system behavior or data inconsistencies, especially in scenarios where the request payload plays a critical role in application logic.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+        <li>Ensure POST/PUT APIs are implemented to reflect the input payload in their responses, as expected in standard RESTful API contracts.</li>
+        <li>Enhance API test coverage to capture and validate full response payloads against expected contracts.</li>
+        <li>Work with backend developers to confirm that the API is sending complete and correct response data for write operations.</li>
+        <li>Include detailed expected behavior in API specifications, particularly for response contracts.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><strong>Final Verdict:</strong> FAIL</p>
+    <p><strong>Reasoning:</strong> While the GET request met the expected outcomes, the POST request exhibited a contract mismatch by failing to reflect request payload values in the response. This could lead to unreliable behavior for downstream systems that rely on this API.</p>
+</body>
+</html>
+```

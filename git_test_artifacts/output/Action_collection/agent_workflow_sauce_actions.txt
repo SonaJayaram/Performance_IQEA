@@ -1,0 +1,24 @@
+Switched to new window: [https://www.saucedemo.com/]
+Click on "user-name" (URL: https://www.saucedemo.com/)
+Enter "standard_user" in the "user-name" field
+Enter "secret_sauce" in the "password" field
+Click on "login-button"
+Enter "Login" in the "login-button" field (URL: https://www.saucedemo.com/inventory.html)
+Click the "add-to-cart-sauce-labs-backpack" button
+Click the "add-to-cart-sauce-labs-bike-light" button
+Click on "Name (A to Z) Name (Z to A) Price (low to high) Price (high"
+Select "Price (high to low)" from the "Name (A to Z) Name (Z to A) Price (low to high) Price (high" dropdown
+Click the "add-to-cart-sauce-labs-fleece-jacket" button
+Click the "3" link
+Click the "remove-sauce-labs-bike-light" button (URL: https://www.saucedemo.com/cart.html)
+Click the "checkout" button
+Click on "firstName" (URL: https://www.saucedemo.com/checkout-step-one.html)
+Enter "test" in the "firstName" field
+Enter "test" in the "lastName" field
+Enter "6876" in the "postalCode" field
+Click on "continue"
+Enter "Continue" in the "continue" field (URL: https://www.saucedemo.com/checkout-step-two.html)
+Click the "finish" button
+Click the "back-to-products" button (URL: https://www.saucedemo.com/checkout-complete.html)
+Click the "react-burger-menu-btn" button (URL: https://www.saucedemo.com/inventory.html)
+Click the "logout_sidebar_link" link

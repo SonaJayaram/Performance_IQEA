@@ -1,0 +1,56 @@
+query_name,visual_type,sql_query,dimension_column,metric_columns,kpi_patterns,description
+Untitled Visual,card,"SELECT SUM(o.sales) AS total_sales, COUNT(DISTINCT o.order_id) AS total_orders, COUNT(DISTINCT o.customer_id) AS total_customers, SUM(o.profit) AS total_profit, CASE WHEN SUM(o.sales) = 0 THEN NULL ELSE SUM(o.profit) / SUM(o.sales) END AS profit_margin, CASE WHEN COUNT(DISTINCT o.order_id) = 0 THEN NULL ELSE CAST(COUNT(DISTINCT r.order_id) AS DOUBLE) / CAST(COUNT(DISTINCT o.order_id) AS DOUBLE) END AS return_rate_pct FROM tiger_data_engineering.global_superstore_gold.gold_orders o LEFT JOIN tiger_data_engineering.global_superstore_gold.gold_returns r ON r.order_id = o.order_id WHERE (:region IS NULL OR o.region = :region) AND (:segment IS NULL OR o.segment = :segment) AND (:start_date IS NULL OR :end_date IS NULL OR o.order_date BETWEEN :start_date AND :end_date)",,"[""total_sales"", ""total_orders"", ""total_customers"", ""total_profit"", ""profit_margin"", ""return_rate_pct""]","[""Total Sales"", ""Total Orders"", ""Total Customers"", ""Total Profit"", ""Profit Margin"", ""Return Rate %""]","Single-row card query returning the six KPI measures (Total Sales, Total Orders, Total Customers, Total Profit, Profit Margin, Return Rate %) with active slicers applied: REGION, SEGMENT, and ORDER_DATE range."
+Total Sales and Total Profit by Year and Quarter,table,"SELECT
+  year(o.order_date) AS Year,
+  quarter(o.order_date) AS Quarter,
+  SUM(o.sales) AS total_sales,
+  SUM(o.profit) AS total_profit
+FROM tiger_data_engineering.global_superstore_gold.gold_orders AS o
+WHERE
+  ((:region IS NULL) OR o.region = :region)
+  AND ((:segment IS NULL) OR o.segment = :segment)
+  AND ((:start_date IS NULL AND :end_date IS NULL) OR (o.order_date BETWEEN :start_date AND :end_date))
+GROUP BY
+  year(o.order_date),
+  quarter(o.order_date)
+ORDER BY
+  year(o.order_date),
+  quarter(o.order_date);",Year,"[""total_sales"", ""total_profit""]","[""Total Sales"", ""Total Profit""]","Dual-axis time series aggregated by Year and Quarter. Applies page slicers: REGION, SEGMENT, ORDER_DATE (start_date/end_date). Uses only the orders table and returns total sales and total profit per Year/Quarter."
+Total Sales by MARKET,table,"SELECT o.market AS MARKET,
+       SUM(o.sales) AS total_sales
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE o.region = {{region}}
+  AND o.segment = {{segment}}
+  AND o.order_date BETWEEN {{start_date}} AND {{end_date}}
+GROUP BY o.market
+ORDER BY SUM(o.sales) DESC",MARKET,"[""total_sales""]","[""Total Sales""]","Total Sales aggregated by MARKET with page-level slicers applied for REGION, SEGMENT and ORDER_DATE."
+Total Sales by CATEGORY and SUB_CATEGORY,table,"SELECT
+  o.category AS CATEGORY,
+  SUM(CASE WHEN o.sub_category = 'Accessories' THEN o.sales ELSE 0 END) AS Accessories,
+  SUM(CASE WHEN o.sub_category = 'Appliances' THEN o.sales ELSE 0 END) AS Appliances,
+  SUM(CASE WHEN o.sub_category = 'Art' THEN o.sales ELSE 0 END) AS Art,
+  SUM(CASE WHEN o.sub_category = 'Binders' THEN o.sales ELSE 0 END) AS Binders,
+  SUM(CASE WHEN o.sub_category = 'Bookcases' THEN o.sales ELSE 0 END) AS Bookcases,
+  SUM(CASE WHEN o.sub_category = 'Chairs' THEN o.sales ELSE 0 END) AS Chairs,
+  SUM(CASE WHEN o.sub_category = 'Copiers' THEN o.sales ELSE 0 END) AS Copiers,
+  SUM(CASE WHEN o.sub_category = 'Envelopes' THEN o.sales ELSE 0 END) AS Envelopes,
+  SUM(CASE WHEN o.sub_category = 'Fasteners' THEN o.sales ELSE 0 END) AS Fasteners,
+  SUM(CASE WHEN o.sub_category = 'Furnishings' THEN o.sales ELSE 0 END) AS Furnishings,
+  SUM(CASE WHEN o.sub_category = 'Labels' THEN o.sales ELSE 0 END) AS Labels,
+  SUM(CASE WHEN o.sub_category = 'Machines' THEN o.sales ELSE 0 END) AS Machines,
+  SUM(CASE WHEN o.sub_category = 'Paper' THEN o.sales ELSE 0 END) AS Paper,
+  SUM(CASE WHEN o.sub_category = 'Phones' THEN o.sales ELSE 0 END) AS Phones
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE
+  (:region IS NULL OR o.region = :region)
+  AND (:segment IS NULL OR o.segment = :segment)
+  AND ((:start_date IS NULL AND :end_date IS NULL) OR (o.order_date BETWEEN :start_date AND :end_date))
+GROUP BY o.category
+ORDER BY o.category;",CATEGORY,"[""Accessories"", ""Appliances"", ""Art"", ""Binders"", ""Bookcases"", ""Chairs"", ""Copiers"", ""Envelopes"", ""Fasteners"", ""Furnishings"", ""Labels"", ""Machines"", ""Paper"", ""Phones""]","[""Accessories"", ""Appliances"", ""Art"", ""Binders"", ""Bookcases"", ""Chairs"", ""Copiers"", ""Envelopes"", ""Fasteners"", ""Furnishings"", ""Labels"", ""Machines"", ""Paper"", ""Phones""]","Total sales per CATEGORY with one column per SUB_CATEGORY (each column is SUM of sales where sub_category matches). Applies page slicers: region, segment, and order_date range via parameters (:region, :segment, :start_date, :end_date)."
+total_sales_by_segment,table,"SELECT o.segment AS SEGMENT, SUM(o.sales) AS total_sales
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE (:region IS NULL OR o.region = :region)
+  AND (:segment IS NULL OR o.segment = :segment)
+  AND ((:start_date IS NULL AND :end_date IS NULL) OR (o.order_date BETWEEN :start_date AND :end_date))
+GROUP BY o.segment
+ORDER BY SUM(o.sales) DESC",SEGMENT,"[""total_sales""]","[""Total Sales""]","Total Sales by SEGMENT (applies REGION, SEGMENT, and ORDER_DATE slicers). Uses SUM(o.sales) grouped by o.segment."

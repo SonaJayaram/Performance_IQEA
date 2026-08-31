@@ -1,0 +1,40 @@
+query_name,visual_type,sql_query,dimension_column,metric_columns,kpi_patterns,description
+Top 10 Total Sales by PRODUCE_NAME,table,"SELECT o.produce_name AS PRODUCE_NAME,
+       SUM(o.sales) AS ""Total Sales""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.produce_name
+ORDER BY SUM(o.sales) DESC
+LIMIT 10",PRODUCE_NAME,"[""Total Sales""]","[""Total Sales""]",Top 10 produce items by total sales.
+"Returns, Profit Margin and Sales by SUB_CATEGORY",table,"SELECT o.sub_category AS SUB_CATEGORY,
+       100.0 * COUNT(DISTINCT CASE WHEN r.returned = 'Yes' THEN r.order_id ELSE NULL END) / NULLIF(COUNT(DISTINCT o.order_id),0) AS ""Return Rate %"",
+       SUM(o.profit) / NULLIF(SUM(o.sales),0) AS ""Profit Margin"",
+       SUM(o.sales) AS ""Total Sales""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+LEFT JOIN tiger_data_engineering.global_superstore_gold.gold_returns r
+  ON o.order_id = r.order_id
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.sub_category",SUB_CATEGORY,"[""Return Rate %"", ""Profit Margin"", ""Total Sales""]","[""Return Rate %"", ""Profit Margin"", ""Total Sales""]","Per sub-category: return rate (percent of orders returned), profit margin (profit / sales), and total sales."
+"Total Sales, Orders and Return Rate by REGION",table,"SELECT o.region AS REGION,
+       SUM(o.sales) AS ""Total Sales"",
+       COUNT(DISTINCT o.order_id) AS ""Total Orders"",
+       100.0 * COUNT(DISTINCT CASE WHEN r.returned = 'Yes' THEN r.order_id ELSE NULL END) / NULLIF(COUNT(DISTINCT o.order_id),0) AS ""Return Rate %""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+LEFT JOIN tiger_data_engineering.global_superstore_gold.gold_returns r
+  ON o.order_id = r.order_id
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.region",REGION,"[""Total Sales"", ""Total Orders"", ""Return Rate %""]","[""Total Sales"", ""Total Orders"", ""Return Rate %""]","By region: total sales, distinct total orders, and return rate percent."
+Total Sales by Year and SEGMENT,table,"SELECT YEAR(o.order_date) AS Year,
+       SUM(CASE WHEN o.segment = 'Consumer' THEN o.sales ELSE 0 END) AS Consumer,
+       SUM(CASE WHEN o.segment = 'Corporate' THEN o.sales ELSE 0 END) AS Corporate,
+       SUM(CASE WHEN o.segment = 'Home Office' THEN o.sales ELSE 0 END) AS ""Home Office""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE {SLICER_CONDITIONS}
+GROUP BY YEAR(o.order_date)
+ORDER BY Year",Year,"[""Consumer"", ""Corporate"", ""Home Office""]","[""Consumer"", ""Corporate"", ""Home Office""]","Year-over-year total sales broken out by segment (Consumer, Corporate, Home Office)."
+Total Orders by SHIP_MODE,table,"SELECT o.ship_mode AS SHIP_MODE,
+       COUNT(DISTINCT o.order_id) AS ""Total Orders""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.ship_mode
+ORDER BY COUNT(DISTINCT o.order_id) DESC",SHIP_MODE,"[""Total Orders""]","[""Total Orders""]",Count of distinct orders by ship mode.

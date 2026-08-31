@@ -1,0 +1,161 @@
+{
+    "metrics": {
+        "http_req_blocked": {
+            "avg": 8.962576625,
+            "min": 0,
+            "med": 0,
+            "max": 809.9419,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "data_sent": {
+            "count": 353560,
+            "rate": 8350.614301689173
+        },
+        "http_req_duration": {
+            "p(90)": 253.46308000000002,
+            "p(95)": 265.44893,
+            "avg": 243.40774112499966,
+            "min": 229.6363,
+            "med": 236.7062,
+            "max": 948.0678
+        },
+        "http_req_receiving": {
+            "avg": 0.6270789999999998,
+            "min": 0,
+            "med": 0,
+            "max": 319.3437,
+            "p(90)": 0.7014100000000001,
+            "p(95)": 0.8231899999999991
+        },
+        "http_req_sending": {
+            "avg": 0.5285919999999996,
+            "min": 0,
+            "med": 0.5755,
+            "max": 9.0328,
+            "p(90)": 0.8177100000000002,
+            "p(95)": 1.1218299999999997
+        },
+        "http_req_waiting": {
+            "p(95)": 264.34628,
+            "avg": 242.2520701250001,
+            "min": 227.4123,
+            "med": 235.97605,
+            "max": 946.7882,
+            "p(90)": 252.78467
+        },
+        "iterations": {
+            "count": 160,
+            "rate": 3.77898599465513
+        },
+        "vus_max": {
+            "value": 10,
+            "min": 10,
+            "max": 10
+        },
+        "http_reqs": {
+            "rate": 18.894929973275648,
+            "count": 800
+        },
+        "http_req_failed": {
+            "passes": 800,
+            "fails": 0,
+            "value": 1
+        },
+        "checks": {
+            "passes": 0,
+            "fails": 1120,
+            "value": 0
+        },
+        "vus": {
+            "value": 2,
+            "min": 1,
+            "max": 10
+        },
+        "iteration_duration": {
+            "avg": 2263.931457499999,
+            "min": 2160.5418,
+            "med": 2193.39045,
+            "max": 3026.0094,
+            "p(90)": 2355.57064,
+            "p(95)": 2883.18785
+        },
+        "data_received": {
+            "count": 197172,
+            "rate": 4656.938915863383
+        },
+        "http_req_connecting": {
+            "min": 0,
+            "med": 0,
+            "max": 250.6338,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 2.92600325
+        },
+        "http_req_tls_handshaking": {
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 6.004056874999999,
+            "min": 0,
+            "med": 0,
+            "max": 536.9686
+        }
+    },
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "TC_01_save_draft: Status is 200": {
+                    "name": "TC_01_save_draft: Status is 200",
+                    "path": "::TC_01_save_draft: Status is 200",
+                    "id": "45a36da867b4348475b5979d0779ffb2",
+                    "passes": 0,
+                    "fails": 160
+                },
+                "TC_01_save_draft: Message is correct": {
+                    "passes": 0,
+                    "fails": 160,
+                    "name": "TC_01_save_draft: Message is correct",
+                    "path": "::TC_01_save_draft: Message is correct",
+                    "id": "0425c7af8503554002cc25ca08c23fdd"
+                },
+                "TC_02_create_draft: Status is 201": {
+                    "name": "TC_02_create_draft: Status is 201",
+                    "path": "::TC_02_create_draft: Status is 201",
+                    "id": "b7944f0892569c6f6dacffb8b8586e84",
+                    "passes": 0,
+                    "fails": 160
+                },
+                "TC_03_update_agent: Status is 200": {
+                    "name": "TC_03_update_agent: Status is 200",
+                    "path": "::TC_03_update_agent: Status is 200",
+                    "id": "dd0429179f5d2c3b9496bc056bd104ca",
+                    "passes": 0,
+                    "fails": 160
+                },
+                "TC_04_save_draft_update: Status is 200": {
+                    "fails": 160,
+                    "name": "TC_04_save_draft_update: Status is 200",
+                    "path": "::TC_04_save_draft_update: Status is 200",
+                    "id": "02d63763b460ed4071edfccd1a0d2b42",
+                    "passes": 0
+                },
+                "TC_04_save_draft_update: Message is correct": {
+                    "name": "TC_04_save_draft_update: Message is correct",
+                    "path": "::TC_04_save_draft_update: Message is correct",
+                    "id": "5434d91b46d3fc3e21b7ce09059084e8",
+                    "passes": 0,
+                    "fails": 160
+                },
+                "TC005_Prompts_Clone: Status is 200": {
+                    "passes": 0,
+                    "fails": 160,
+                    "name": "TC005_Prompts_Clone: Status is 200",
+                    "path": "::TC005_Prompts_Clone: Status is 200",
+                    "id": "b9a6230db05b86b5bbfa3a70a32fc291"
+                }
+            }
+    }
+}

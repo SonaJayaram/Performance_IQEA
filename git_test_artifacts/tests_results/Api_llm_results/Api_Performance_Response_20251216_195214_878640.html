@@ -1,0 +1,41 @@
+<h2>Test Overview</h2>
+<ul>
+    <li><strong>API Method & Endpoint:</strong> GET /api/users, POST /api/users</li>
+    <li><strong>Load Configuration Summary:</strong> 
+        <ul>
+            <li>Ramp-up Users: 20</li>
+            <li>Spawn Rate: 0.5 users/second</li>
+            <li>Run Time: 10 seconds</li>
+            <li>Stop Time: 100 seconds</li>
+        </ul>
+    </li>
+</ul>
+
+<h2>Key Metrics Summary</h2>
+<p><strong>Note:</strong> Performance metrics are missing and could not be analyzed due to insufficient raw data provided in the Locust reports.</p>
+<ul>
+    <li><strong>Average Response Time:</strong> Not Available</li>
+    <li><strong>P95 / P99 Response Time:</strong> Not Available</li>
+    <li><strong>Throughput:</strong> Not Available</li>
+    <li><strong>Error Rate:</strong> Not Available</li>
+</ul>
+
+<h2>Performance Findings</h2>
+<p>No meaningful performance findings could be derived due to the lack of critical metric data (e.g., throughput, response times, failure count). The current report is insufficient for identifying any bottlenecks, instability, or anomalies in the system.</p>
+
+<h2>Risk Level</h2>
+<p><strong>Risk Level:</strong> High</p>
+<p><strong>Reasoning:</strong> The absence of detailed performance metrics introduces significant uncertainty about the system's behavior under load. This prevents any meaningful reliability, scalability, or SLA assessment. The lack of data renders the analysis incomplete, posing a high risk to production deployment.</p>
+
+<h2>Recommendations</h2>
+<ul>
+    <li>Ensure raw performance data such as throughput, latency (avg, P95, P99), and failure counts are properly captured and included in future Locust reports. This is essential for accurate performance analysis.</li>
+    <li>Validate the test configuration and ensure that the Locust test scripts are appropriately designed to stress-test the APIs under realistic load conditions.</li>
+    <li>Extend the test duration beyond 10 seconds to observe the system's behavior over a sufficient period and allow meaningful stability assessments.</li>
+    <li>Ensure the reporting configuration in Locust is correctly set up to output all relevant performance metrics (e.g., by enabling CSV and HTML report generation). Use accurate timestamps for precise reporting.</li>
+    <li>Repeat the tests and confirm that all key metrics (throughput, response times, failure rates) are captured correctly. Perform multiple test runs to collect consistent performance trends.</li>
+</ul>
+
+<h2>Production Readiness Verdict</h2>
+<p><strong>Verdict:</strong> Not Ready</p>
+<p><strong>Explanation:</strong> The provided Locust performance reports lack critical data to evaluate the system's scalability, reliability, and compliance with SLA/SLO requirements. Without this information, the system cannot be deemed production-ready. A complete and detailed performance test, capturing all necessary metrics, is required for proper assessment.</p>

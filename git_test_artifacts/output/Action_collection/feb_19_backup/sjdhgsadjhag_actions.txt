@@ -1,0 +1,5 @@
+Switched to new window: [https://www.amazon.in/]
+Click on "Mobiles" (URL: https://www.amazon.in/)
+Click on "Redmi Note 15" (URL: https://www.amazon.in/mobile-phones/b/?ie=UTF8&node=1389401031&ref_=nav_cs_mobiles)
+Click on "submit.add-to-cart" (URL: https://www.amazon.in/dp/B0G5G5C89T/?_encoding=UTF8&ref_=cct_cg_Budget_3a1&pf_rd_p=bd96dc97-fbde-4d40-ab12-54bc650f335d&pf_rd_r=MYCFSTVTRSRPS9BCQG60&th=1)
+Click on "proceedToRetailCheckout" (URL: https://www.amazon.in/cart/smart-wagon?newItems=d8562b34-d0f0-441c-988d-6796c8a4a2a1,1&ref_=sw_refresh)

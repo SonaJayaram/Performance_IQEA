@@ -1,0 +1,323 @@
+Switched to new window: [https://accounts.google.com/v3/signin/identifier?opparams=%253Fgis_params%253DGAcqKy1KVTZjZ2hLM1BLaDRDUWRxYXlIMVIyNF9OMUdHdV9mR2lCTlNhTzJQVUk4AUJAZTNhYjQzMWUwNDE0ZDZmOWI0NWZlZGU0ZDc4MWVjYmNhYzgzNWI0MGJkYThkNmUyMDU3ZjNhZGI3MWUzOGYyNw%2526response_mode%253Dform_post&dsh=-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI&as=-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI&client_id=572745194466-gn88euodo1rcvph8qhdpjm29e6ep29cb.apps.googleusercontent.com&display=popup&gsiwebsdk=gis_attributes&o2v=1&origin=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&prompt=select_account&redirect_uri=gis_transform&response_type=id_token&scope=openid+email+profile&service=lso&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hANgcIby6VIt_GXHVSEmK01tRhx82x2ZSn4PFBdc7IIS7LxNPaEBVjSFK6edkP6HRET1JxcW9OnFDPwr2cp4ZAzx6_oLQlpJp482OOJUa11mW7sa78ajTQMgIRIAi0nxX9ajpBCbht35KLjQa4uAGv4pQ9bfDqUDCQg_aRUFUnMxpXMsA2JZ2Qoa1U-1lXLvhr4TeFbi7F35HfAFf3t3Cy-uTDCXVBitJfyo9rdXWRqq-QA-7YsQASpRBKaNM07mWlObhbklmTI4lH60a14eL5xqMIZT1rC2JaZVjRhG8doV9Qfgm7NouFSlTb_zWlXWBBanj1DciEtvXpTg_INZOlOj93HrBzAoOBqJDmrl5CB1ALjYmXQxYn3tJiYwQXAbfbTWGaQL-JeW6H2vA9aYG3PBRmqxxW6aqwRyH2oSXT6VlanlT2RzvcBDQIaPv0VFhbhV7RXPIT16_v-Oo78A9kA31Ry45QKgveQtiRnJlh9F5uT1VqOHuMObSMH3udY9rfuXvu61%26flowName%3DGeneralOAuthFlow%26as%3D-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI%26client_id%3D572745194466-gn88euodo1rcvph8qhdpjm29e6ep29cb.apps.googleusercontent.com%26requestPath%3D%252Fsignin%252Foauth%252Fconsent%23&app_domain=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&rart=ANgoxceXa6sBA4RQWucxHUNcWHLrvsHm0KZHpikEPjgpAeW5KZ8zeHbrCwLhF4Lb8ZjCxrIGoPdunv3p4aS67MZfWzdjUT6cELTrH_nRlE25o8-7LlcaNQ4]
+Enter "sathanantham.aru@tigernalytics.com" in the "Email or phone" field (URL: https://accounts.google.com/v3/signin/identifier?opparams=%253Fgis_params%253DGAcqKy1KVTZjZ2hLM1BLaDRDUWRxYXlIMVIyNF9OMUdHdV9mR2lCTlNhTzJQVUk4AUJAZTNhYjQzMWUwNDE0ZDZmOWI0NWZlZGU0ZDc4MWVjYmNhYzgzNWI0MGJkYThkNmUyMDU3ZjNhZGI3MWUzOGYyNw%2526response_mode%253Dform_post&dsh=-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI&as=-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI&client_id=572745194466-gn88euodo1rcvph8qhdpjm29e6ep29cb.apps.googleusercontent.com&display=popup&gsiwebsdk=gis_attributes&o2v=1&origin=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&prompt=select_account&redirect_uri=gis_transform&response_type=id_token&scope=openid+email+profile&service=lso&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hANgcIby6VIt_GXHVSEmK01tRhx82x2ZSn4PFBdc7IIS7LxNPaEBVjSFK6edkP6HRET1JxcW9OnFDPwr2cp4ZAzx6_oLQlpJp482OOJUa11mW7sa78ajTQMgIRIAi0nxX9ajpBCbht35KLjQa4uAGv4pQ9bfDqUDCQg_aRUFUnMxpXMsA2JZ2Qoa1U-1lXLvhr4TeFbi7F35HfAFf3t3Cy-uTDCXVBitJfyo9rdXWRqq-QA-7YsQASpRBKaNM07mWlObhbklmTI4lH60a14eL5xqMIZT1rC2JaZVjRhG8doV9Qfgm7NouFSlTb_zWlXWBBanj1DciEtvXpTg_INZOlOj93HrBzAoOBqJDmrl5CB1ALjYmXQxYn3tJiYwQXAbfbTWGaQL-JeW6H2vA9aYG3PBRmqxxW6aqwRyH2oSXT6VlanlT2RzvcBDQIaPv0VFhbhV7RXPIT16_v-Oo78A9kA31Ry45QKgveQtiRnJlh9F5uT1VqOHuMObSMH3udY9rfuXvu61%26flowName%3DGeneralOAuthFlow%26as%3D-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI%26client_id%3D572745194466-gn88euodo1rcvph8qhdpjm29e6ep29cb.apps.googleusercontent.com%26requestPath%3D%252Fsignin%252Foauth%252Fconsent%23&app_domain=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&rart=ANgoxceXa6sBA4RQWucxHUNcWHLrvsHm0KZHpikEPjgpAeW5KZ8zeHbrCwLhF4Lb8ZjCxrIGoPdunv3p4aS67MZfWzdjUT6cELTrH_nRlE25o8-7LlcaNQ4)
+Click on "VfPpkd-RLmnJb"
+Change the value to "" in "Loading" (URL: https://accounts.google.com/v3/signin/rejected?app_domain=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&as=-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI&client_id=572745194466-gn88euodo1rcvph8qhdpjm29e6ep29cb.apps.googleusercontent.com&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hANgcIby6VIt_GXHVSEmK01tRhx82x2ZSn4PFBdc7IIS7LxNPaEBVjSFK6edkP6HRET1JxcW9OnFDPwr2cp4ZAzx6_oLQlpJp482OOJUa11mW7sa78ajTQMgIRIAi0nxX9ajpBCbht35KLjQa4uAGv4pQ9bfDqUDCQg_aRUFUnMxpXMsA2JZ2Qoa1U-1lXLvhr4TeFbi7F35HfAFf3t3Cy-uTDCXVBitJfyo9rdXWRqq-QA-7YsQASpRBKaNM07mWlObhbklmTI4lH60a14eL5xqMIZT1rC2JaZVjRhG8doV9Qfgm7NouFSlTb_zWlXWBBanj1DciEtvXpTg_INZOlOj93HrBzAoOBqJDmrl5CB1ALjYmXQxYn3tJiYwQXAbfbTWGaQL-JeW6H2vA9aYG3PBRmqxxW6aqwRyH2oSXT6VlanlT2RzvcBDQIaPv0VFhbhV7RXPIT16_v-Oo78A9kA31Ry45QKgveQtiRnJlh9F5uT1VqOHuMObSMH3udY9rfuXvu61%26flowName%3DGeneralOAuthFlow%26as%3D-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI%26client_id%3D572745194466-gn88euodo1rcvph8qhdpjm29e6ep29cb.apps.googleusercontent.com%26requestPath%3D%252Fsignin%252Foauth%252Fconsent%23&display=popup&dsh=-JU6cghK3PKh4CQdqayH1R24_N1GGu_fGiBNSaO2PUI&epd=ARMKLbYTkqxt84PriEoZcBTK2JPfBz79HfsCAi2qVXR3NO6G3KEchwvdoA&flowName=GeneralOAuthFlow&gsiwebsdk=gis_attributes&idnf=sathanantham.aru%40tigernalytics.com&o2v=1&opparams=%253Fgis_params%253DGAcqKy1KVTZjZ2hLM1BLaDRDUWRxYXlIMVIyNF9OMUdHdV9mR2lCTlNhTzJQVUk4AUJAZTNhYjQzMWUwNDE0ZDZmOWI0NWZlZGU0ZDc4MWVjYmNhYzgzNWI0MGJkYThkNmUyMDU3ZjNhZGI3MWUzOGYyNw%2526response_mode%253Dform_post&origin=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&prompt=select_account&rart=ANgoxceXa6sBA4RQWucxHUNcWHLrvsHm0KZHpikEPjgpAeW5KZ8zeHbrCwLhF4Lb8ZjCxrIGoPdunv3p4aS67MZfWzdjUT6cELTrH_nRlE25o8-7LlcaNQ4&redirect_uri=gis_transform&response_type=id_token&rhlk=le&rrk=46&scope=openid%20email%20profile&service=lso)
+Click on "Try again"
+Change the value to "" in "Try again"
+Switched to new window: [https://agentflow-uat.tigeranalyticstest.in/]
+Click on "Continue with Microsoft" (URL: https://agentflow-uat.tigeranalyticstest.in/)
+Switched to new window: [https://login.microsoftonline.com/e714ef31-faab-41d2-9f1e-e6df4af16ab8/oauth2/v2.0/authorize?client_id=4722cb40-93b0-4c58-83fa-245cb7651152&scope=api%3A%2F%2Feksagentflow.tigermlcore.com%2F4722cb40-93b0-4c58-83fa-245cb7651152%2Faccess_as_user%20openid%20profile%20User.Read%20offline_access&redirect_uri=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&client-request-id=019f1d00-06d6-7905-b066-4a984d847a47&response_mode=fragment&client_info=1&clidata=1&nonce=019f1d00-0734-7f5b-8b84-0acae919ec46&state=eyJpZCI6IjAxOWYxZDAwLTA3MzItNzdkYS05MTExLWFiOTI4ZmJiY2JhNyIsIm1ldGEiOnsiaW50ZXJhY3Rpb25UeXBlIjoicG9wdXAifX0%3D&x-client-SKU=msal.js.browser&x-client-VER=4.30.0&response_type=code&code_challenge=wqATbaxksahrtrfQMHMXJFPWr0rdp3yKKYcMGGr66Mk&code_challenge_method=S256]
+Click on "Sign in
+Can’t access your account?
+	
+Sign-in options" (URL: https://login.microsoftonline.com/e714ef31-faab-41d2-9f1e-e6df4af16ab8/oauth2/v2.0/authorize?client_id=4722cb40-93b0-4c58-83fa-245cb7651152&scope=api%3A%2F%2Feksagentflow.tigermlcore.com%2F4722cb40-93b0-4c58-83fa-245cb7651152%2Faccess_as_user%20openid%20profile%20User.Read%20offline_access&redirect_uri=https%3A%2F%2Fagentflow-uat.tigeranalyticstest.in&client-request-id=019f1d00-06d6-7905-b066-4a984d847a47&response_mode=fragment&client_info=1&clidata=1&nonce=019f1d00-0734-7f5b-8b84-0acae919ec46&state=eyJpZCI6IjAxOWYxZDAwLTA3MzItNzdkYS05MTExLWFiOTI4ZmJiY2JhNyIsIm1ldGEiOnsiaW50ZXJhY3Rpb25UeXBlIjoicG9wdXAifX0%3D&x-client-SKU=msal.js.browser&x-client-VER=4.30.0&response_type=code&code_challenge=wqATbaxksahrtrfQMHMXJFPWr0rdp3yKKYcMGGr66Mk&code_challenge_method=S256)
+Click on "Enter your email, phone, or Skype."
+Enter "kirtipriyanka" in the "Enter your email, phone, or Skype." field
+Enter "kirtipriyanka.ra@tige" in the "Enter your email, phone, or Skype." field
+Enter "kirtipriyanka.ra@tigeranalytic.co" in the "Enter your email, phone, or Skype." field
+Click on "Enter your email, phone, or Skype."
+Enter "kirtipriyanka.ra@tigeranalytics.com" in the "Enter your email, phone, or Skype." field
+Click on "idSIButton9"
+Shortcut_select_all on "Enter the password for kirtipriyanka.ra@tigeranalytics.com"
+Key_enter on "Enter the password for kirtipriyanka.ra@tigeranalytics.com"
+Enter "Kirti@234" in the "Enter the password for kirtipriyanka.ra@tigeranalytics.com" field
+Click on "idSIButton9"
+Key_enter on "Enter the password for kirtipriyanka.ra@tigeranalytics.com" (URL: https://login.microsoftonline.com/e714ef31-faab-41d2-9f1e-e6df4af16ab8/login)
+Enter "Kirti@234" in the "Enter the password for kirtipriyanka.ra@tigeranalytics.com" field
+Click on "idSIButton9"
+Key_enter on "Enter the password for kirtipriyanka.ra@tigeranalytics.com"
+Enter "Kirtiravi007" in the "Enter the password for kirtipriyanka.ra@tigeranalytics.com" field
+Click on "idSIButton9"
+Switched to window: [https://agentflow-uat.tigeranalyticstest.in/Home]
+Click on "" (URL: https://agentflow-uat.tigeranalyticstest.in/Home)
+Change the value to "" in "link-Agent Studio" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow)
+Click on "+
+New Agent"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (DeepAgent)
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (D"
+Click on "Experiment Name"
+Enter "newagenttest" in the "Experiment Name" field
+Click on "Open HAL Assistant"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (DeepAgent)
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (D"
+Click on "Continue"
+Change the value to "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (DeepAgent)
+
+Your Agent Journey
+
+Follow these 4 steps to build and deploy your agent
+
+Canvas
+
+Build your agent workflow with nodes
+
+Playground
+
+Test with sample inputs/experiments and refine
+
+Evaluation
+
+Review performance and accuracy
+
+Publish
+
+Deploy your agent to production
+
+Skip
+Continue" in "Create Agent
+
+Agent Name *
+
+Description
+
+Framework
+
+LangGraph
+
+ADK
+
+LangChain (D" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=f81f763a-f56a-4ca2-8419-3fcdbfbb768a&agentId=2476&pageType=form)
+Click on "loader-sec"
+Click on "Nodes
+
+Use Multiple nodes to create a workflow"
+Change the value to "Nodes
+
+
+Core Structural
+Base
+Flow Control
+Router
+Loop
+If Else
+Utilities
+HITL
+Sticky Note" in "Nodes
+
+
+Core Structural
+Base
+Flow Control
+Router
+Loop
+If Else
+Utilities
+HITL
+S"
+Drag_start on "Base"
+Drag_start on "Base"
+Drop on "react-flow__pane"
+Change the value to "Add Node1
+Add" in "Add Node1
+Add"
+Click on "Node Name"
+Key_enter on "Node Name"
+Enter "base" in the "Node Name" field
+Click on "Base"
+Change the value to "" in "node-b1a78bfb-c054-4d47-8909-74b95e889728"
+Click on ""
+Change the value to "start_user_query
+Add Input
+Base
+BASE
+LLM Message" in "node-13c4e411-fdaa-4396-94a4-17eb71918365"
+Click on "Edit"
+Change the value to "Base
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+Select source name
+
+Temperature (%)
+*
+Top_P
+*
+Max Output Tokens
+*
+Max Steps
+*
+Input Type
+Add Input
+start_user_query
+Type:
+String
+Output Type
+LLM Message
+E
+System Prompt
+Use prompt...
+
+ 
+start_user_query﻿
+
+Cancel
+Save" in "Base
+BASE NODE
+A
+Node Configurations
+B
+Skills
+C
+Tools
+Model Name
+*
+Select source"
+Change the value to "Select source name" in "Select source name"
+Change the value to "gpt-image-1.5" in "gpt-image-1.5"
+Click on "claude-4-sonnet"
+Change the value to "claude-4-sonnet" in "claude-4-sonnet"
+Change the value to "claude-4-sonnet" in "claude-4-sonnet"
+Click on "Save"
+Change the value to "" in "MuiDialog-container MuiDialog-scrollPaper css-ekeie0"
+Click on ""
+Change the value to "Agent Versions
+Show all versions
+newagenttest
+Draft
+Current
+Latest
+Draft
+Description
+Add" in "Agent Versions
+Show all versions
+newagenttest
+Draft
+Current
+Latest
+Draft
+Descrip"
+Click on "Add"
+Click on "Test & Deploy" (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/canvas?agent_uuid=f81f763a-f56a-4ca2-8419-3fcdbfbb768a&version=v1.0.2&agentId=2476&pageType=form)
+Click on "Test Playground
+
+A one-stop workflow to design, refine, and test your agent."
+Click on "Test Playground
+
+A one-stop workflow to design, refine, and test your agent." (URL: https://agentflow-uat.tigeranalyticstest.in/workflow/playground?agent_uuid=f81f763a-f56a-4ca2-8419-3fcdbfbb768a&version=v1.0.2&agentId=2476&pageType=form&screen=playground)
+Change the value to "Test & Evaluate
+Choose how you'd like to proceed with your agent
+Test Playground
+
+A one-stop workflow to design, refine, and test your agent.
+
+Evaluation
+
+Create, refine, and test your agent's behavior across multiple versions." in "Test & Evaluate
+Choose how you'd like to proceed with your agent
+Test Playground"
+Click on "Experimentation
+Playground
+Workflow Simulation
+BETA"
+Click on "Type your message here..."
+Key_enter on "Type your message here..."

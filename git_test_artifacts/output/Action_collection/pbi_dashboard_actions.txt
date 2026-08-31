@@ -1,0 +1,284 @@
+Switched to new window: [https://app.powerbi.com/view?r=eyJrIjoiMjFiZjAzMTctOTAxZC00ZjM2LWEwMTMtZjM0Nzg5MWNmZmZiIiwidCI6ImU3MTRlZjMxLWZhYWItNDFkMi05ZjFlLWU2ZGY0YWYxNmFiOCIsImMiOjEwfQ%3D%3D]
+Click on "CATEGORY Technology. SUB_CATEGORY Phones. Total Sales $1,706,824.14." (URL: https://app.powerbi.com/view?r=eyJrIjoiMjFiZjAzMTctOTAxZC00ZjM2LWEwMTMtZjM0Nzg5MWNmZmZiIiwidCI6ImU3MTRlZjMxLWZhYWItNDFkMi05ZjFlLWU2ZGY0YWYxNmFiOCIsImMiOjEwfQ%3D%3D)
+Change the value to "" in "CATEGORY Technology. SUB_CATEGORY Phones. Total Sales $1,706,824.14."
+Click on "CATEGORY Furniture. SUB_CATEGORY Chairs. Total Sales $1,501,681.76."
+Change the value to "" in "CATEGORY Furniture. SUB_CATEGORY Chairs. Total Sales $1,501,681.76."
+Click on "CATEGORY Office Supplies. SUB_CATEGORY Appliances. Total Sales $1,011,064.30."
+Change the value to "" in "CATEGORY Office Supplies. SUB_CATEGORY Appliances. Total Sales $1,011,064.30."
+Click on "SEGMENT Consumer. Total Sales $6,507,949.42 (51.48%)."
+Change the value to "" in "SEGMENT Consumer. Total Sales $6,507,949.42 (51.48%)."
+Click on "SEGMENT Corporate. Total Sales $3,824,697.52 (30.25%)."
+Change the value to "" in "SEGMENT Corporate. Total Sales $3,824,697.52 (30.25%)."
+Click on "glyphicon glyph-small pbi-glyph-chevronrightmedium middleIcon active"
+Click on "All"
+Change the value to "All" in "REGION"
+Change the value to "Africa" in "Africa"
+Click on "Central"
+Click on "Central Asia"
+Click on "displayAreaViewport"
+Change the value to "Show keyboard shortcuts
+Show screen reader tips
+Skip to main content
+Power BI Report
+REGION
+Central Asia
+SEGMENT
+All
+
+ORDER DATE
+
+Top 10 Total Sales by PRODUCE_NAME
+$0K
+$5K
+$10K
+Total Sales
+PRODUCE_NAME
+Apple Smart Phone, Full …
+Motorola Smart Phone, …
+Sauder Classic Bookcase,…
+Bush Library with Doors, …
+Motorola Smart Phone, F…
+Bevis Conference Table, F…
+Samsung Smart Phone, C…
+Cisco Smart Phone, with …
+Ikea Classic Bookcase, M…
+Cisco Smart Phone, Full S…
+5%
+10%
+15%
+20%
+25%
+Return Rate %
+Profit Margin
+1%
+2%
+3%
+4%
+5%
+6%
+3.21%
+18.45%
+SUB_CATEGORY
+Accessories
+Appliances
+Art
+Binders
+Bookcases
+Chairs
+Copiers
+Scroll up
+Scroll down
+Scroll left
+Scroll right
+REGION
+Total Sales
+Total Orders
+Return Rate %
+ 
+Central Asia
+$752,826.57
+data bar 100%
+1026
+2.34 %
+Total
+$752,826.57
+1026
+2.34 %
+Total Sales by Year and SEGMENT
+$0.0M
+$0.1M
+$0.2M
+$0.3M
+Year
+Total Sales
+2011
+2012
+2013
+2014
+SEGMENT
+Consumer
+Corporate
+Home Office
+Total Orders by SHIP_MODE
+621 (60.53%)
+(20.27%)
+(14.52%)
+(4.68%)
+208
+149
+48
+SHIP_MODE
+Standard Class
+Second Class
+First Class
+Same Day
+-
++
+76%
+Microsoft Power BI
+2of2" in "embedWrapperID"
+Click on "Central Asia"
+Change the value to "Central Asia" in "REGION"
+Change the value to "Africa" in "Africa"
+Click on "Central Asia"
+Click on "displayAreaViewport"
+Change the value to "Show keyboard shortcuts
+Show screen reader tips
+Skip to main content
+Power BI Report
+REGION
+All
+SEGMENT
+All
+
+ORDER DATE
+
+Top 10 Total Sales by PRODUCE_NAME
+$0K
+$50K
+$100K
+Total Sales
+PRODUCE_NAME
+Apple Smart Phone, Full …
+Cisco Smart Phone, Full S…
+Motorola Smart Phone, F…
+Nokia Smart Phone, Full …
+Canon imageCLASS 2200…
+Hon Executive Leather Ar…
+Office Star Executive Leat…
+Harbour Creations Execu…
+Samsung Smart Phone, C…
+Nokia Smart Phone, with…
+-10%
+0%
+10%
+20%
+Return Rate %
+Profit Margin
+4%
+5%
+6%
+7%
+8%
+6.04%
+12.87%
+SUB_CATEGORY
+Accessories
+Appliances
+Art
+Binders
+Bookcases
+Chairs
+Copiers
+Scroll up
+Scroll down
+Scroll left
+Scroll right
+REGION
+Total Sales
+Total Orders
+Return Rate %
+ 
+North Asia
+$848,309.78
+data bar 30%
+1150
+13.83 %
+West
+$725,457.82
+data bar 26%
+1611
+11.73 %
+North
+$1,248,165.60
+data bar 44%
+2356
+10.02 %
+Central
+$2,822,302.52
+data bar 100%
+5249
+4.80 %
+South
+$1,600,907.04
+data bar 57%
+3270
+4.10 %
+Southeast Asia
+$884,423.17
+data bar 31%
+1517
+3.63 %
+Oceania
+$1,100,184.61
+data bar 39%
+1744
+3.33 %
+East
+$678,781.24
+data bar 24%
+1401
+3.21 %
+Caribbean
+$324,280.86
+data bar 11%
+855
+2.92 %
+Central Asia
+$752,826.57
+data bar 27%
+1026
+2.34 %
+Africa
+$783,773.21
+data bar 28%
+2232
+ 
+Canada
+$66,928.17
+data bar 2%
+201
+ 
+EMEA
+$806,161.31
+data bar 29%
+2462
+ 
+Total
+$12,642,501.91
+25035
+4.68 %
+Total Sales by Year and SEGMENT
+$0M
+$2M
+$4M
+Year
+Total Sales
+2011
+2012
+2013
+2014
+SEGMENT
+Consumer
+Corporate
+Home Office
+Total Orders by SHIP_MODE
+15K (59.57%)
+(20.12%)
+(15.02%)
+(5.29%)
+5K
+4K
+1K
+SHIP_MODE
+Standard Class
+Second Class
+First Class
+Same Day
+-
++
+76%
+Microsoft Power BI
+2of2" in "embedWrapperID"
+Click on "SHIP_MODE Standard Class. Total Orders 15154 (59.57%)."
+Change the value to "" in "SHIP_MODE Standard Class. Total Orders 15154 (59.57%)."

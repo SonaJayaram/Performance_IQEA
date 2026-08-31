@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>API Quality Analysis Report</title>
+  <style>
+    body { font-family: Arial,Helvetica,sans-serif; line-height:1.4; color:#222; padding:20px; }
+    h1,h2 { color:#0b4f6c; }
+    .api-block { border:1px solid #ddd; padding:12px 16px; margin-bottom:20px; border-radius:6px; background:#fbfdff; }
+    dl { margin:0 0 12px 0; }
+    dt { font-weight:700; }
+    dd { margin:0 0 8px 0; }
+    ul { margin:0 0 12px 18px; }
+    .pass { color: #116611; font-weight:700; }
+    .fail { color: #aa1100; font-weight:700; }
+    .gray { color:#666; }
+  </style>
+</head>
+<body>
+  <h1>API Quality Analysis Report</h1>
+
+  <!-- API 1 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <dl>
+      <dt>Method</dt><dd>GET</dd>
+      <dt>Endpoint</dt><dd>https://reqres.in/api/users/2</dd>
+      <dt>Status Code</dt><dd>200</dd>
+      <dt>Result</dt><dd><span class="pass">PASS</span></dd>
+    </dl>
+
+    <h2>Validation Results</h2>
+    <ul>
+      <li><strong>Status code validation:</strong> 200 is the expected and appropriate status code for a successful GET of an existing resource. Valid.</li>
+      <li><strong>Field/value validation details:</strong>
+        <ul>
+          <li>The response contains a "data" object with fields: id (2), email ("janet.weaver@reqres.in"), first_name ("Janet"), last_name ("Weaver"), avatar (URL).</li>
+          <li>The expected assertion was first_name: Janet — this field is present and matches exactly.</li>
+          <li>The response also includes a "support" object and an "_meta" object; presence of these additional fields is acceptable unless a stricter contract forbids them.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li class="gray">No functional defects identified for the asserted expectation (first_name: Janet).</li>
+      <li class="gray">Potential observation: response contains additional metadata fields ("_meta"). If clients expect a minimal payload, this should be documented; however, this is not a defect per current assertion.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk:</strong> Low</p>
+    <p class="gray">Justification: Status code and asserted field match expectations. No contract mismatch observed for the validated field. Additional metadata does not present an immediate functional risk.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Document the full response schema (including "support" and "_meta") in API specification so consumers know what to expect.</li>
+      <li>Add automated schema validation in tests (e.g., JSON Schema or OpenAPI contract) to catch unexpected structural changes early.</li>
+      <li>Consider versioning or a "fields" parameter if clients require a smaller payload without metadata.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><span class="pass">PASS</span> — The GET request returned status 200 and the expected field first_name with the correct value. No defects were found against the provided expectation.</p>
+  </div>
+
+  <!-- API 2 -->
+  <div class="api-block">
+    <h2>API Summary</h2>
+    <dl>
+      <dt>Method</dt><dd>POST</dd>
+      <dt>Endpoint</dt><dd>https://reqres.in/api/users</dd>
+      <dt>Status Code</dt><dd>201</dd>
+      <dt>Result</dt><dd><span class="fail">FAIL</span></dd>
+    </dl>
+
+    <h2>Validation Results</h2>
+    <ul>
+      <li><strong>Status code validation:</strong> 201 is the expected and appropriate status code for successful resource creation. Valid.</li>
+      <li><strong>Field/value validation details:</strong>
+        <ul>
+          <li>The actual response contains: name ("John Doe"), job ("Developer"), id ("720"), createdAt (timestamp), and an "_meta" object.</li>
+          <li>The expected assertion provided was first_name: John. The response does NOT include a field named "first_name".</li>
+          <li>The response includes a "name" field with value "John Doe". Without the original request payload provided, it cannot be confirmed if "name":"John Doe" reflects the request, but it is present in the response.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Issues Identified</h2>
+    <ul>
+      <li>Mismatch between test expectation and response contract: expected field "first_name" is missing; response uses "name". This is a contract inconsistency between test expectation and actual API response.</li>
+      <li>Missing input data for verification: the request payload used for the POST is not provided in the test input, preventing a full verification that response values reflect the request payload.</li>
+      <li>Ambiguity in expected value: expected "first_name: John" suggests either the API should return a parsed first_name or tests should expect "name". This ambiguity can lead to false positives/negatives in test results.</li>
+    </ul>
+
+    <h2>Risk Assessment</h2>
+    <p><strong>Risk:</strong> Medium</p>
+    <p class="gray">Justification: While the HTTP status code indicates successful creation, the mismatch in expected field names (first_name vs name) and missing request payload create a contract risk. Consumers relying on "first_name" will fail; automated tests that assume different field names may report incorrect results. This can cause integration issues.</p>
+
+    <h2>Recommendations</h2>
+    <ul>
+      <li>Align contract and tests: decide whether the API should return "name" or structured "first_name" and "last_name". Update API documentation and tests to match the agreed contract.</li>
+      <li>Include the exact request payload in test records and test definitions. This allows validators to assert that response echoes request values where applicable (e.g., name/job).</li>
+      <li>Add a JSON Schema / OpenAPI specification for the POST endpoint and enforce it in CI (validate response against schema). This will detect missing or renamed fields automatically.</li>
+      <li>If the API intends to return separate name parts, update the implementation to return first_name/last_name; otherwise, update functional tests to expect "name" (or update expected value to "John Doe").</li>
+      <li>Ensure test expectations are unambiguous (field name and expected value). Avoid asserting partial names (first_name) if API returns full name.</li>
+      <li>Log and surface contract changes: when the API returns additional metadata ("_meta"), indicate in docs whether these fields are stable or subject to change.</li>
+    </ul>
+
+    <h2>Overall Verdict</h2>
+    <p><span class="fail">FAIL</span> — Although the POST returned HTTP 201 and a response body, the test expectation (first_name: John) is not satisfied because the response does not contain "first_name". The test outcome cannot be fully validated because the request payload is not available. Recommend resolving the contract mismatch and providing the request payload for repeatable verification.</p>
+  </div>
+
+  <footer class="gray">
+    Report generated by: Senior API Quality Architect and Automation Expert. Note: analysis is limited to the provided execution data; no external data was assumed or invented.
+  </footer>
+</body>
+</html>

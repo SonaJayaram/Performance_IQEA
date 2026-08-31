@@ -1,0 +1,8 @@
+Switched to new window: [https://portal.foodtruck-qa.com/]
+Click the "Enter" button (URL: https://portal.foodtruck-qa.com/)
+Click the "Kitchen Order Manager" link
+Switched to new window: [https://kom.foodtruck-qa.com/hdr-order-manager?type=Wonder]
+Click the "Inventory Manager" link (URL: https://kom.foodtruck-qa.com/hdr-order-manager?type=Wonder)
+Click the "Manager View" link (URL: https://kom.foodtruck-qa.com/inventory-manager?tab=hot-holding)
+Click the "submit" button (URL: https://kom.foodtruck-qa.com/manager-view)
+Click the "Alerts" button

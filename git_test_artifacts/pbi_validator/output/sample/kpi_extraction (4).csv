@@ -1,0 +1,63 @@
+visual_name,kpi_name,value,value_type,visual_type
+Untitled Visual,Total Sales,"$12,642,501.91",number,card
+Untitled Visual,Total Orders,25035,number,card
+Untitled Visual,Total Customers,1590,number,card
+Untitled Visual,Total Profit,"$1,467,457.29",number,card
+Untitled Visual,Profit Margin,11.61%,number,card
+Untitled Visual,Return Rate %,4.68 %,number,card
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2011, Qtr 1]","$335,780.01",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2011, Qtr 1]","$36,043.28",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2011, Qtr 2]","$478,870.98",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2011, Qtr 2]","$48,501.40",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2011, Qtr 3]","$613,306.37",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2011, Qtr 3]","$65,075.56",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2011, Qtr 4]","$831,493.54",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2011, Qtr 4]","$99,320.58",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2012, Qtr 1]","$399,367.71",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2012, Qtr 1]","$43,394.65",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2012, Qtr 2]","$625,592.86",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2012, Qtr 2]","$81,650.82",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2012, Qtr 3]","$737,768.89",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2012, Qtr 3]","$86,935.45",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2012, Qtr 4]","$914,709.23",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2012, Qtr 4]","$95,434.36",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2013, Qtr 1]","$565,019.59",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2013, Qtr 1]","$74,006.83",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2013, Qtr 2]","$834,839.49",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2013, Qtr 2]","$93,436.15",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2013, Qtr 3]","$933,036.99",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2013, Qtr 3]","$98,793.16",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2013, Qtr 4]","$1,072,850.38",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2013, Qtr 4]","$140,699.09",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2014, Qtr 1]","$689,206.68",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2014, Qtr 1]","$85,110.35",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2014, Qtr 2]","$932,986.97",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2014, Qtr 2]","$101,514.46",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2014, Qtr 3]","$1,196,482.87",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2014, Qtr 3]","$149,558.22",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Sales [2014, Qtr 4]","$1,481,189.35",number,table
+Total Sales and Total Profit by Year and Quarter,"Total Profit [2014, Qtr 4]","$167,982.94",number,table
+Total Sales by MARKET,Total Sales [APAC],"$3,585,744.13",number,table
+Total Sales by MARKET,Total Sales [EU],"$2,938,089.06",number,table
+Total Sales by MARKET,Total Sales [US],"$2,297,200.86",number,table
+Total Sales by MARKET,Total Sales [LATAM],"$2,164,605.17",number,table
+Total Sales by MARKET,Total Sales [EMEA],"$806,161.31",number,table
+Total Sales by MARKET,Total Sales [Africa],"$783,773.21",number,table
+Total Sales by MARKET,Total Sales [Canada],"$66,928.17",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Accessories [Technology],"$749,237.02",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Copiers [Technology],"$1,509,436.27",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Machines [Technology],"$779,060.07",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Phones [Technology],"$1,706,824.14",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Bookcases [Furniture],"$1,466,572.24",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Chairs [Furniture],"$1,501,681.76",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Furnishings [Furniture],"$385,578.26",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Appliances [Office Supplies],"$1,011,064.30",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Art [Office Supplies],"$372,091.97",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Binders [Office Supplies],"$461,911.51",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Envelopes [Office Supplies],"$170,904.30",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Fasteners [Office Supplies],"$83,242.32",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Labels [Office Supplies],"$73,404.03",number,table
+Total Sales by CATEGORY and SUB_CATEGORY,Paper [Office Supplies],"$244,291.72",number,table
+Total Sales by SEGMENT,Total Sales [Consumer],"$6,507,949.42",number,table
+Total Sales by SEGMENT,Total Sales [Corporate],"$3,824,697.52",number,table
+Total Sales by SEGMENT,Total Sales [Home Office],"$2,309,854.97",number,table

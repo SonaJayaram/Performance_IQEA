@@ -1,0 +1,61 @@
+query_name,visual_type,sql_query,dimension_column,metric_columns,kpi_patterns,description
+Top 10 Total Sales by PRODUCE_NAME,table,"SELECT produce_name AS PRODUCE_NAME, SUM(sales) AS ""Total Sales""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders
+WHERE {SLICER_CONDITIONS}
+GROUP BY produce_name
+ORDER BY SUM(sales) DESC
+LIMIT 10;",PRODUCE_NAME,"[""Total Sales""]","[""Total Sales""]",Top 10 products by total sales (aggregated sales). Uses slicer conditions placeholder.
+"Sub-Category Return Rate, Profit Margin and Sales",table,"SELECT o.sub_category AS SUB_CATEGORY,
+       COALESCE(CAST(r.return_orders AS DOUBLE) / NULLIF(o.total_orders,0),0) AS ""Return Rate %"",
+       (o.sum_profit / NULLIF(o.sum_sales,0)) AS ""Profit Margin"",
+       o.sum_sales AS ""Total Sales""
+FROM (
+  SELECT sub_category,
+         COUNT(DISTINCT order_id) AS total_orders,
+         SUM(sales) AS sum_sales,
+         SUM(profit) AS sum_profit
+  FROM tiger_data_engineering.global_superstore_gold.gold_orders
+  WHERE {SLICER_CONDITIONS}
+  GROUP BY sub_category
+) o
+LEFT JOIN (
+  SELECT o2.sub_category, COUNT(DISTINCT r.order_id) AS return_orders
+  FROM tiger_data_engineering.global_superstore_gold.gold_returns r
+  JOIN tiger_data_engineering.global_superstore_gold.gold_orders o2
+    ON r.order_id = o2.order_id
+  WHERE {SLICER_CONDITIONS}
+  GROUP BY o2.sub_category
+) r
+  ON o.sub_category = r.sub_category
+ORDER BY o.sum_sales DESC;",SUB_CATEGORY,"[""Return Rate %"", ""Profit Margin"", ""Total Sales""]","[""Return Rate %"", ""Profit Margin"", ""Total Sales""]","Per sub-category metrics: return rate (distinct returned orders / distinct orders), profit margin (profit/sales), and total sales. All subqueries include {SLICER_CONDITIONS}."
+Region Operations Scorecard,table,"SELECT o.region AS REGION,
+       SUM(o.sales) AS ""Total Sales"",
+       COUNT(DISTINCT o.order_id) AS ""Total Orders"",
+       COALESCE(CAST(r.return_orders AS DOUBLE) / NULLIF(COUNT(DISTINCT o.order_id),0),0) AS ""Return Rate %""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders o
+LEFT JOIN (
+  SELECT o2.region, COUNT(DISTINCT r.order_id) AS return_orders
+  FROM tiger_data_engineering.global_superstore_gold.gold_returns r
+  JOIN tiger_data_engineering.global_superstore_gold.gold_orders o2
+    ON r.order_id = o2.order_id
+  WHERE {SLICER_CONDITIONS}
+  GROUP BY o2.region
+) r
+  ON o.region = r.region
+WHERE {SLICER_CONDITIONS}
+GROUP BY o.region
+ORDER BY ""Total Sales"" DESC;",REGION,"[""Total Sales"", ""Total Orders"", ""Return Rate %""]","[""Total Sales"", ""Total Orders"", ""Return Rate %""]","Region-level totals: sales, distinct orders, and return rate. Both main and returns subquery apply {SLICER_CONDITIONS}."
+Total Sales by Year and SEGMENT,table,"SELECT EXTRACT(YEAR FROM order_date) AS Year,
+       SUM(CASE WHEN segment = 'Consumer' THEN sales ELSE 0 END) AS ""Consumer"",
+       SUM(CASE WHEN segment = 'Corporate' THEN sales ELSE 0 END) AS ""Corporate"",
+       SUM(CASE WHEN segment = 'Home Office' THEN sales ELSE 0 END) AS ""Home Office""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders
+WHERE {SLICER_CONDITIONS}
+GROUP BY EXTRACT(YEAR FROM order_date)
+ORDER BY Year;",Year,"[""Consumer"", ""Corporate"", ""Home Office""]","[""Consumer"", ""Corporate"", ""Home Office""]","Yearly total sales pivoted into three segment columns (Consumer, Corporate, Home Office). Uses {SLICER_CONDITIONS}."
+Total Orders by SHIP_MODE,table,"SELECT ship_mode AS SHIP_MODE,
+       COUNT(DISTINCT order_id) AS ""Total Orders""
+FROM tiger_data_engineering.global_superstore_gold.gold_orders
+WHERE {SLICER_CONDITIONS}
+GROUP BY ship_mode
+ORDER BY ""Total Orders"" DESC;",SHIP_MODE,"[""Total Orders""]","[""Total Orders""]",Total distinct orders by ship mode. Includes slicer placeholder in WHERE.

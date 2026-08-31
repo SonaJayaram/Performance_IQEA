@@ -1,0 +1,63 @@
+Here is the extracted workflow information from the provided document, formatted as per your instructions:
+
+---
+
+**Page:** Login Page (https://www.saucedemo.com/)  
+- Step 1: Click on "user-name"  
+- Step 2: Change the value in "user-name"  
+- Step 3: Enter "standard_user" in the "user-name" field  
+- Step 4: Click on "password"  
+- Step 5: Change the value in "password"  
+- Step 6: Enter "secret_sauce" in the "password" field  
+- Step 7: Click on "login-button"  
+- Step 8: Click on "logout_sidebar_link"  
+- **Navigates to:** Product Page (https://www.saucedemo.com/inventory.html)  
+
+---
+
+**Page:** Product Page (https://www.saucedemo.com/inventory.html)  
+- Step 1: Enter "Login" in the "login-button" field  
+- Step 2: Click on "add-to-cart-sauce-labs-bike-light"  
+- Step 3: Click on "continue-shopping"  
+- Step 4: Click on "Name (A to Z) Name (Z to A) Price (low to high) Price (high to low)"  
+- Step 5: Change the value in "Name (A to Z) Name (Z to A) Price (low to high) Price (high to low)"  
+- Step 6: Click on "back-to-products"  
+- Step 7: Click on "Swag Labs"  
+- Step 8: Click on "react-burger-menu-btn"  
+- **Navigates to:** Cart Page (https://www.saucedemo.com/cart.html)  
+
+---
+
+**Page:** Cart Page (https://www.saucedemo.com/cart.html)  
+- Step 1: Click on "1"  
+- **Navigates to:** Checkout Step One Page (https://www.saucedemo.com/checkout-step-one.html)  
+
+---
+
+**Page:** Checkout Step One Page (https://www.saucedemo.com/checkout-step-one.html)  
+- Step 1: Click on "checkout"  
+- Step 2: Click on "firstName"  
+- Step 3: Change the value in "firstName"  
+- Step 4: Enter "test" in the "firstName" field  
+- Step 5: Change the value in "lastName"  
+- Step 6: Enter "test" in the "lastName" field  
+- Step 7: Change the value in "postalCode"  
+- Step 8: Enter "456789" in the "postalCode" field  
+- Step 9: Click on "continue"  
+- **Navigates to:** Checkout Step Two Page (https://www.saucedemo.com/checkout-step-two.html)  
+
+---
+
+**Page:** Checkout Step Two Page (https://www.saucedemo.com/checkout-step-two.html)  
+- Step 1: Enter "Continue" in the "continue" field  
+- **Navigates to:** Checkout Complete Page (https://www.saucedemo.com/checkout-complete.html)  
+
+---
+
+**Page:** Checkout Complete Page (https://www.saucedemo.com/checkout-complete.html)  
+- Step 1: Click on "finish"  
+- **Navigates to:** N/A (End of workflow)  
+
+--- 
+
+This completes the extraction of the workflow details.

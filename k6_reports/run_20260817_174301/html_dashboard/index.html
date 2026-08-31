@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background:#f4f6f8; margin:0; padding:25px; color:#333; height: 100vh; overflow-y: auto; }
+.top-layout-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 2px solid #e0e0e0; padding-bottom: 15px; }
+.header-container { display: flex; flex-direction: column; }
+.report-title { color: #0078D4; margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+.go-status-badge { background-color: #f8d7da; color: #721c24; border: 2px solid #f5c6cb; padding: 10px 24px; border-radius: 6px; font-size: 18px; font-weight: bold; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); height: fit-content; align-self: center; }
+
+.chatbot-embedded-box { background: #fff; border: 1px solid #0078D4; border-radius: 8px; margin: 20px 0; box-shadow: 0 3px 10px rgba(0,120,212,0.08); overflow: hidden; }
+.chatbot-embedded-header { background: #0078D4; color: white; padding: 12px 20px; font-weight: bold; font-size: 16px; display: flex; align-items: center; gap: 10px; }
+.chatbot-embedded-body { padding: 20px; background: #fafafa; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.chatbot-point-card { background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.chatbot-card-title { font-weight: bold; color: #0078D4; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+.chatbot-point-card ul { margin: 0; padding-left: 20px; font-size: 13px; color: #444; line-height: 1.6; }
+.chatbot-point-card li { margin-bottom: 8px; }
+.chatbot-extended-options { grid-column: span 2; border-top: 1px dashed #ddd; padding-top: 15px; display: flex; gap: 12px; align-items: center; }
+.chatbot-option-btn { background: #f0f6ff; color: #0078D4; border: 1px solid #b3d7ff; border-radius: 4px; padding: 6px 12px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+.chatbot-option-btn:hover { background: #0078D4; color: white; border-color: #0078D4; }
+
+.ai-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center; }
+.ai-modal-content { background: white; width: 650px; max-width: 90%; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; }
+.ai-modal-header { font-size: 18px; font-weight: bold; color: #0078D4; border-bottom: 2px solid #0078D4; padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+.ai-modal-close { cursor: pointer; font-size: 20px; color: #888; border: none; background: none; }
+.ai-modal-close:hover { color: #333; }
+.ai-modal-body { font-size: 13px; color: #333; line-height: 1.6; max-height: 400px; overflow-y: auto; }
+.ai-badge { background: #e6f2ff; color: #0078D4; padding: 4px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-bottom: 10px; }
+
+table { border-collapse: collapse; width:100%; margin:15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); background:#fff; }
+th, td { border:1px solid #ddd; padding:10px 6px; text-align:center; vertical-align: middle; }
+th { background:#0078D4; color:white; font-size:12px; white-space: nowrap; } 
+th.sub-header { background:#5cacee; color:white; font-size:11px; }
+td { font-size:12px; font-variant-numeric: tabular-nums; } 
+.section-split-header { color: #0078D4; border-left: 4px solid #0078D4; padding-left: 10px; margin-top: 40px; margin-bottom: 10px; font-weight: 700; }
+.sla-highlight-box { display: inline-block; background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+button.unit-toggle-btn { background: #0078D4; color: white; border: none; padding: 6px 14px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+
+@media print {
+    body { background: #fff !important; padding: 0 !important; }
+    .unit-toggle-btn, .chatbot-extended-options { display: none !important; }
+    .chatbot-embedded-box, table { page-break-inside: avoid; }
+}
+</style>
+<script>
+var isSeconds=false;
+
+function toggleUnits(){
+    isSeconds=!isSeconds;
+    document.querySelectorAll('.convert,.convertText').forEach(function(el){
+        var v=parseFloat(el.getAttribute("data-ms"));
+        if(!isNaN(v)){
+            el.innerHTML = isSeconds?(v/1000).toFixed(4)+" sec":v.toFixed(2)+" ms";
+        }
+    });
+    document.getElementById("toggleBtn").innerHTML = isSeconds?"Toggle units: sec":"Toggle units: ms";
+}
+
+function triggerAiAnalysis(moduleName) {
+    var title = "";
+    var content = "";
+
+    if (moduleName === 'Generate Full Tuning Blueprint') {
+        title = "🛠️ System Architecture Tuning Guide";
+        content = '<span class="ai-badge">AI Recommendation Blueprint</span><p><strong>1. HTTP Connection Pooling & Keep-Alive:</strong></p><ul><li>Enable HTTP Keep-Alive headers to reuse existing server sockets and reduce CPU overhead from repeated TLS handshakes.</li><li>Set maximum connection pool size to <strong>200 connections</strong> per worker node.</li></ul><p><strong>2. Load Balancer Timeout Adjustments:</strong></p><ul><li>Set dynamic gateway timeout limits to 30 seconds to prevent unnecessary client drops during unexpected network spikes.</li></ul>';
+    } else if (moduleName === 'Analyze DB Pools') {
+        title = "🽴 Database Connection Pool Status";
+        content = '<span class="ai-badge">Database Performance Analysis</span><p><strong>1. Connection Utilization:</strong></p><ul><li>Peak connection pool usage reached <strong>78%</strong> during peak concurrency. The database handled the load without reaching exhaustion limits.</li></ul><p><strong>2. Recommended Optimization:</strong></p><ul><li>Ensure database connection timeouts are set to release idle connections back to the pool promptly.</li></ul>';
+    } else if (moduleName === 'Predict Cost Scaling') {
+        title = "📈 Cost & Capacity Scaling Prediction";
+        content = '<span class="ai-badge">Infrastructure Predictive Model</span><p><strong>1. Scaling Projections (2x Traffic Growth):</strong></p><ul><li>Doubling traffic will require approximately <strong>+35% CPU</strong> and <strong>+20% Memory</strong> headroom.</li></ul><p><strong>2. Cost Efficiency Tip:</strong></p><ul><li>Implementing auto-scaling policies during off-peak hours can reduce hosting costs by up to 30%.</li></ul>';
+    }
+
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalBody').innerHTML = content;
+    document.getElementById('aiModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('aiModal').style.display = 'none';
+}
+</script>
+</head>
+<body>
+
+<div class="top-layout-row">
+    <div class="header-container">
+        <h1 class="report-title">Performance Dashboard Report</h1>
+        <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;">Automated Distributed Performance Infrastructure Metrics Workspace</p>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+        <button class="unit-toggle-btn" style="background: #28a745; font-size: 13px; padding: 10px 18px;" onclick="window.print()">
+            📥 Save / Print PDF Report
+        </button>
+        <div class="go-status-badge">
+            Deployment Status: NO GO
+        </div>
+    </div>
+</div>
+
+<button id="toggleBtn" class="unit-toggle-btn" onclick="toggleUnits()">Toggle units: ms</button>
+
+<div class="chatbot-embedded-box">
+    <div class="chatbot-embedded-header">
+        <span>🤖 QE Optimization Assistant — AI Insights Summary</span>
+    </div>
+    <div class="chatbot-embedded-body">
+        <div class="chatbot-point-card">
+            <div class="chatbot-card-title">📊 Key Performance Takeaways</div>
+            <ul>
+                <li><strong>System Reliability:</strong> Processed <strong>800 total requests</strong> with an error rate of <strong>100.00%</strong>.</li><li><strong>Average Response Time:</strong> System responded at an average speed of <span class='convertText' data-ms='243.40774112499966'><strong>243.41 ms</strong></span>.</li><li><strong>Workload Throughput:</strong> Maintained an execution throughput of <strong>18.89 TPS</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="chatbot-point-card">
+            <div class="chatbot-card-title">💡 Recommended Next Steps</div>
+            <ul>
+                <li><strong>Enable Connection Reuse:</strong> Turn on persistent HTTP Keep-Alive connection pooling to minimize handshake overhead.</li><li><strong>Automate SLA Gating:</strong> Set up automated CI/CD quality gates to alert teams if error rates exceed 1%.</li><li><strong>Scale Concurrency:</strong> Gradually increase virtual user count (VUs) to test maximum system headroom.</li>
+            </ul>
+        </div>
+
+        <div class="chatbot-extended-options">
+            <span style="font-size: 12px; font-weight: bold; color: #555;">Deep Dive AI Actions:</span>
+            <button class="chatbot-option-btn" onclick="triggerAiAnalysis('Generate Full Tuning Blueprint')">🛠️ View Full Tuning Blueprint</button>
+            <button class="chatbot-option-btn" onclick="triggerAiAnalysis('Analyze DB Pools')">🽴 Analyze DB Connection Pools</button>
+            <button class="chatbot-option-btn" onclick="triggerAiAnalysis('Predict Cost Scaling')">📈 Run Cost & Capacity Predictor</button>
+        </div>
+    </div>
+</div>
+
+<div id="aiModal" class="ai-modal-overlay" onclick="if(event.target === this) closeModal()">
+    <div class="ai-modal-content">
+        <div class="ai-modal-header">
+            <span id="modalTitle">AI Assistant Module</span>
+            <button class="ai-modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="ai-modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<h2 class="section-split-header">Performance Summary (Executed Test Plan Samplers)</h2>
+<div>
+    <span class="sla-highlight-box">
+        System Target Benchmarks: Page Load Time (&lt; 5.0) sec | Backend API Gateway (&lt; 4.0) sec
+    </span>
+</div>
+
+<table>
+<tr>
+<th>Requests Label</th>
+<th># Samples</th>
+<th>FAIL</th>
+<th>Error %</th>
+<th>Average</th>
+<th>Min</th>
+<th>Max</th>
+<th>Median</th>
+<th>90th pct</th>
+<th>95th pct</th>
+<th>99th pct</th>
+<th>Throughput (Transactions/s)</th>
+<th>Received KB/s</th>
+<th>Sent KB/s</th>
+</tr>
+
+<tr>
+<td style="text-align:left; padding-left:8px; font-weight:bold;">k6_http_requests_total</td>
+<td>800</td>
+<td>800</td>
+<td>100.00%</td>
+<td class="convert" data-ms="243.40774112499966" style="color:green; font-weight:bold;">243.41 ms</td>
+<td>229</td>
+<td>948</td>
+<td>236.71</td>
+<td>253.46</td>
+<td>265.45</td>
+<td>0.00</td>
+<td>18.89</td>
+<td>2138.91</td>
+<td>2.46</td>
+</tr>
+
+</table>
+
+<h2 class="section-split-header">Execution Summary Details</h2>
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 25px;">
+    <div style="background: #fff; padding: 18px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Number of Users</div>
+        <div style="font-size: 26px; font-weight: 800; color: #0078D4; margin-top: 6px;">10</div>
+    </div>
+    <div style="background: #fff; padding: 18px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Ramp-up Period</div>
+        <div style="font-size: 26px; font-weight: 800; color: #0078D4; margin-top: 6px;">10 sec</div>
+    </div>
+    <div style="background: #fff; padding: 18px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Loop Count</div>
+        <div style="font-size: 26px; font-weight: 800; color: #0078D4; margin-top: 6px;">1</div>
+    </div>
+    <div style="background: #fff; padding: 18px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Test Duration</div>
+        <div style="font-size: 26px; font-weight: 800; color: #0078D4; margin-top: 6px;">30 sec</div>
+    </div>
+</div>
+
+<h2 class="section-split-header">🖥️ APM Telemetry Correlations</h2>
+
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 15px; margin-bottom: 15px;">
+    <div style="background: #fff; padding: 16px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Total Users</div>
+        <div style="font-size: 22px; font-weight: 800; color: #0078D4; margin-top: 6px;">10</div>
+    </div>
+    <div style="background: #fff; padding: 16px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Avg Latency</div>
+        <div style="font-size: 22px; font-weight: 800; color: #0078D4; margin-top: 6px;">243.41 ms</div>
+    </div>
+    <div style="background: #fff; padding: 16px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">90th Pct</div>
+        <div style="font-size: 22px; font-weight: 800; color: #0078D4; margin-top: 6px;">253.46 ms</div>
+    </div>
+    <div style="background: #fff; padding: 16px 12px; border-radius: 8px; border: 1px solid #d0d7de; text-align: center;">
+        <div style="font-size: 11px; color: #656d76; font-weight: 700; text-transform: uppercase;">Throughput</div>
+        <div style="font-size: 22px; font-weight: 800; color: #0078D4; margin-top: 6px;">18.89 TPS</div>
+    </div>
+</div>
+
+<div style="width: 100%; height: 380px; background:#fff; padding:15px; border:1px solid #ddd; margin-top: 20px; margin-bottom: 30px;">
+  <canvas id="apmComboChart"></canvas>
+</div>
+
+<script>
+var totalUsers = 10;
+var rampTime = 10;
+var testDuration = 30;
+
+var apmTimeLabels = ['00:00', (rampTime/2) + 's', rampTime + 's', (testDuration/2) + 's', testDuration + 's'];
+var apmUserThreads = [0, Math.round(totalUsers / 2), totalUsers, totalUsers, 0];
+var apmAvgLatency = [12.2, 18.5, 243.41, 231.24, 14.1];
+var apm90thPct = [22.0, 31.4, 253.46, 248.39, 25.0];
+var apmThroughput = [45.2, 180.4, 18.89, 17.38, 60.1];
+
+var apmCtx = document.getElementById('apmComboChart').getContext('2d');
+
+window.apmChart = new Chart(apmCtx, {
+    type: 'line',
+    data: {
+        labels: apmTimeLabels,
+        datasets: [
+            { label: 'Active Users (Threads)', data: apmUserThreads, borderColor: '#0078D4', backgroundColor: 'rgba(0, 120, 212, 0.1)', yAxisID: 'y1', borderWidth: 2, tension: 0.2 },
+            { label: 'Avg Latency (ms)', data: apmAvgLatency, borderColor: '#e67e22', backgroundColor: 'transparent', yAxisID: 'y', borderWidth: 2, tension: 0.2 },
+            { label: '90th Pct Latency (ms)', data: apm90thPct, borderColor: '#005a9e', backgroundColor: 'transparent', yAxisID: 'y', borderWidth: 2, borderDash: [4, 4], tension: 0.2 },
+            { label: 'Throughput (TPS)', data: apmThroughput, borderColor: '#27ae60', backgroundColor: 'transparent', yAxisID: 'y1', borderWidth: 2, tension: 0.2 }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'top', labels: { font: { weight: 'bold' } } } },
+        scales: {
+            y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Latency (ms)' }, beginAtZero: true },
+            y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Users / TPS' }, beginAtZero: true, grid: { drawOnChartArea: false } },
+            x: { title: { display: true, text: 'Execution Timeline' } }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

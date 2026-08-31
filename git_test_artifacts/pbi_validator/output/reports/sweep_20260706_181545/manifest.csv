@@ -1,0 +1,11 @@
+REGION (2),SEGMENT,applied_ok,visual_sheets,file,error
+Africa,Consumer,False,5,01_REGION_2_Africa__SEGMENT_Consumer.xlsx,
+Canada,Corporate,False,5,02_REGION_2_Canada__SEGMENT_Corporate.xlsx,
+Caribbean,Home Office,False,5,03_REGION_2_Caribbean__SEGMENT_Home_Office.xlsx,
+Central,Consumer,False,5,04_REGION_2_Central__SEGMENT_Consumer.xlsx,
+Central Asia,Corporate,False,5,05_REGION_2_Central_Asia__SEGMENT_Corporate.xlsx,
+East,Home Office,False,5,06_REGION_2_East__SEGMENT_Home_Office.xlsx,
+EMEA,Consumer,False,5,07_REGION_2_EMEA__SEGMENT_Consumer.xlsx,
+North,Corporate,False,5,08_REGION_2_North__SEGMENT_Corporate.xlsx,
+Africa,Home Office,False,5,09_REGION_2_Africa__SEGMENT_Home_Office.xlsx,
+Canada,Consumer,False,5,10_REGION_2_Canada__SEGMENT_Consumer.xlsx,

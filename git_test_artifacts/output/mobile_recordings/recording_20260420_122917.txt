@@ -1,0 +1,45 @@
+================================================================================
+IQEA MOBILE AUTOMATION — RECORDED SESSION
+================================================================================
+Generated  : 2026-04-20 12:30:10
+Device     : Google sdk_gphone64_x86_64 (Android)
+OS         : Android Android 15
+Session ID : SES-UP4FGWHZ
+Total Steps: 4
+
+================================================================================
+RECORDED ACTIONS
+================================================================================
+
+[STEP #01]  TAP
+  Time      : 12:27:42.732
+  Label     : FrameLayout
+  XPath     : //android.widget.FrameLayout[@index="0"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #02]  TAP
+  Time      : 12:27:48.948
+  Label     : Start voice search
+  XPath     : //android.widget.ImageView[@resource-id="com.android.chrome:id/voice_search_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #03]  TAP
+  Time      : 12:27:55.771
+  Label     : New tab
+  XPath     : //android.widget.ImageButton[@resource-id="com.android.chrome:id/optional_toolbar_button"]
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
+
+[STEP #04]  INPUT
+  Time      : 12:28:01.711
+  Label     : https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_7lvdl
+  XPath     : //android.widget.EditText[@resource-id="com.android.chrome:id/url_bar"]
+  Value     : https://www.amazon.in/?&tag=googinhydmabk-21&ref=pd_sl_7lvdlypdab_e&adgrpid=159067175452&hvpone=&hvptwo=&hvadid=674834481520&hvpos=&hvnetw=g&hvrand=20568323375617407
+  From      : [0, 0]
+  To        : [0, 0]
+----------------------------------------
